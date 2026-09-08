@@ -1,0 +1,4 @@
+#Tue Sep 08 13:05:55 CEST 2026
+configuration*?=984099D896B9E61171B0D7E41F4284EF312FE8C5
+module-resource*?\:checkstyle-suppressions.xml=8BAC70D466F74EEE064FC5C757095BCEDC7E56E9
+module-resource*?\:checkstyle-xpath-suppressions.xml=C2315DD3871E117DD65C7FEC76F4FB5E99F9D7B0
