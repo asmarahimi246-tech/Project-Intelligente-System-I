@@ -13,6 +13,10 @@ Check met:
 mvn --version
 ```
 
+### problemen met instaleren
+check of java en maven op de PATH staan
+stuur een bericht voor meer help (ik reageer sneller op whatsapp)
+
 ## Stap 1: Project openen
 Open een terminal of command prompt en navigeer naar de map waar je project zich bevindt.
 
