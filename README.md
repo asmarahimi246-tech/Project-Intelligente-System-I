@@ -2,7 +2,16 @@
 
 ## Vereisten
 - Java Development Kit (JDK) geïnstalleerd (versie 8 of hoger)
+Check met:
+```bash
+java --version
+```
+
 - Maven geïnstalleerd (https://maven.apache.org/download.cgi)
+Check met:
+```bash
+mvn --version
+```
 
 ## Stap 1: Project openen
 Open een terminal of command prompt en navigeer naar de map waar je project zich bevindt.
