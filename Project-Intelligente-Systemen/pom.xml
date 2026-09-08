@@ -6,6 +6,11 @@
 
   <groupId>games.kasia.app</groupId>
   <artifactId>Project-Intelligente-Systemen</artifactId>
+
+<!--                              -->
+<!-- vvv HIER STAAT DE VERSIE vvv -->
+<!--                              -->
+
   <version>0.0.1</version>
 
   <name>Project-Intelligente-Systemen</name>
@@ -60,6 +65,20 @@
             <failsOnError>true</failsOnError>
             <consoleOutput>true</consoleOutput>
             <outputFile>${project.build.directory}/checkstyle/checkstyle-report.xml</outputFile>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.2.0</version>
+          <configuration>
+            <archive>
+              <manifest>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                <mainClass>games.kasia.app.App</mainClass>
+              </manifest>
+            </archive>
           </configuration>
         </plugin>
 

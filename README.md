@@ -1,1 +1,42 @@
-test
+# Hoe je het Maven-project compileert en uitvoert (deels gegenereerd door ai)
+
+## Vereisten
+- Java Development Kit (JDK) geïnstalleerd (versie 8 of hoger)
+- Maven geïnstalleerd (https://maven.apache.org/download.cgi)
+
+## Stap 1: Project openen
+Open een terminal of command prompt en navigeer naar de map waar je project zich bevindt.
+
+```bash
+cd pad/naar/je/project/Project-Intelligente-Systemen
+```
+
+Je can checken of je in de goede folder met ls:
+
+```bash
+ls
+```
+
+De output moetde volgende text bevatten:
+
+pom.xml src target
+
+## Stap 2: checkstyle, testen, packagen naar jar en uitvoeren
+
+### checkstyle (WIP)
+
+### testen
+```bash
+mvn test
+```
+
+### packagen en uitvoeren
+```bash
+mvn package
+```
+
+en daarna hierbij is <versie> de versie van de applicatie nu is dat 0.0.1 (de versie kan je zien in de pom.xml)
+
+```bash
+java -jar target/Project-Intelligente-Systemen-<versie>.jar
+```
