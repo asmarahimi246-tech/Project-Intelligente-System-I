@@ -34,22 +34,10 @@ De output moetde volgende text bevatten:
 
 pom.xml src target
 
-## Stap 2: checkstyle, testen, packagen naar jar en uitvoeren
+## Stap 2: checkstyle, testen, packagen en uitvoeren
 
-### checkstyle (WIP)
-
-### testen
-```bash
-mvn test
-```
-
-### packagen en uitvoeren
-```bash
-mvn package
-```
-
-en daarna hierbij is <versie> de versie van de applicatie nu is dat 0.0.1 (de versie kan je zien in de pom.xml)
+Je kan alles doen met een command (de eerste keer kan lang duren):
 
 ```bash
-java -jar target/Project-Intelligente-Systemen-<versie>.jar
+mvn package exec:java
 ```
