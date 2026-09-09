@@ -34,10 +34,16 @@ De output moetde volgende text bevatten:
 
 pom.xml src target
 
-## Stap 2: checkstyle, testen, packagen en uitvoeren
+## Stap 2: testen en uitvoeren
 
-Je kan alles doen met een command (de eerste keer kan lang duren):
+### testen
 
 ```bash
-mvn package exec:java
+mvn test
+```
+
+### uitvoeren
+
+```bash
+mvn compile exec:java
 ```

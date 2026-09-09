@@ -103,7 +103,7 @@
       </configuration>
     </plugin>
     
-    <!-- Checkstyle plugin, bound to verify phase -->
+    <!-- Checkstyle plugin -->
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-checkstyle-plugin</artifactId>
@@ -128,21 +128,6 @@
         <failsOnError>true</failsOnError>
         <consoleOutput>true</consoleOutput>
         <linkXRef>false</linkXRef>
-      </configuration>
-    </plugin>
-
-    <!-- Jar plugin -->
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-jar-plugin</artifactId>
-      <version>3.2.0</version>
-      <configuration>
-        <archive>
-          <manifest>
-            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-            <mainClass>games.kasia.app.App</mainClass>
-          </manifest>
-        </archive>
       </configuration>
     </plugin>
   </plugins>
