@@ -1,5 +1,0 @@
--------------------------------------------------------------------------------
-Test set: games.kasia.app.AppTest
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s -- in games.kasia.app.AppTest
-games.kasia.app.AppTest.testApp -- Time elapsed: 0.011 s
