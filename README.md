@@ -1,10 +1,10 @@
 # Hoe je het Maven-project compileert en uitvoert (deels gegenereerd door ai)
 
 ## Vereisten
-- Java Development Kit (JDK) geïnstalleerd (versie 8 of hoger)
+- Java Development Kit (JDK) geïnstalleerd (versie 11 of hoger) (de game server gebruikt 11)
 Check met:
 ```bash
-java --version
+java -version
 ```
 
 - Maven geïnstalleerd (https://maven.apache.org/download.cgi)
