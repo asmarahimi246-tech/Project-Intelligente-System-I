@@ -17,4 +17,10 @@ public class ServerListener {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Choose an number [1-9]: ");
 
+            int invoer = scanner.nextInt();
+            int number = invoer - 1;
+
+            System.out.println("move " + number);
+        }
+    }
 }
