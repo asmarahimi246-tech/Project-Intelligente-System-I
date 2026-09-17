@@ -8,6 +8,8 @@ public class prototype {
         Scanner input = new Scanner(System.in);
         Random computer = new Random();
 
+        int turns = 0;
+
         while (true) {
         
             printBoard(board);
@@ -15,11 +17,22 @@ public class prototype {
             System.out.print("Choose a position (1-9): ");
             int position = input.nextInt();
 
-            board[position - 1] = 'X'; // position - 1 because the indexes are 0-8
+            while (board[position - 1] == 'X' || board[position - 1] == 'O') {
+                System.out.print("That position is taken. Choose another: ");
+                position = input.nextInt();
+            }
 
-            if (hasWon(board, "X")) {
+            board[position - 1] = 'X'; // position - 1 because the indexes are 0-8
+            turns++;
+
+            if (hasWon(board, 'X')) {
                 printBoard(board);
                 System.out.println("You win!");
+                break;
+            }
+            if (turns == 9) {
+                printBoard(board);
+                System.out.println("It's a draw!");
                 break;
             }
 
@@ -30,8 +43,9 @@ public class prototype {
             }
 
             board[computerPosition] = 'O';
+            turns++;
 
-            if (hasWon(board, "O")) {
+            if (hasWon(board, 'O')) {
                 printBoard(board);
                 System.out.println("The computer wins!");
                 break;
