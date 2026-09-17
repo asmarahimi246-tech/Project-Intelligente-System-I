@@ -8,7 +8,7 @@ public class Client {
     private BufferedReader reader;
     private PrintWriter writer;
 
-    public client() throws IOException {
+    public Client() throws IOException {
         socket = new Socket("localhost", 7789);
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         writer = new PrintWriter(socket.getOutputStream(), true);
