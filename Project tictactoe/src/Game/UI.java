@@ -1,4 +1,4 @@
-package UI;
+package Game;
 
 public class UI {
 
