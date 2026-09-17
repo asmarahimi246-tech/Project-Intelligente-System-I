@@ -13,4 +13,13 @@ public class Client {
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         writer = new PrintWriter(socket.getOutputStream(), true);
     }
+
+    public void sendCommand(String command) {
+        writer.println(command);
+    }
+
+    public BufferedReader getReader() {
+        System.out.println("test");
+        return reader;
+    }
 }
