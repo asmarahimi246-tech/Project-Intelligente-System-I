@@ -1,4 +1,14 @@
-package PACKAGE_NAME;
+import Network.Client;
+import java.io.IOException;
+import Framework.ServerListener;
+import java.util.Scanner;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        Random random = new Random();
+        int randomnumber = 1000 + random.nextInt(9000);
+        String playername = "Player" + randomnumber;
 
         Client client = new Client();
         ServerListener listener = new ServerListener(client);
