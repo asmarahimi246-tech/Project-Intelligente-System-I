@@ -3,7 +3,7 @@ package Network;
 import java.io.*;
 import java.net.*;
 
-public class client {
+public class Client {
     private Socket socket;
     private BufferedReader reader;
     private PrintWriter writer;
