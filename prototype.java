@@ -11,11 +11,16 @@ public class prototype {
         printBoard(board);
 
         System.out.print("Choose a position (1-9): ");
-        int position = scanner.nextInt();
+        int position = input.nextInt();
 
         board[position - 1] = 'X'; // position - 1 because the indexes are 0-8
 
-        int computerPosition = random.nextInt(9); // random number from 0-8
+        int computerPosition = computer.nextInt(9); // random number from 0-8
+
+        while (board[computerPosition] == 'X' || board[computerPosition] == 'O') {
+            computerPosition = computer.nextInt(9);
+        }
+
         board[computerPosition] = 'O';
 
         printBoard(board);
