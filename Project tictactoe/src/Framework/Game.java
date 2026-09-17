@@ -1,4 +1,4 @@
 package Game;
 
-public class Game {
-}
+import Network.Client;
+
