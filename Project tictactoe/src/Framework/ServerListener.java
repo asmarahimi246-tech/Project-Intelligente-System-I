@@ -13,5 +13,8 @@ public class ServerListener {
     public void Commandhandler(String message) {
         System.out.println(message);
 
+        if (message.startsWith("SVR GAME YOURTURN")) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Choose an number [1-9]: ");
 
 }
