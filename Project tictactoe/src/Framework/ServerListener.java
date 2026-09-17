@@ -19,6 +19,7 @@ public class ServerListener {
 
             int invoer = scanner.nextInt();
             int number = invoer - 1;
+            System.out.println(invoer);
 
             System.out.println("move " + number);
         }
