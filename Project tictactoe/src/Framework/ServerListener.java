@@ -23,5 +23,6 @@ public class ServerListener {
 
             client.sendCommand("move " + number);
         }
+
     }
 }
