@@ -21,7 +21,7 @@ public class ServerListener {
             int number = invoer - 1;
             System.out.println(invoer);
 
-            System.out.println("move " + number);
+            client.sendCommand("move " + number);
         }
     }
 }
