@@ -1,5 +1,6 @@
 package games.kasia.app;
 
+import games.kasia.app.client.modules.gameManager.GameManager;
 /**
  * 
  * App
@@ -15,12 +16,9 @@ public class App
      */
     public static void main( String[] args )
     {
-        int kaas = 11;
         System.out.println( "Hello World!" );
-    }
 
-    private void test()
-    {
-        System.out.println("kaas");
+        GameManager gameManager =  new GameManager();
+        gameManager.test();
     }
 }
