@@ -16,21 +16,7 @@ public class ServerListener {
         System.out.println(message);
 
         if (message.startsWith("SVR GAME YOURTURN")) {
-            printBoard();
-            Scanner scanner = new Scanner(System.in);
-            System.out.print("Choose an number [1-9]: ");
-
-            int invoer = scanner.nextInt();
-            int number = invoer - 1;
-            System.out.println(invoer);
-
-            if (board[number] != 'X' && board[number] != 'O') {
-                board[number] = 'X';
-                System.out.println("Tussenstand");
-                printBoard();
-                client.sendCommand("move " + number);
-            }
-
+            game.Number();
         }
 
         if (message.startsWith("SVR GAME MOVE")) {
