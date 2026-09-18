@@ -35,10 +35,10 @@ public class Game {
 
     public void Move(int number) {
         if (board[number] != 'X' && board[number] != 'O') {
-            char symbol;
-            
-            if (symbool == 'X') {
-                symbol = 'O';
+            char player2;
+
+            if (player1 == 'X') {
+                player2 = 'O';
             } else {
                 symbol = 'X';
             }
