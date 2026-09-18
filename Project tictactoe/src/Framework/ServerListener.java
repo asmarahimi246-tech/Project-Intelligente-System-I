@@ -25,10 +25,7 @@ public class ServerListener {
                 char Caracter = message.charAt(index);
                 int number = Character.getNumericValue(Caracter);
 
-                if (board[number] != 'X') {
-                    board[number] = 'O';
-                    printBoard();
-                }
+                game.Move(number);
             }
         }
     }
