@@ -6,6 +6,8 @@ import java.util.Scanner;
 public class ServerListener {
     private Client client;
 
+    static char[] board = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
     public ServerListener(Client client) {
         this.client = client;
     }
