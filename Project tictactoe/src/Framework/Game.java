@@ -40,7 +40,7 @@ public class Game {
             if (player1 == 'X') {
                 player2 = 'O';
             } else {
-                symbol = 'X';
+                player2 = 'X';
             }
 
             board[number] = symbol;
