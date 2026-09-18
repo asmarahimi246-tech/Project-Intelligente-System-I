@@ -22,7 +22,7 @@ public class Game {
         System.out.print("Choose an number [1-9]: ");
 
         int invoer = scanner.nextInt();
-        int number = invoer - 1;
+        invoer -= 1;
         System.out.println(invoer);
 
         if (board[invoer] != 'X' && board[invoer] != 'O') {
