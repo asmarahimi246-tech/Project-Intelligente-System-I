@@ -21,9 +21,9 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Choose an number [1-9]: ");
 
-        int invoer = scanner.nextInt();
-        invoer -= 1;
-        System.out.println(invoer);
+        int input = scanner.nextInt();
+        input -= 1;
+        System.out.println(input);
 
         if (board[invoer] != 'X' && board[invoer] != 'O') {
             board[invoer] = symbool;
