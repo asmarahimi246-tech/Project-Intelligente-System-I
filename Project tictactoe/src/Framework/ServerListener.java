@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class ServerListener {
     private Client client;
+    private Game game;
 
     public ServerListener(Client client, Game game) {
         this.client = client;
