@@ -11,7 +11,8 @@ public class Main {
         String playername = "Player" + randomnumber;
 
         Client client = new Client();
-        ServerListener listener = new ServerListener(client);
+        Game game = new Game(client);
+        ServerListener listener = new ServerListener(client, game);
 
         client.sendCommand("login " + playername);
         client.sendCommand("subscribe tic-tac-toe");
