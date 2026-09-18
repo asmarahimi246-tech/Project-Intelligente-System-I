@@ -1,3 +1,4 @@
+import Framework.Game;
 import Network.Client;
 import java.io.IOException;
 import Framework.ServerListener;
