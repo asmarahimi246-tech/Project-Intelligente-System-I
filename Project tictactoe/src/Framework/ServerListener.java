@@ -24,7 +24,13 @@ public class ServerListener {
             int number = invoer - 1;
             System.out.println(invoer);
 
-            client.sendCommand("move " + number);
+            if (board[number] != 'X' && board[number] != 'O') {
+                board[number] = 'X';
+                System.out.println("Tussenstand");
+                printBoard();
+                client.sendCommand("move " + number);
+            }
+
         }
 
     }
