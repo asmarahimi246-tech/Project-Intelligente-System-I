@@ -23,4 +23,3 @@ public class Client {
         return reader;
     }
 }
-
