@@ -10,8 +10,8 @@ import Framework.Game;
 public class Main {
     public static void main(String[] args) throws IOException {
         Random random = new Random();
-        int randomnumber = 1000 + random.nextInt(9000);
-        String playername = "Player" + randomnumber;
+        String uniqueId = java.util.UUID.randomUUID().toString().substring(0, 5);
+        String playername = "Player" + uniqueId;
 
         Client client = new Client();
         Game game = new Game(client);
