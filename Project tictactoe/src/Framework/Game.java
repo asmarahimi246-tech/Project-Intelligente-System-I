@@ -1,4 +1,4 @@
-package Game;
+package Framework;
 
 import Network.Client;
 import java.util.Scanner;
