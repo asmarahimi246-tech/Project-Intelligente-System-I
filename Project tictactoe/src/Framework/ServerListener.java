@@ -1,7 +1,6 @@
 package Framework;
 
 import Network.Client;
-import java.util.Scanner;
 
 public class ServerListener {
     private Client client;
