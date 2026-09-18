@@ -5,6 +5,7 @@ import Network.Client;
 public class ServerListener {
     private Client client;
     private Game game;
+    private boolean hasHadTurn = false;
 
     public ServerListener(Client client, Game game) {
         this.client = client;
