@@ -1,6 +1,24 @@
 package Game;
 
 import Network.Client;
+import java.util.Scanner;
+
+public class Game {
+    private Client client;
+    private char[] board = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+
+    public Game(Client client) {
+        this.client = client;
+    }
+
+    public void Number() {
+        printBoard();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Choose an number [1-9]: ");
+
+        int invoer = scanner.nextInt();
+        int number = invoer - 1;
+        System.out.println(invoer);
 
         if (board[number] != 'X' && board[number] != 'O') {
             board[number] = 'X';
