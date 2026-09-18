@@ -13,7 +13,7 @@ public class Game {
     }
 
     public void Symbol(char symbol) {
-        this.Symbol = symbol;
+        this.symbol = symbol;
     }
 
     public void Turn() {
