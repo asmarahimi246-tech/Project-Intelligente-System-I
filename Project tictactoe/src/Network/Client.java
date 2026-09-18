@@ -19,7 +19,6 @@ public class Client {
     }
 
     public BufferedReader getReader() {
-        System.out.println("test");
         return reader;
     }
 }
