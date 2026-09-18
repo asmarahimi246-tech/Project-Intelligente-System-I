@@ -29,7 +29,7 @@ public class Game {
             board[input] = symbool;
             System.out.println("Tussenstand:");
             printBoard();
-            client.sendCommand("move " + invoer);
+            client.sendCommand("move " + input);
         }
     }
 
