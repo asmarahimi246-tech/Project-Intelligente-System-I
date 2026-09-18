@@ -43,7 +43,7 @@ public class Game {
                 player2 = 'X';
             }
 
-            board[number] = symbol;
+            board[number] = player2;
             printBoard();
         }
     }
