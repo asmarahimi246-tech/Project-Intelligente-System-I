@@ -28,8 +28,8 @@ public class ServerListener {
                 }
 
                 int index = message.indexOf("MOVE:") + 7;
-                char Caracter = message.charAt(index);
-                int number = Character.getNumericValue(Caracter);
+                char caracter = message.charAt(index);
+                int number = Character.getNumericValue(caracter);
 
                 game.Move(number);
             }
