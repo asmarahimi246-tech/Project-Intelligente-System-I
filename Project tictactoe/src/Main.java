@@ -5,7 +5,6 @@ import Framework.ServerListener;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Random random = new Random();
         String uniqueId = java.util.UUID.randomUUID().toString().substring(0, 5);
         String playername = "Player" + uniqueId;
 
