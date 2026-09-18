@@ -25,8 +25,8 @@ public class Game {
         int number = invoer - 1;
         System.out.println(invoer);
 
-        if (board[number] != 'X' && board[number] != 'O') {
-            board[number] = symbool;
+        if (board[invoer] != 'X' && board[invoer] != 'O') {
+            board[invoer] = symbool;
             System.out.println("Tussenstand:");
             printBoard();
             client.sendCommand("move " + number);
