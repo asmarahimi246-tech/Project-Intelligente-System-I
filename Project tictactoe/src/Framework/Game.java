@@ -13,7 +13,7 @@ public class Game {
     }
 
     public void Symbol(char symbol) {
-        this.symbol = symbol;
+        this.symbool = symbol;
     }
 
     public void Turn() {
