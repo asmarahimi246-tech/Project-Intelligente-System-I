@@ -12,7 +12,11 @@ public class Game {
         this.client = client;
     }
 
-    public void Number() {
+    public void Symbol(char symbol) {
+        this.mySymbol = symbol;
+    }
+
+    public void Turn() {
         printBoard();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Choose an number [1-9]: ");
