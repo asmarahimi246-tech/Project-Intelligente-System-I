@@ -24,7 +24,7 @@ public class ServerListener {
             if (message.contains("MOVE:")) {
                 if (!hadturn) {
                     game.Symbol('O');
-                    hasHadTurn = true;
+                    hadturn = true;
                 }
 
                 int index = message.indexOf("MOVE:") + 7;
