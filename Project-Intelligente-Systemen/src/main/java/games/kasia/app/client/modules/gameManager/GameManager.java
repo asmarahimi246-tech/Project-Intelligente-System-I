@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import games.kasia.app.games.Game;
 import games.kasia.app.games.GameTypes;
+import games.kasia.app.client.common.Config;
 
 /**
  * 
@@ -23,7 +24,9 @@ public class GameManager {
      */
     public void test() {
         // print debug
-        this.view.debugPrint();
+        if (Config.DEBUG){
+            this.view.debugPrint();
+        }
 
         // scan for input
         Scanner scanner  = new Scanner(System.in);

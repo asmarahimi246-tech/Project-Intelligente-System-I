@@ -1,13 +1,16 @@
 package games.kasia.app.games;
+import games.kasia.app.games.jarTest.JarTest;
 import games.kasia.app.games.randomRaceGame.RandomRaceGame;
 import games.kasia.app.games.tikTakToe.TikTakToe;
 
 /**
  * GameTypes
+ * 
+ * With error handling
  */
 public enum GameTypes {
-
-    TIKTAKTOE(1, new TikTakToe()), RACEGAME(2, new RandomRaceGame());
+    // List of all game types
+    TIKTAKTOE(1, new TikTakToe()), RACEGAME(2, new RandomRaceGame()), JARGAME(3, new JarTest());
 
     private final int gameNumber;
     private final Game game;
@@ -40,7 +43,7 @@ public enum GameTypes {
      * 
      * @param number the number
      * 
-     * @return the game
+     * @return the game or
      */
     public static Game getByNumber(int number) {
         for (GameTypes e : values()) {
@@ -48,6 +51,6 @@ public enum GameTypes {
                 return e.getGame();
             }
         }
-        return null;
+        throw new ArrayIndexOutOfBoundsException("Invalid game number:" + number);
     }
 }
