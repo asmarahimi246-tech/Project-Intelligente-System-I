@@ -22,7 +22,7 @@ public class ServerListener {
 
         if (message.startsWith("SVR GAME MOVE")) {
             if (message.contains("MOVE:")) {
-                if (!hadturn) {
+                if (!turn) {
                     game.Symbol('O');
                     hadturn = true;
                 }
