@@ -36,6 +36,7 @@ public class Game {
     public void Move(int number) {
         if (board[number] != 'X' && board[number] != 'O') {
             char symbol;
+            
             if (symbool == 'X') {
                 symbol = 'O';
             } else {
