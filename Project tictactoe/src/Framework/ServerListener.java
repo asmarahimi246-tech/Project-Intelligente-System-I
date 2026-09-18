@@ -33,8 +33,19 @@ public class ServerListener {
 
         }
 
+        if (message.startsWith("SVR GAME MOVE")) {
+            if (message.contains("MOVE:")) {
+                int index = message.indexOf("MOVE:") + 7;
+                char Caracter = message.charAt(index);
+                int number = Character.getNumericValue(Caracter);
+
+                if (board[number] != 'X') {
+                    board[number] = 'O';
+                    printBoard();
+                }
+            }
+        }
     }
-    static char[] board = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
     static void printBoard() {
         System.out.println("|---|---|---|");
