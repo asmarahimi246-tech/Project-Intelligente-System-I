@@ -1,10 +1,13 @@
 package games.kasia.app.games;
 
+import java.util.Scanner;
+
 /**
  * Game
  */
-public class Game {
+public abstract class Game {
     protected String name;
+    protected boolean isOnline = false;
 
     /**    (non-Javadoc)
      * 
@@ -17,10 +20,9 @@ public class Game {
 
     /**
      * runs the game
+     * @param userInput 
      */
-    public void run(){
-
-    }
+    public abstract void run();
     
     /**
      * Closes game in x seconds
@@ -36,5 +38,12 @@ public class Game {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+
+    /**
+     * Check if its an online game
+     */
+	public boolean isOnline() {
+        return this.isOnline;
     }
 }

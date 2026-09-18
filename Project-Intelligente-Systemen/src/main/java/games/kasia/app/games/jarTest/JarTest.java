@@ -1,5 +1,7 @@
 package games.kasia.app.games.jarTest;
 
+import java.util.Scanner;
+
 import games.kasia.app.games.Game;
 
 /**
@@ -16,4 +18,10 @@ public class JarTest extends Game{
         System.out.println("word niet meer gebruikt want de jar werkt all");
         super.closeInSeconds();
     }
+
+	@Override
+	public boolean isOnline() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'isOnline'");
+	}
 }

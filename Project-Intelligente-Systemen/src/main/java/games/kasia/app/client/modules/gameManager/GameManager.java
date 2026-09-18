@@ -2,9 +2,8 @@ package games.kasia.app.client.modules.gameManager;
 
 import java.util.Scanner;
 
-import games.kasia.app.games.Game;
 import games.kasia.app.games.GameTypes;
-import games.kasia.app.client.common.Config;
+import games.kasia.app.client.common.ScannerSingleton;
 import games.kasia.app.client.common.widgets.menu.Menu;
 import games.kasia.app.client.common.widgets.menu.parts.Option;
 
@@ -24,10 +23,8 @@ public class GameManager {
 
     /**
      * Opens a local game
-     * 
-     * @param userInput a scanner for use input
      */
-    public void openLocal(Scanner userInput) {
+    public void openLocal() {
         // Set online to false
         this.online = false;
 
@@ -47,6 +44,6 @@ public class GameManager {
         view.debugPrint(menu);
 
         // Run menu
-        menu.runOption(userInput);
+        menu.runOption(ScannerSingleton.getInstance());
     }
 }

@@ -1,4 +1,6 @@
 package games.kasia.app.games.randomRaceGame;
+import java.util.Scanner;
+
 import games.kasia.app.games.Game;
 
 /**
@@ -63,4 +65,10 @@ public class RandomRaceGame extends Game {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+
+	@Override
+	public boolean isOnline() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'isOnline'");
+	}
 }

@@ -3,6 +3,7 @@ package games.kasia.app.client.modules.mainMenu;
 import java.util.Scanner;
 
 import games.kasia.app.App;
+import games.kasia.app.client.common.ScannerSingleton;
 import games.kasia.app.client.common.widgets.menu.Menu;
 import games.kasia.app.client.common.widgets.menu.parts.Option;
 import games.kasia.app.client.modules.gameManager.GameManager;
@@ -13,7 +14,6 @@ import games.kasia.app.client.modules.gameManager.GameManager;
  */
 public class MainMenu {
     private App app;
-    private Scanner userInput;
     private MainMenuView view = new MainMenuView();
 
     /**
@@ -21,7 +21,6 @@ public class MainMenu {
      */
     public MainMenu(App app) {
         this.app = app;
-        this.userInput = app.getScanner();
     }
 
     /**
@@ -34,7 +33,7 @@ public class MainMenu {
         Menu menu = new Menu("What do you want to do?", " ");
 
         // Add options
-        Option toAdd = new Option("start local game", () -> gameManager.openLocal(this.userInput));
+        Option toAdd = new Option("start local game", () -> gameManager.openLocal());
         menu.addOption(toAdd);
         toAdd = new Option("<- exit application", () -> app.sendCloseSignal());
         menu.addOption(toAdd);
@@ -43,6 +42,6 @@ public class MainMenu {
         view.debugPrint(menu);
 
         // Run menu
-        menu.runOption(this.userInput);
+        menu.runOption(ScannerSingleton.getInstance());
     }
 }

@@ -119,15 +119,6 @@ public class App
     }
 
     /**
-     * Gets the scanner for user input
-     * 
-     * @return a scanner
-     */
-    public Scanner getScanner() {
-        return this.userInput;
-    }
-
-    /**
      * Sends a signal to tell the application to close
      */
     public void sendCloseSignal() {
