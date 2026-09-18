@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Game {
     private Client client;
-    private char Symbol = 'X';
+    private char symbol = 'X';
     private char[] board = {'1','2','3','4','5','6','7','8','9'};
 
     public Game(Client client) {
