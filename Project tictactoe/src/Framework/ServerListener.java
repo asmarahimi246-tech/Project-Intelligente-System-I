@@ -10,6 +10,7 @@ public class ServerListener {
 
     public ServerListener(Client client) {
         this.client = client;
+        this.game = game;
     }
 
     public void Commandhandler(String message) {
