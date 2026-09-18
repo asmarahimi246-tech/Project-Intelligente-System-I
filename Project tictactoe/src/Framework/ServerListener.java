@@ -16,7 +16,7 @@ public class ServerListener {
         System.out.println(message);
 
         if (message.startsWith("SVR GAME YOURTURN")) {
-            hasHadTurn = true;
+            hadturn = true;
             game.Turn();
         }
 
