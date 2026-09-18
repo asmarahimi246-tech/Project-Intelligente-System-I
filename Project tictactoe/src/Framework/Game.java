@@ -26,7 +26,7 @@ public class Game {
         System.out.println(input);
 
         if (board[input] != 'X' && board[input] != 'O') {
-            board[input] = symbool;
+            board[input] = player1;
             System.out.println("Tussenstand:");
             printBoard();
             client.sendCommand("move " + input);
