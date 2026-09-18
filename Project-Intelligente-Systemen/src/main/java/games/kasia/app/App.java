@@ -1,13 +1,14 @@
 package games.kasia.app;
 
+import games.kasia.app.games.tempgame.TicTacToe;
+
 /**
  * 
  * App
  * 
  * yes
  */
-public class App
-{
+public class App {
     /**
      * The main method - entry point of the application.
      *
@@ -15,12 +16,15 @@ public class App
      */
     public static void main( String[] args )
     {
-        int kaas = 11;
-        System.out.println( "Hello World!" );
+        TicTacToe game = new TicTacToe();
+        game.playGame();
+//        game.test();
+//        int kaas = 11;
+
     }
 
-    private void test()
-    {
-        System.out.println("kaas");
-    }
+//    private void test()
+//    {
+//        System.out.println("kaas");
+//    }
 }
