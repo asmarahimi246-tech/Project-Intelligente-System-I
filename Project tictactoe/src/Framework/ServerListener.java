@@ -22,6 +22,11 @@ public class ServerListener {
 
         if (message.startsWith("SVR GAME MOVE")) {
             if (message.contains("MOVE:")) {
+                if (!hasHadTurn) {
+                    game.Symbol('O');
+                    hasHadTurn = true;
+                }
+
                 int index = message.indexOf("MOVE:") + 7;
                 char Caracter = message.charAt(index);
                 int number = Character.getNumericValue(Caracter);
