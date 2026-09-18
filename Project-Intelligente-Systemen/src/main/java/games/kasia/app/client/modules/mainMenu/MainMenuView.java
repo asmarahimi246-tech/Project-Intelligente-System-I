@@ -1,11 +1,11 @@
-package games.kasia.app.client.modules.gameManager;
+package games.kasia.app.client.modules.mainMenu;
 
 import games.kasia.app.client.common.widgets.menu.Menu;
 
 /**
- * GameManagerView
+ * MainMenuView
  */
-public class GameManagerView {
+public class MainMenuView {
 
     /**
      * Print a simplified ui in the terminal
@@ -13,10 +13,10 @@ public class GameManagerView {
     public void debugPrint(Menu menu) {
         menu.clearScreen();
 
-        System.out.println("Local game menu");
+        System.out.println("Main menu");
         System.out.println("");
         System.out.println("");
-
+        
         menu.printOptionsList();
     }
 }

@@ -5,13 +5,16 @@ import java.util.Scanner;
 import games.kasia.app.games.Game;
 import games.kasia.app.games.GameTypes;
 import games.kasia.app.client.common.Config;
+import games.kasia.app.client.common.widgets.menu.Menu;
+import games.kasia.app.client.common.widgets.menu.parts.Option;
 
 /**
  * 
  * GameManager
  */
 public class GameManager {
-    GameManagerView view = new GameManagerView();
+    private GameManagerView view = new GameManagerView();
+    private boolean online;
 
     /**
      * Constructor
@@ -20,23 +23,30 @@ public class GameManager {
     }
 
     /**
-     * a test method
+     * Opens a local game
+     * 
+     * @param userInput a scanner for use input
      */
-    public void test() {
-        // print debug
-        if (Config.DEBUG){
-            this.view.debugPrint();
+    public void openLocal(Scanner userInput) {
+        // Set online to false
+        this.online = false;
+
+        // Make menu
+        Menu menu = new Menu("What do you want to play?", " ");
+
+        // Add options
+        Option toAdd;
+        for (GameTypes gameType : GameTypes.values()) {
+            toAdd = new Option(gameType.getGame().toString(), () -> gameType.getGame().run());
+            menu.addOption(toAdd);
         }
+        toAdd = new Option("<- go back", () -> {});
+        menu.addOption(toAdd);
 
-        // scan for input
-        Scanner scanner  = new Scanner(System.in);
-        int gameNumber = scanner.nextInt();
-        scanner.close();
+        // print temp menu
+        view.debugPrint(menu);
 
-        // get game
-        Game game = GameTypes.getByNumber(gameNumber);
-
-        // test de game
-        game.run();
+        // Run menu
+        menu.runOption(userInput);
     }
 }

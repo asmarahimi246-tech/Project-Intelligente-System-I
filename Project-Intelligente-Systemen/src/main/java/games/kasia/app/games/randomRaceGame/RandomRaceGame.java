@@ -52,6 +52,7 @@ public class RandomRaceGame extends Game {
         System.out.println("          ^^ ^^");
         System.out.println();
         System.out.println("ビデオゲームのコピーは著作権法により重大\nな犯罪となります。詳しくは、お持ちの\n任天堂のゲーム取扱説明書を参照してください。");
+        super.closeInSeconds();
     }
 
     /**

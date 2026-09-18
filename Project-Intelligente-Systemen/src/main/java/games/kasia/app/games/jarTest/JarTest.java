@@ -13,6 +13,7 @@ public class JarTest extends Game{
 
     @Override
     public void run() {
-        System.out.println("ok");
+        System.out.println("word niet meer gebruikt want de jar werkt all");
+        super.closeInSeconds();
     }
 }

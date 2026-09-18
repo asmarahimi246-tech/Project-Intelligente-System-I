@@ -2,13 +2,12 @@ package games.kasia.app;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import games.kasia.app.client.common.Config;
-import games.kasia.app.client.modules.gameManager.GameManager;
+import games.kasia.app.client.modules.mainMenu.MainMenu;
 /**
  * 
  * App
@@ -18,6 +17,8 @@ import games.kasia.app.client.modules.gameManager.GameManager;
 public class App
 {
     private Process localServer;
+    private Scanner userInput;
+    private boolean running;
 
     /**
      * The main method - entry point of the application.
@@ -26,16 +27,35 @@ public class App
      */
     public static void main( String[] args )
     {
-        // create app
+        // create and run the application
         App app = new App();
         app.setup();
+        app.run();
 
-        // game manager
-        GameManager gameManager =  new GameManager();
-        gameManager.test();
+        // For when it crashes
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Something went wrong. Closing application");
+            app.close();
+        }));
+    }
 
-        // close app
-        app.close();
+    /**
+     * runs the application
+     */
+    private void run() {
+        //TODO: main
+        MainMenu menu = new MainMenu(this);
+
+        try {
+            // application loop
+            while (this.running){
+                menu.open();
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("Something went wrong. Closing application");
+        } finally {
+            this.close();
+        }
     }
 
     /**
@@ -44,21 +64,16 @@ public class App
      * like starting the local server
      */
     public void setup() {
+        // set app to running
+        this.running = true;
+
+        // user input
+        this.userInput = new Scanner(System.in);
+        
+        // setup local server
         try{
             // from config
             Path serverPath = Config.SERVERJAR;
-            String adminPassword = Config.ADMINPASSWORD;
-
-            // server setup commands to execute before starting server
-            List<List<String>> commandList = new ArrayList<>();
-            commandList.add(Arrays.asList("java", "-jar",  serverPath.normalize().toString(), "--set-password", adminPassword));
-
-            // setup for server
-            for (List<String> command : commandList) {
-                ProcessBuilder setup = new ProcessBuilder(command);
-                Process serverSetup = setup.start();
-                serverSetup.destroyForcibly();
-            }
 
             // starting server
             ProcessBuilder server = new ProcessBuilder("java", "-jar", serverPath.normalize().toString());
@@ -76,7 +91,10 @@ public class App
     /**
      * Closes the application
      */
-    public void close() {
+    private void close() {
+        // close scanner
+        userInput.close();
+
         // close local server
         if (localServer != null) {
             localServer.destroy();
@@ -87,7 +105,7 @@ public class App
                 if (finished) {
                     int exitCode = localServer.exitValue();
                     System.out.println("Local server exited with code: " + exitCode);
-                    
+
                 // force if to slow
                 } else {
                     System.out.println("Local server did not exit within the timeout period");
@@ -98,5 +116,21 @@ public class App
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Gets the scanner for user input
+     * 
+     * @return a scanner
+     */
+    public Scanner getScanner() {
+        return this.userInput;
+    }
+
+    /**
+     * Sends a signal to tell the application to close
+     */
+    public void sendCloseSignal() {
+        this.running = false;
     }
 }
