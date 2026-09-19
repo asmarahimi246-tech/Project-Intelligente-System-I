@@ -5,8 +5,8 @@ import Framework.ServerListener;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        String uniqueId = java.util.UUID.randomUUID().toString().substring(0, 5);
-        String playername = "Player" + uniqueId;
+        String uniqueID = java.util.UUID.randomUUID().toString().substring(0, 5);
+        String playername = "Player" + uniqueID;
 
         Client client = new Client();
         Game game = new Game(client);
