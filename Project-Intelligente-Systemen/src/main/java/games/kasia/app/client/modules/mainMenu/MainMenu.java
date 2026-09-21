@@ -43,5 +43,6 @@ public class MainMenu {
 
         // Run menu
         menu.runOption(ScannerSingleton.getInstance());
+        
     }
 }

@@ -1,13 +1,20 @@
 package games.kasia.app.games.tikTakToe;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import games.kasia.app.client.common.Config;
+import games.kasia.app.client.common.WHYsonParser;
 import games.kasia.app.games.Game;
 import games.kasia.app.games.tikTakToe.players.TikTakToePlayer;
+import games.kasia.app.games.common.Player;
+import games.kasia.app.games.common.PlayerStates;
 
 /**
  * TikTakToe
  */
 public class TikTakToe extends Game {
+    private ArrayList<Player> players = new ArrayList<Player>();
+
     /**
      * Constructor
      */
@@ -17,30 +24,136 @@ public class TikTakToe extends Game {
         super.name = "tic-tac-toe";
     }
 
-    //TODO: make actual game
+    /**
+     * Setup
+     */
+    private void setup() {
+        // make test players
+        Player player1 = new TikTakToePlayer("madeline", this);
+        Player player2 = new TikTakToePlayer("badeline", this);
+
+        this.players.add(player1);
+        this.players.add(player2);
+
+        // setup players with finite state machine
+        boolean playersSetup = false;
+        while (!playersSetup) {
+            playersSetup = true;
+            for (Player player : players) {
+                switch(player.getState()) {
+                    case INITIALIZED:
+                        player.login();
+                        playersSetup = false;
+                        break;
+                    case LOGGED_IN:
+                        player.subscribe();
+                        playersSetup = false;
+                        break;
+                    case SUBSCRIBED:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    /**
+     * closes the game
+     */
+    private void close() {
+        for (Player player : this.players) {
+            player.disconnect();
+        }
+        super.closeInSeconds();
+    }
+
+    //TODO: Place setup in setup
     @Override
     public void run() {
-        System.out.println("ik ben boter kaas en eieren");
-        System.out.println("speler test");
-        TikTakToePlayer player1 = new TikTakToePlayer("madeline", this);
-        TikTakToePlayer player2 = new TikTakToePlayer("badeline", this);
-
-        player1.subscribe();
-        player2.subscribe();
+        this.setup();
+        super.gameRunning = true;
 
         //gameloop
-        int movesLeft = 9;
-        while(movesLeft > 0) {
-            player1.doMove();
-            movesLeft--;
-            System.out.println(movesLeft);
-            player2.doMove();
-            movesLeft--;
-            System.out.println(movesLeft);
+        while(super.gameRunning) {
+            for (Player player : players) {
+                if (!super.gameRunning) {
+                    break;
+                }
+                player.doMove();
+            }
+            if (!super.gameRunning) {
+                break;
+            }
         }
 
-        player1.disconnect();
-        player2.disconnect();
-        super.closeInSeconds();
+        this.close();
+    }
+
+    @Override
+    public void processMessage(String answer) {
+        WHYsonParser why = new WHYsonParser(answer);
+
+        if (answer.contains("GAME MATCH")) {
+            sortPlayers(why.getValue("PLAYERTOMOVE"));
+        } else if (answer.contains("GAME WIN")) {
+            endGame(answer);
+        } else if (answer.contains("GAME LOSS")) {
+            endGame(answer);
+        } else {
+            if (Config.DEBUG) {
+                System.out.println("[info] not implemented in proccesMessage: " + answer);
+            }
+        }
+    }
+
+    /**
+     * prints who wins and kinda closes the game
+     * 
+     * @param answer what the server said
+     */
+    private void endGame(String answer) {
+        WHYsonParser why = new WHYsonParser(answer);
+
+        int player1Score = Integer.parseInt(why.getValue("PLAYERONESCORE"));
+        int player2Score = Integer.parseInt(why.getValue("PLAYERTWOSCORE"));
+
+        if (player1Score > player2Score) {
+            String winningPlayer = players.get(0).toString();
+            System.out.println("[info] " + winningPlayer + " wins");
+        } else {
+            String winningPlayer = players.get(1).toString();
+            System.out.println("[info] " + winningPlayer + " wins");
+        }
+        this.sendCloseSignal();
+    }
+
+    /**
+     * sorts players
+     * 
+     * @param value
+     */
+    private void sortPlayers(String value) {
+        System.out.println(value);
+        ArrayList<Player> sorted = new ArrayList<Player>();
+
+        for (Player player : players) {
+            if (player.toString().equals(value)) {
+                sorted.add(player);
+            }
+        }
+ 
+        for (Player player : players) {
+            if (!player.toString().equals(value)) {
+                sorted.add(player);
+            }
+        }
+
+        this.players = new ArrayList<Player>(sorted);
+    }
+ 
+    @Override
+    public void sendCloseSignal() {
+        super.gameRunning = false;
     }
 }
