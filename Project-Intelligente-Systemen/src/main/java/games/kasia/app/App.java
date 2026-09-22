@@ -7,6 +7,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import games.kasia.app.client.common.Config;
+import games.kasia.app.client.common.ScannerSingleton;
 import games.kasia.app.client.modules.mainMenu.MainMenu;
 /**
  * 
@@ -17,7 +18,6 @@ import games.kasia.app.client.modules.mainMenu.MainMenu;
 public class App
 {
     private Process localServer;
-    private Scanner userInput;
     private boolean running;
 
     /**
@@ -66,9 +66,6 @@ public class App
     public void setup() {
         // set app to running
         this.running = true;
-
-        // user input
-        this.userInput = new Scanner(System.in);
         
         // setup local server
         try{
@@ -93,7 +90,7 @@ public class App
      */
     private void close() {
         // close scanner
-        userInput.close();
+        ScannerSingleton.closeInstance();
 
         // close local server
         if (localServer != null) {

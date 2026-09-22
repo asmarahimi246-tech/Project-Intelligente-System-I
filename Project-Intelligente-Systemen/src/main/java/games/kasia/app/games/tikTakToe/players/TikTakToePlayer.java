@@ -16,7 +16,7 @@ import games.kasia.app.games.common.Player;
  * TikTakToePlayer
  */
 public class TikTakToePlayer extends Player {
-
+    private PlayerState state;
     /**
      * Constructor
      * 
@@ -51,10 +51,11 @@ public class TikTakToePlayer extends Player {
 
 	@Override
 	public void doMove() {
+        System.out.println("-----------" + super.name + "-----------");
         // to be sure there isnt any
-        super.getAnswer();
-        
-        System.out.println("-----------");
+        System.out.println(super.getAnswer());
+        System.out.println(super.getAnswer());
+
         Scanner userInput = ScannerSingleton.getInstance();
         String move = userInput.nextLine();
         super.sendCommand(move);
@@ -74,6 +75,7 @@ public class TikTakToePlayer extends Player {
     /**
      * Subscribe to the game
      */
+    @Override
     public void subscribe() {
         super.sendCommand("subscribe " + game.toString());
         System.out.println(super.getAnswer());

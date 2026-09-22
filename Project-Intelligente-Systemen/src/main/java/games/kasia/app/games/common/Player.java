@@ -88,4 +88,6 @@ public abstract class Player {
             e.printStackTrace();
         }
     }
+
+    public abstract void subscribe();
 }
