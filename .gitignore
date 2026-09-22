@@ -9,9 +9,9 @@ Project-Intelligente-Systemen/target/
 /.vscode/
 
 # Maven wrapper
-Project-Intelligente-Systemen/.mvn/
-Project-Intelligente-Systemen/mvnw
-Project-Intelligente-Systemen/mvnw.cmd
+/.mvn/
+/mvnw
+/mvnw.cmd
 
 # Logs
 *.log

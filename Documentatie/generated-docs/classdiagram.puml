@@ -1,0 +1,22 @@
+@startuml
+
+class app.App {
+	{method}  {static} +main ( args : String[] ) : void
+	{method} +sendCloseSignal () : void
+	{method} +setup () : void
+}
+
+
+class app.common.util.Config {
+	{field} {static} +LOCALPORT : int
+	{field} {static} +ONLINEIP : String
+	{field} {static} +ONLINEPORT : int
+	{field} {static} +SERVERJAR : Path
+}
+
+
+
+
+
+
+@enduml

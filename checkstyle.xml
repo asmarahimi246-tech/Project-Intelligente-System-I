@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+          "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+          "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+  <property name="severity" value="error"/>
+  <property name="charset" value="UTF-8"/>
+
+  <module name="TreeWalker">
+    <module name="SuppressionXpathFilter">
+      <property name="file" value="${org.checkstyle.google.suppressionxpathfilter.config}"
+            default="checkstyle-xpath-suppressions.xml" />
+      <property name="optional" value="true"/>
+    </module>
+
+    <!-- Javadoc -->
+    <module name="SingleLineJavadoc"/>
+
+    <module name="MissingJavadocMethod">
+      <property name="scope" value="private"/>
+      <property name="minLineCount" value="2"/>
+    </module>
+
+    <module name="MissingJavadocType">
+    </module>
+
+
+    <!-- Naming conventions -->
+    <!-- Method names: camelCase -->
+    <module name="MethodName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+
+    <!-- Member variables: camelCase -->
+    <module name="MemberName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+
+    <!-- Class, Interface, Enum names: PascalCase -->
+    <module name="TypeName">
+      <property name="format" value="^[A-Z][a-zA-Z0-9]*$"/>
+    </module>
+
+    <!-- Constant variables: UPPER_CASE with underscores -->
+    <module name="ConstantName">
+      <property name="format" value="^[A-Z][A-Z0-9_]*$"/>
+    </module>
+
+    <!-- Parameter names: camelCase -->
+    <module name="ParameterName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+
+    <!-- Local variables: camelCase -->
+    <module name="LocalVariableName">
+      <property name="format" value="^[a-z][a-zA-Z0-9]*$"/>
+    </module>
+
+    <!-- Avoid star imports -->
+    <module name="AvoidStarImport"/>
+
+    <!-- Restrict to one top-level class per file -->
+    <module name="OneTopLevelClass"/>
+
+    <!-- One statement per line -->
+    <module name="OneStatementPerLine"/>
+  </module>
+</module>
