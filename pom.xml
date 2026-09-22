@@ -65,6 +65,38 @@
       </executions>
     </plugin>
 
+    <!-- Uml to image plugin-->
+    <plugin>
+      <groupId>com.github.jeluard</groupId>
+      <artifactId>plantuml-maven-plugin</artifactId>
+      <version>1.2</version>
+      <executions>
+        <execution>
+          <id>generate-plantuml</id>
+          <phase>package</phase> <!-- Kies de gewenste fase -->
+          <goals>
+            <goal>generate</goal> <!-- Of het juiste doel als het anders is -->
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <outputInSourceDirectory>true</outputInSourceDirectory>
+        <sourceFiles>
+          <directory>${basedir}</directory>
+          <includes>
+            <include>Documentatie/generated-docs/classdiagram.puml</include>
+          </includes>
+        </sourceFiles>
+      </configuration>
+      <dependencies>
+        <dependency>
+          <groupId>net.sourceforge.plantuml</groupId>
+          <artifactId>plantuml</artifactId>
+         <version>8031</version>
+        </dependency>
+      </dependencies>
+    </plugin>
+
     <!-- Compile plugin-->
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
@@ -121,6 +153,7 @@
         </dependency>
       </dependencies>
       <configuration>
+        <argLine>--add-opens=java.desktop/com.sun.imageio.plugins.png=ALL-UNNAMED</argLine>
         <reportFormat>plain</reportFormat>
         <consoleOutputReporter>
           <disable>true</disable>

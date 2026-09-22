@@ -1,5 +1,5 @@
 # Maven output directories
-Project-Intelligente-Systemen/target/
+target/
 
 # IDE's
 /.idea/
@@ -9,7 +9,6 @@ Project-Intelligente-Systemen/target/
 /.vscode/
 
 # Maven wrapper
-/.mvn/
 /mvnw
 /mvnw.cmd
 
