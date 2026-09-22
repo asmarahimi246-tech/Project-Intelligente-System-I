@@ -1,3 +1,6 @@
+# Class diagram van het project
+![puml](Documentatie/generated-docs/classdiagram.png)
+
 # Hoe je het Maven-project compileert en uitvoert (deels gegenereerd door ai)
 
 ## Vereisten
