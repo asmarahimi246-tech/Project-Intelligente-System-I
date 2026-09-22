@@ -8,6 +8,7 @@ import java.util.Scanner;
 public abstract class Game {
     protected String name;
     protected boolean isOnline = false;
+    protected boolean gameRunning = false;
 
     /**    (non-Javadoc)
      * 
@@ -31,7 +32,7 @@ public abstract class Game {
         int seconds = 5;
 
         // for testing
-        System.out.println("game ends in " + seconds + "s");
+        System.out.println("[info] game ends in " + seconds + "s");
         try {
 			Thread.sleep(seconds*1000);
 		} catch (InterruptedException e) {
@@ -46,4 +47,8 @@ public abstract class Game {
 	public boolean isOnline() {
         return this.isOnline;
     }
+
+    public abstract void processMessage(String answer);
+
+    public abstract void sendCloseSignal();
 }

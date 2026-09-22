@@ -71,4 +71,16 @@ public class RandomRaceGame extends Game {
 		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'isOnline'");
 	}
+
+    @Override
+    public void processMessage(String answer) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'processMessage'");
+    }
+
+    @Override
+    public void sendCloseSignal() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'sendCloseSignal'");
+    }
 }

@@ -9,8 +9,10 @@ import java.util.Scanner;
 
 import games.kasia.app.client.common.Config;
 import games.kasia.app.client.common.ScannerSingleton;
+import games.kasia.app.client.common.widgets.menu.Menu;
 import games.kasia.app.games.Game;
 import games.kasia.app.games.common.Player;
+import games.kasia.app.games.common.PlayerStates;
 
 /**
  * TikTakToePlayer
@@ -27,6 +29,7 @@ public class TikTakToePlayer extends Player {
         super();
         super.name = name;
         super.game = game;
+
         Socket socket = null;
         if (super.game.isOnline()) {
             throw new UnsupportedOperationException("Unimplemented method 'doMove'");
@@ -41,46 +44,34 @@ public class TikTakToePlayer extends Player {
         super.socket = socket;
 
         try {
-			this.connectToServer();
+			super.connectToServer();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
-    
+
+    @Override 
+    public PlayerStates getState() {
+        return super.state;
+    }
 
 	@Override
 	public void doMove() {
         System.out.println("-----------" + super.name + "-----------");
         // to be sure there isnt any
-        System.out.println(super.getAnswer());
-        System.out.println(super.getAnswer());
-
-        Scanner userInput = ScannerSingleton.getInstance();
-        String move = userInput.nextLine();
-        super.sendCommand(move);
-        System.out.println(super.getAnswer());
+        try {
+            Menu menu = new Menu(name, name);
+            menu.clearScreen();
+            System.out.println("[client > " + super.name + "] type: move <number (0-9)>");
+            Scanner userInput = ScannerSingleton.getInstance();
+            String move = userInput.nextLine();
+            super.sendCommand(move);
+            System.out.println("[server > " + super.name + "] " + super.getAnswer());
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
     }
-
-	@Override
-	protected void connectToServer() throws IOException {
-        reader = new BufferedReader(new InputStreamReader(super.socket.getInputStream()));
-        writer = new PrintWriter(super.socket.getOutputStream(), true);
-        super.printLongResponse(2);
-
-        super.sendCommand("login " + super.name);
-        System.out.println(super.getAnswer());
-	}
-
-    /**
-     * Subscribe to the game
-     */
-    @Override
-    public void subscribe() {
-        super.sendCommand("subscribe " + game.toString());
-        System.out.println(super.getAnswer());
-    }
-
 
 	@Override
 	public void disconnect() {
