@@ -16,8 +16,8 @@ public class Client {
 
     /**
      * A constructor
-     * makes a Client 
-     * 
+     * makes a Client
+     *
      * @throws IOException when something goes wrong with the socket
      */
     public Client() throws IOException {
