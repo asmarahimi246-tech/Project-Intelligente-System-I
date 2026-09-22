@@ -28,7 +28,7 @@ public class Client {
 
     /**
      * Send a command to the server
-     * 
+     *
      * @param command the command to send
      */
     public void sendCommand(String command) {
