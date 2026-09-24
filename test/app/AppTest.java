@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
-import app.App;
-
 @TestInstance(Lifecycle.PER_CLASS)
 public class AppTest {
 
@@ -17,8 +15,7 @@ public class AppTest {
 
     @BeforeAll 
     public void setUp() {
-        app = new App();
-        app.setup();
+        app = App.getInstance();
     }
 
     @AfterAll 

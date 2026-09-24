@@ -33,69 +33,97 @@
     </dependency>
   </dependencies>
 
+<profiles>
+  <profile>
+    <id>uml-generation</id>
+    <properties>
+      <skipTests>true</skipTests>
+    </properties>
+    <build>
+      <plugins>
+        <!-- Clean plugin -->
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.4.0</version>
+          <executions>
+            <execution>
+              <id>auto-clean</id>
+              <phase>initialize</phase>
+              <goals>
+                <goal>clean</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+    <!-- Uml plugin -->
+        <plugin>
+          <artifactId>plantuml-generator-maven-plugin</artifactId>
+          <groupId>de.elnarion.maven</groupId>
+          <version>2.4.1</version>
+          <executions>
+    	      <execution>
+	    	      <id>generate-simple-diagram</id>
+              <phase>compile</phase>
+	    	      <goals>
+	    	    	  <goal>generate</goal>
+	    	      </goals>
+	          </execution>
+          </executions>
+          <configuration>
+              <maxVisibilityMethods>PROTECTED</maxVisibilityMethods>
+              <maxVisibilityFields>PROTECTED</maxVisibilityFields>
+              <useShortClassNamesInFieldsAndMethods>true</useShortClassNamesInFieldsAndMethods>
+              <outputDirectory>Documentatie/generated-docs</outputDirectory>
+	    		    <outputFilename>classdiagram.puml</outputFilename>
+	    		    <scanPackages>
+	    			    <scanPackage>
+	    			      app
+	    			    </scanPackage>
+		    	    </scanPackages>
+		        </configuration>
+        </plugin>
+
+        <!-- Uml to image plugin-->
+        <plugin>
+          <groupId>com.github.jeluard</groupId>
+          <artifactId>plantuml-maven-plugin</artifactId>
+          <version>1.2</version>
+          <executions>
+          <execution>
+             <id>generate-plantuml</id>
+              <phase>generate-resources</phase>
+              <goals>
+                <goal>generate</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <outputInSourceDirectory>true</outputInSourceDirectory>
+            <sourceFiles>
+              <directory>${basedir}</directory>
+              <includes>
+                <include>Documentatie/generated-docs/classdiagram.puml</include>
+              </includes>
+            </sourceFiles>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>net.sourceforge.plantuml</groupId>
+              <artifactId>plantuml</artifactId>
+             <version>8031</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+</profiles>
+
 <build>
   <sourceDirectory>src</sourceDirectory>
   <testSourceDirectory>test</testSourceDirectory>
   <plugins>
-    <!-- Uml plugin -->
-    <plugin>
-     <artifactId>plantuml-generator-maven-plugin</artifactId>
-      <groupId>de.elnarion.maven</groupId>
-      <version>2.4.1</version>
-      <executions>
-    	<execution>
-	    	<id>generate-simple-diagram</id>
-	    	<goals>
-	    		<goal>generate</goal>
-	    	</goals>
-	    	<phase>compile</phase>
-	    	<configuration>
-          <maxVisibilityMethods>PROTECTED</maxVisibilityMethods>
-          <maxVisibilityFields>PROTECTED</maxVisibilityFields>
-          <useShortClassNamesInFieldsAndMethods>true</useShortClassNamesInFieldsAndMethods>
-          <outputDirectory>Documentatie/generated-docs</outputDirectory>
-	    		<outputFilename>classdiagram.puml</outputFilename>
-	    		<scanPackages>
-	    			<scanPackage>
-	    			app
-	    			</scanPackage>
-		    	</scanPackages>
-		    </configuration>
-	    </execution>
-      </executions>
-    </plugin>
-
-    <!-- Uml to image plugin-->
-    <plugin>
-      <groupId>com.github.jeluard</groupId>
-      <artifactId>plantuml-maven-plugin</artifactId>
-      <version>1.2</version>
-      <executions>
-        <execution>
-          <id>generate-plantuml</id>
-          <phase>package</phase> <!-- Kies de gewenste fase -->
-          <goals>
-            <goal>generate</goal> <!-- Of het juiste doel als het anders is -->
-          </goals>
-        </execution>
-      </executions>
-      <configuration>
-        <outputInSourceDirectory>true</outputInSourceDirectory>
-        <sourceFiles>
-          <directory>${basedir}</directory>
-          <includes>
-            <include>Documentatie/generated-docs/classdiagram.puml</include>
-          </includes>
-        </sourceFiles>
-      </configuration>
-      <dependencies>
-        <dependency>
-          <groupId>net.sourceforge.plantuml</groupId>
-          <artifactId>plantuml</artifactId>
-         <version>8031</version>
-        </dependency>
-      </dependencies>
-    </plugin>
 
     <!-- Compile plugin-->
     <plugin>

@@ -66,5 +66,8 @@ stuur een bericht voor meer help (ik reageer sneller op whatsapp (yuna))
 ### uitvoeren
 
 ```bash
-mvn compile exec:java
+mvn compile -Puml-generation
 ```
+
+### note
+dit check niet voor errors en doet ook geen tests

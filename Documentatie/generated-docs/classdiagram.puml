@@ -2,8 +2,11 @@
 
 class app.App {
 	{method}  {static} +main ( args : String[] ) : void
-	{method} +sendCloseSignal () : void
-	{method} +setup () : void
+	{method}  {static} +sendCloseSignal () : void
+}
+
+
+class app.common.network.Client {
 }
 
 
@@ -15,8 +18,62 @@ class app.common.util.Config {
 }
 
 
+class app.common.util.ScannerSingleton {
+	{method}  {static} +closeInstance () : void
+}
 
 
+class app.common.util.WHYsonParser {
+	{method} +getValue ( param : String ) : String
+}
+
+
+class app.common.widgets.menu.MenuWidget {
+	{method} +addOption ( option : Option ) : void
+	{method} +clearScreen () : void
+	{method} +printOptionsList () : void
+	{method} +runOption ( scanner : Scanner ) : void
+}
+
+
+class app.common.widgets.menu.parts.Option {
+	{method} +run ( scanner : Scanner ) : void
+}
+
+
+interface app.common.widgets.menu.parts.ToExecute {
+	{method}  {abstract} +execute () : void
+}
+
+
+class app.menus.GameMenu {
+	{method} +open () : void
+}
+
+
+class app.menus.MainMenu {
+	{method} +open () : void
+}
+
+
+abstract class app.menus.common.Menu {
+	{method}  {abstract} +open () : void
+}
+
+
+class app.menus.common.MenuState {
+}
+
+
+
+
+app.App -->  app.App : INSTANCE
+app.common.widgets.menu.MenuWidget "1" o-- "0..*"  app.common.widgets.menu.parts.Option : optionsList
+app.common.widgets.menu.parts.Option -->  app.common.widgets.menu.parts.ToExecute : function
+app.menus.GameMenu --|>  app.menus.common.Menu
+app.menus.MainMenu --|>  app.menus.common.Menu
+app.menus.common.MenuState -->  app.menus.common.Menu : state
+app.menus.common.MenuState -->  app.menus.common.MenuState : INSTANCE
 
 
 @enduml

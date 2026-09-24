@@ -5,17 +5,48 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 import app.common.util.Config;
+import app.common.util.ScannerSingleton;
+import app.menus.MainMenu;
+import app.menus.common.Menu;
+import app.menus.common.MenuState;
 
 /**
- * 
  * App
  * 
- * yes
+ * The app is a singleton (explenation v)
+ * https://refactoring.guru/design-patterns/singleton
+ * 
+ * Its a singleton to make send close signal globaly accesable
+ * 
+ * It also prevents the making of multiple Apps 
+ * thus solving the problem of multiple local server runnig on the same port
  */
 public class App
 {
+    private static App INSTANCE;
     private Process localServer;
-    private boolean running;
+    private static boolean RUNNING;
+
+    /**
+     * Constructor
+     */
+    private App() {
+        this.setup();
+
+        // set app to running
+        RUNNING = true;
+    }
+
+    /**
+     * Get instance
+     * @return the instance
+     */
+    public static App getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new App();
+        }
+        return INSTANCE;
+    }
 
     /**
      * The main method - entry point of the application.
@@ -25,8 +56,7 @@ public class App
     public static void main( String[] args )
     {
         // create and run the application
-        App app = new App();
-        app.setup();
+        App app = App.getInstance();
         app.run();
 
         // For when it crashes
@@ -40,10 +70,14 @@ public class App
      * runs the application
      */
     private void run() {
-        //TODO: main
+        // get the current menu state
+        MenuState menuState = MenuState.getInstance();
 
         try {
-            System.out.println();
+            while (RUNNING){
+                Menu menu = menuState.getState();
+                menu.open();
+            }
         } catch (NoSuchElementException e) {
             System.out.println("Something went wrong. Closing application");
         } finally {
@@ -56,10 +90,7 @@ public class App
      * 
      * like starting the local server
      */
-    public void setup() {
-        // set app to running
-        this.running = true;
-        
+    private void setup() {        
         // setup local server
         try{
             // from config
@@ -76,6 +107,10 @@ public class App
             e.printStackTrace();
         }
 
+        // set a entry menu as the menu state
+        Menu entryMenu = new MainMenu();
+        MenuState menuState = MenuState.getInstance();
+        menuState.setState(entryMenu);
     }
 
     /**
@@ -83,6 +118,7 @@ public class App
      */
     private void close() {
         // close scanner
+        ScannerSingleton.closeInstance();
 
         // close local server
         if (localServer != null) {
@@ -110,7 +146,7 @@ public class App
     /**
      * Sends a signal to tell the application to close
      */
-    public void sendCloseSignal() {
-        this.running = false;
+    public static void sendCloseSignal() {
+        RUNNING = false;
     }
 }
