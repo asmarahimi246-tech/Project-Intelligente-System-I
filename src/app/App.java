@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import app.common.util.Config;
 import app.common.util.ScannerSingleton;
 import app.menus.MainMenu;
-import app.menus.common.Menu;
+import app.menus.common.MenuContext;
 import app.menus.common.MenuState;
 
 /**
@@ -70,13 +70,13 @@ public class App
      * runs the application
      */
     private void run() {
-        // get the current menu state
-        MenuState menuState = MenuState.getInstance();
+        // get an instance of the current menu state
+        MenuContext context = MenuContext.getInstance();
 
         try {
             while (RUNNING){
-                Menu menu = menuState.getState();
-                menu.open();
+                MenuState state = context.getState();
+                state.open();
             }
         } catch (NoSuchElementException e) {
             System.out.println("Something went wrong. Closing application");
@@ -108,9 +108,9 @@ public class App
         }
 
         // set a entry menu as the menu state
-        Menu entryMenu = new MainMenu();
-        MenuState menuState = MenuState.getInstance();
-        menuState.setState(entryMenu);
+        MenuState entryMenu = new MainMenu();
+        MenuContext context = MenuContext.getInstance();
+        context.setState(entryMenu);
     }
 
     /**

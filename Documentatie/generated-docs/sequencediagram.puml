@@ -1,0 +1,53 @@
+@startuml
+
+participant MainMenu
+participant MenuContext
+participant CLIMenu
+participant Option
+participant ScannerSingleton
+participant ToExecute
+
+activate MainMenu
+	MainMenu -> MenuContext : getInstance
+	activate MenuContext
+		MenuContext --> MainMenu
+	deactivate MenuContext
+	MainMenu -> CLIMenu : addOption
+	activate CLIMenu
+		CLIMenu --> MainMenu
+	deactivate CLIMenu
+	MainMenu -> CLIMenu : addOption
+	activate CLIMenu
+		CLIMenu --> MainMenu
+	deactivate CLIMenu
+	MainMenu -> CLIMenu : printOptionsList
+	activate CLIMenu
+		CLIMenu -> Option : getDescription
+		activate Option
+			Option --> CLIMenu
+		deactivate Option
+		CLIMenu --> MainMenu
+	deactivate CLIMenu
+	MainMenu -> ScannerSingleton : getInstance
+	activate ScannerSingleton
+		ScannerSingleton --> MainMenu
+	deactivate ScannerSingleton
+	MainMenu -> CLIMenu : runOption
+	activate CLIMenu
+		CLIMenu -> CLIMenu : inputInt
+		activate CLIMenu
+			CLIMenu --> CLIMenu
+		deactivate CLIMenu
+		CLIMenu -> Option : run
+		activate Option
+			Option -> ToExecute : execute
+			activate ToExecute
+				ToExecute --> Option
+			deactivate ToExecute
+			Option --> CLIMenu
+		deactivate Option
+		CLIMenu --> MainMenu
+	deactivate CLIMenu
+deactivate MainMenu
+
+@enduml

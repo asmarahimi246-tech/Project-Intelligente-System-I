@@ -20,7 +20,7 @@ public class AppTest {
 
     @AfterAll 
     public void tearDown() {
-        app.sendCloseSignal();
+        App.sendCloseSignal();
     }
 
     @Test

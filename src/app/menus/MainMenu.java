@@ -2,15 +2,15 @@ package app.menus;
 
 import app.App;
 import app.common.util.ScannerSingleton;
-import app.common.widgets.menu.MenuWidget;
-import app.common.widgets.menu.parts.Option;
-import app.menus.common.Menu;
+import app.common.widgets.cliMenu.CLIMenu;
+import app.common.widgets.cliMenu.parts.Option;
+import app.menus.common.MenuContext;
 import app.menus.common.MenuState;
 
 /**
  * MainMenu
  */
-public class MainMenu extends Menu {
+public class MainMenu implements MenuState {
     /**
      * Constructor
      */
@@ -18,16 +18,16 @@ public class MainMenu extends Menu {
 
     @Override
     public void open() {
-        // Get refference to the menu state
-        MenuState state = MenuState.getInstance();
+        // Get refference to the menu context
+        MenuContext context = MenuContext.getInstance();
 
-        Menu gameMenu = new GameMenu();
+        MenuState gameMenu = new GameMenu();
 
         // Make menu
-        MenuWidget menu = new MenuWidget("What do you want to do?", " ");
+        CLIMenu menu = new CLIMenu("What do you want to do?", " ");
 
         // Add options
-        Option toAdd = new Option("start local game", () -> state.setState(gameMenu));
+        Option toAdd = new Option("start local game", () -> context.setState(gameMenu));
         menu.addOption(toAdd);
         toAdd = new Option("<- exit application", () -> App.sendCloseSignal());
         menu.addOption(toAdd);

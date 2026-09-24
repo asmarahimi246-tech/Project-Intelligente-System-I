@@ -1,8 +1,8 @@
-package app.common.widgets.menu;
+package app.common.widgets.cliMenu;
 
 import java.util.Scanner;
 
-import app.common.widgets.menu.parts.Option;
+import app.common.widgets.cliMenu.parts.Option;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -12,7 +12,7 @@ import java.util.List;
  * this is the menu class.
  * it does menu stuff.
  */
-public class MenuWidget {
+public class CLIMenu {
     private String printText;
     private String readText;
     private List<Option> optionsList;
@@ -22,7 +22,7 @@ public class MenuWidget {
      * @param printText printText.
      * @param readText readText.
      */
-    public MenuWidget(String printText, String readText) {
+    public CLIMenu(String printText, String readText) {
         this.printText = printText;
         this.readText = readText;;
         this.optionsList = new ArrayList<>();

@@ -1,50 +1,14 @@
 package app.menus.common;
 
 /**
- * MenuState
+ * Menu
  * 
- * The MenuState is a singleton (explenation v)
- * https://refactoring.guru/design-patterns/singleton
+ * This interface has all functions that a menu must implement
  * 
- * Its a singleton to prevent infinitly nesting menus
- * This makes it easyer to close theapplication and 
- * prevents unnesacary recourse usage
+ * It also allows the storing of any menu as Menu
  */
-public class MenuState {
-    private static MenuState INSTANCE;
-    private Menu state;
+public interface MenuState {
 
-    /**
-     * Constructor
-     */
-    private MenuState() {}
+    public abstract void open();
 
-    /**
-     * Get instance
-     * @return the instance
-     */
-    public static MenuState getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new MenuState();
-        }
-        return INSTANCE;
-    }
-
-    /**
-     * Sets the state
-     * 
-     * @param menu the menu
-     */
-    public void setState(Menu menu) {
-        this.state = menu;
-    }
-
-    /**
-     * Gets the state
-     * 
-     * @return the menu state
-     */
-    public Menu getState() {
-        return this.state;
-    }
 }

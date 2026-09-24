@@ -1,4 +1,4 @@
-package app.common.widgets.menu.parts;
+package app.common.widgets.cliMenu.parts;
 
 import java.util.Scanner;
 

@@ -28,7 +28,7 @@ class app.common.util.WHYsonParser {
 }
 
 
-class app.common.widgets.menu.MenuWidget {
+class app.common.widgets.cliMenu.CLIMenu {
 	{method} +addOption ( option : Option ) : void
 	{method} +clearScreen () : void
 	{method} +printOptionsList () : void
@@ -36,13 +36,37 @@ class app.common.widgets.menu.MenuWidget {
 }
 
 
-class app.common.widgets.menu.parts.Option {
+class app.common.widgets.cliMenu.parts.Option {
 	{method} +run ( scanner : Scanner ) : void
 }
 
 
-interface app.common.widgets.menu.parts.ToExecute {
+interface app.common.widgets.cliMenu.parts.ToExecute {
 	{method}  {abstract} +execute () : void
+}
+
+
+class app.games.TikTakToe {
+}
+
+
+abstract class app.games.common.Game {
+}
+
+
+class app.games.common.GameSession {
+}
+
+
+class app.games.players.Bot {
+}
+
+
+class app.games.players.Local {
+}
+
+
+class app.games.players.Remote {
 }
 
 
@@ -56,24 +80,24 @@ class app.menus.MainMenu {
 }
 
 
-abstract class app.menus.common.Menu {
-	{method}  {abstract} +open () : void
+class app.menus.common.MenuContext {
 }
 
 
-class app.menus.common.MenuState {
+interface app.menus.common.MenuState {
+	{method}  {abstract} +open () : void
 }
 
 
 
 
 app.App -->  app.App : INSTANCE
-app.common.widgets.menu.MenuWidget "1" o-- "0..*"  app.common.widgets.menu.parts.Option : optionsList
-app.common.widgets.menu.parts.Option -->  app.common.widgets.menu.parts.ToExecute : function
-app.menus.GameMenu --|>  app.menus.common.Menu
-app.menus.MainMenu --|>  app.menus.common.Menu
-app.menus.common.MenuState -->  app.menus.common.Menu : state
-app.menus.common.MenuState -->  app.menus.common.MenuState : INSTANCE
+app.common.widgets.cliMenu.CLIMenu "1" o-- "0..*"  app.common.widgets.cliMenu.parts.Option : optionsList
+app.common.widgets.cliMenu.parts.Option -->  app.common.widgets.cliMenu.parts.ToExecute : function
+app.menus.GameMenu ..|>  app.menus.common.MenuState
+app.menus.MainMenu ..|>  app.menus.common.MenuState
+app.menus.common.MenuContext -->  app.menus.common.MenuContext : INSTANCE
+app.menus.common.MenuContext -->  app.menus.common.MenuState : state
 
 
 @enduml
