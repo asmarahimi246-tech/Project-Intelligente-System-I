@@ -7,10 +7,21 @@ class app.App {
 
 
 class app.common.network.Client {
+	{method} +isOk () : boolean
+	{method} +sendCommand ( command : String ) : void
+}
+
+
+class app.common.network.ServerListener {
+	{method} +getNextOkMessage () : String
+	{method} +getNextSvrMessage () : String
+	{method} +isError () : boolean
+	{method} +run () : void
 }
 
 
 class app.common.util.Config {
+	{field} {static} +DEBUG : boolean
 	{field} {static} +LOCALPORT : int
 	{field} {static} +ONLINEIP : String
 	{field} {static} +ONLINEPORT : int
@@ -47,10 +58,22 @@ interface app.common.widgets.cliMenu.parts.ToExecute {
 
 
 class app.games.TikTakToe {
+	{method} +processMessage ( answer : String ) : void
+	{method} +run () : void
+	{method} +sendCloseSignal () : void
 }
 
 
 abstract class app.games.common.Game {
+	{field} #gameRunning : boolean
+	{field} #isOnline : boolean
+	{field} #name : String
+	{method} #closeInSeconds () : void
+	{method} +isOnline () : boolean
+	{method}  {abstract} +processMessage ( answer : String ) : void
+	{method}  {abstract} +run () : void
+	{method}  {abstract} +sendCloseSignal () : void
+	{method} +toString () : String
 }
 
 
@@ -58,15 +81,44 @@ class app.games.common.GameSession {
 }
 
 
+abstract class app.games.common.Player {
+	{field} #name : String
+	{field} #reader : BufferedReader
+	{field} #socket : Socket
+	{field} #writer : PrintWriter
+	{method} #connectToServer () : void
+	{method}  {abstract} +disconnect () : void
+	{method}  {abstract} +doMove () : void
+	{method} +getAnswer () : String
+	{method} +getAnswer ( customStopString : String ) : String
+	{method} +login () : void
+	{method} #printLongResponse ( lines : int ) : void
+	{method} +sendCommand ( command : String ) : void
+	{method} +subscribe () : void
+	{method} +toString () : String
+}
+
+
+enum app.games.common.PlayerState {
+	{field} +EXECUTED_TURN
+	{field} +FINISHED_GAME
+	{field} +INITIALIZED
+	{field} +LOGGED_IN
+	{field} +SUBSCRIBED
+}
+
+
 class app.games.players.Bot {
 }
 
 
-class app.games.players.Local {
+class app.games.players.Remote {
 }
 
 
-class app.games.players.Remote {
+class app.games.players.TikTakToePlayer {
+	{method} +disconnect () : void
+	{method} +doMove () : void
 }
 
 
@@ -92,8 +144,15 @@ interface app.menus.common.MenuState {
 
 
 app.App -->  app.App : INSTANCE
+app.common.network.Client -->  app.common.network.ServerListener : listener
 app.common.widgets.cliMenu.CLIMenu "1" o-- "0..*"  app.common.widgets.cliMenu.parts.Option : optionsList
 app.common.widgets.cliMenu.parts.Option -->  app.common.widgets.cliMenu.parts.ToExecute : function
+app.games.TikTakToe "1" o-- "0..*"  app.games.common.Player : players
+app.games.TikTakToe --|>  app.games.common.Game
+app.games.common.Player -->  app.games.common.Game : game
+app.games.common.Player -->  app.games.common.PlayerState : state
+app.games.players.TikTakToePlayer -->  app.games.common.PlayerState : state
+app.games.players.TikTakToePlayer --|>  app.games.common.Player
 app.menus.GameMenu ..|>  app.menus.common.MenuState
 app.menus.MainMenu ..|>  app.menus.common.MenuState
 app.menus.common.MenuContext -->  app.menus.common.MenuContext : INSTANCE

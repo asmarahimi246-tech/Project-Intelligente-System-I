@@ -12,5 +12,6 @@ public class Config {
     public static final int LOCALPORT = 7789;
     public static final String ONLINEIP = null;
     public static final int ONLINEPORT = 7789;
+    public static final boolean DEBUG = false;
 
 }

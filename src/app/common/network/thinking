@@ -1,0 +1,22 @@
+ERR
+share to player with volatile
+
+OK
+share to player (for synchronization)
+
+SVR
+first added player shares to game
+
+
+
+Place on thread:
+ClientHandler
+    connect to server
+    wait for client or server
+        client: write to server (via ServerProxy.writer())
+        ServerOK: notify client or que   (via ServerProxy.reader())
+        ServerSVR: notify game or que   (via ServerProxy.reader())
+
+ServerProxy
+reader
+writer
