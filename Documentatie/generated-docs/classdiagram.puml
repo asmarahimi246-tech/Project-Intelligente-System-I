@@ -7,6 +7,7 @@ class app.App {
 
 
 class app.common.network.Client {
+	{method} +close () : void
 	{method} +isOk () : boolean
 	{method} +sendCommand ( command : String ) : void
 }
@@ -26,6 +27,11 @@ class app.common.util.Config {
 	{field} {static} +ONLINEIP : String
 	{field} {static} +ONLINEPORT : int
 	{field} {static} +SERVERJAR : Path
+}
+
+
+class app.common.util.Logger {
+	{method}  {static} +logDebug ( message : String ) : void
 }
 
 
@@ -93,7 +99,7 @@ interface app.common.widgets.cliMenu.parts.ToExecute {
 
 
 class app.games.TikTakToe.TikTakToe {
-	{method} +processMessage ( answer : String ) : void
+	{method} +processNextMessage () : void
 	{method} +run () : void
 	{method} +sendCloseSignal () : void
 }
@@ -110,8 +116,9 @@ class app.games.TikTakToe.TikTakToeView {
 
 abstract class app.games.TikTakToe.common.AbstractTikTakToePlayer {
 	{field} #name : String
-	{method}  {abstract} +disconnect () : void
-	{method}  {abstract} +doMove () : void
+	{method} +disconnect () : void
+	{method}  {abstract} #doMove () : void
+	{method} +getListener () : ServerListener
 	{method} +login () : void
 	{method} +subscribe ( gameName : String ) : void
 	{method} +toString () : String
@@ -133,23 +140,17 @@ class app.games.TikTakToe.common.Timer {
 
 
 class app.games.TikTakToe.players.Bot {
-	{method} +disconnect () : void
 	{method} +doMove () : void
-	{method} +getState () : TikTakToePlayerState
 }
 
 
 class app.games.TikTakToe.players.Local {
-	{method} +disconnect () : void
 	{method} +doMove () : void
-	{method} +getState () : TikTakToePlayerState
 }
 
 
 class app.games.TikTakToe.players.Remote {
-	{method} +disconnect () : void
 	{method} +doMove () : void
-	{method} +getState () : TikTakToePlayerState
 }
 
 
@@ -196,6 +197,7 @@ app.common.widgets.cliInputFields.CLIIntegerField$Builder --|>  app.common.widge
 app.common.widgets.cliMenu.CLIMenu "1" o-- "0..*"  app.common.widgets.cliMenu.parts.Option : optionsList
 app.common.widgets.cliMenu.parts.Option -->  app.common.widgets.cliMenu.parts.ToExecute : function
 app.games.TikTakToe.TikTakToe "1" o-- "0..*"  app.games.TikTakToe.common.AbstractTikTakToePlayer : players
+app.games.TikTakToe.TikTakToe -->  app.common.network.ServerListener : listener
 app.games.TikTakToe.TikTakToe -->  app.games.TikTakToe.TikTakToeView : view
 app.games.TikTakToe.common.AbstractTikTakToePlayer -->  app.common.network.Client : client
 app.games.TikTakToe.common.AbstractTikTakToePlayer -->  app.games.TikTakToe.common.TikTakToePlayerState : state

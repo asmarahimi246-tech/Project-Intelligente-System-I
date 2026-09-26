@@ -15,4 +15,16 @@ public class Timer {
 			e.printStackTrace();
 		}
     }
+
+    /**
+     * Closes game in x miloseconds
+     */
+    public void closeInMiliSeconds(int miliSeconds) {
+        try {
+			Thread.sleep(miliSeconds);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
 }

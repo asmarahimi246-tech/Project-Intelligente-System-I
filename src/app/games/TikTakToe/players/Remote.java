@@ -1,7 +1,7 @@
 package app.games.TikTakToe.players;
 
+import app.games.TikTakToe.TikTakToe;
 import app.games.TikTakToe.common.AbstractTikTakToePlayer;
-import app.games.TikTakToe.common.TikTakToePlayerState;
 
 /**
  * Remote
@@ -13,8 +13,8 @@ public class Remote extends AbstractTikTakToePlayer{
      * 
      * @param name name of the player used on server login
      */
-    public Remote(String name) {
-        super(name);
+    public Remote(String name, TikTakToe tikTakToe) {
+        super(name, tikTakToe);
         //TODO Auto-generated constructor stub
     }
 

@@ -18,9 +18,9 @@ public class TikTakToe {
     private String name;
     private TikTakToeView view = new TikTakToeView(); 
     private ArrayList<AbstractTikTakToePlayer> players = new ArrayList<AbstractTikTakToePlayer>();
-    private char[] board = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    private TikTakToeModel model = new TikTakToeModel();
     private boolean gameRunning;
-    private ServerListener listener;
+    private ArrayList<ServerListener> listeners = new ArrayList<ServerListener>();
 
     /**
      * Constructor
@@ -31,6 +31,26 @@ public class TikTakToe {
     }
 
     /**
+     * places a tile on the board
+     * 
+     * @param location the location to place the tile
+     * @return true if its succesefull else false
+     */
+    public boolean setTile(int location, char toSet) {
+        ArrayList<Character> toCheck = new ArrayList<Character>();
+        for (AbstractTikTakToePlayer player : players) {
+            toCheck.add(player.getBoardChar());
+        }
+
+        if (model.tileIsEmpty(location, toCheck)) {
+            model.setTile(location, toSet);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Setup
      * 
      * TODO: finish the setup
@@ -38,14 +58,15 @@ public class TikTakToe {
     private void setup() {
         // make test players
         // set one as host to read SVR mesages from
-        AbstractTikTakToePlayer player1 = new Local("madeline");
-        AbstractTikTakToePlayer player2 = new Local("badeline");
+        AbstractTikTakToePlayer player1 = new Local("madeline", this);
+        AbstractTikTakToePlayer player2 = new Local("badeline", this);
 
         this.players.add(player1);
         this.players.add(player2);
 
-        // steal the listener from a player
-        this.listener = player1.getListener();
+        // steal the listeners from the players
+        this.listeners.add(player1.getListener());
+        this.listeners.add(player2.getListener());
 
         // setup players with finite state machine
         boolean playersSetup = false;
@@ -69,9 +90,6 @@ public class TikTakToe {
                 }
             }
         }
-
-        // to set player order
-        this.processNextMessage();
     }
 
     /**
@@ -93,20 +111,52 @@ public class TikTakToe {
         this.setup();
         this.gameRunning = true;
 
-        //gameloop
-        while(this.gameRunning) {
-            // render
-            this.view.printBoard(board);
+        // to set player order
+        // not the best way
+        for (ServerListener listener : listeners) {
+            this.processNextMessage(listener);
+        }
 
+        //gameloop
+        // way too many svr checks
+        while(this.gameRunning) {
             // input / update
             for (AbstractTikTakToePlayer player : players) {
+                Logger.logDebug(player.toString());
+
+                // update
+                for (ServerListener listener : listeners) {
+                    this.processNextMessage(listener);
+                }
+
                 if (!this.gameRunning) {
                     break;
                 }
-                this.gameRunning = false;
-                // TODO: player moves
-                //this.processNextMessage();
-                //player.doMove();
+
+                // render
+                this.view.printBoard(model.getBoard());
+
+                // input
+                player.doMove();
+
+                /* TODO: whatever this is
+                 * timer is a bad way to do this
+                 *
+                 * dont remove the game wont end
+                 * if the server takes longer to
+                 * respond than this timer
+                 */
+                Timer timer = new Timer();
+                timer.closeInMiliSeconds(100);
+
+                // update
+                for (ServerListener listener : listeners) {
+                    this.processNextMessage(listener);
+                }
+
+                if (!this.gameRunning) {
+                    break;
+                }
             }
             if (!this.gameRunning) {
                 break;
@@ -119,19 +169,25 @@ public class TikTakToe {
     /**
      * processes server mesages
      */
-    public void processNextMessage() {
-        String answer = this.listener.getNextSvrMessage();
-        Logger.logDebug("[server > game] " + answer);
-        WHYsonParser why = new WHYsonParser(answer);
+    public void processNextMessage(ServerListener listener) {
+        while (true) {
+            String answer = listener.getNextSvrMessage();
+            if (answer != null) {
+                Logger.logDebug("[server > game] " + answer);
+                WHYsonParser why = new WHYsonParser(answer);
 
-        if (answer.contains("GAME MATCH")) {
-            sortPlayers(why.getValue("PLAYERTOMOVE"));
-        } else if (answer.contains("GAME WIN")) {
-            endGame(answer);
-        } else if (answer.contains("GAME LOSS")) {
-            endGame(answer);
-        } else {
-                Logger.logDebug("[game] not implemented in proccesMessage: " + answer);
+                if (answer.contains("GAME MATCH")) {
+                    sortPlayers(why.getValue("PLAYERTOMOVE"));
+                } else if (answer.contains("GAME WIN")) {
+                    endGame(answer);
+                } else if (answer.contains("GAME LOSS")) {
+                    endGame(answer);
+                } else {
+                    Logger.logDebug("[game] not implemented in proccesMessage: " + answer);
+                }
+            } else {
+                break;
+            }
         }
     }
 
@@ -148,10 +204,10 @@ public class TikTakToe {
 
         if (player1Score > player2Score) {
             String winningPlayer = players.get(0).toString();
-            System.out.println("[game] " + winningPlayer + " wins");
+            Logger.logDebug("[game] " + winningPlayer + " wins");
         } else {
             String winningPlayer = players.get(1).toString();
-            System.out.println("[game] " + winningPlayer + " wins");
+            Logger.logDebug("[game] " + winningPlayer + " wins");
         }
         this.sendCloseSignal();
     }
@@ -167,12 +223,14 @@ public class TikTakToe {
 
         for (AbstractTikTakToePlayer player : players) {
             if (player.toString().equals(value)) {
+                player.setBoardChar('X');
                 sorted.add(player);
             }
         }
  
         for (AbstractTikTakToePlayer player : players) {
             if (!player.toString().equals(value)) {
+                player.setBoardChar('O');
                 sorted.add(player);
             }
         }

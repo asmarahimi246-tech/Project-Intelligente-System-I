@@ -7,6 +7,7 @@ import app.common.network.Client;
 import app.common.network.ServerListener;
 import app.common.util.Config;
 import app.common.util.Logger;
+import app.games.TikTakToe.TikTakToe;
 
 /**
  * Abstract player
@@ -14,15 +15,18 @@ import app.common.util.Logger;
 public abstract class AbstractTikTakToePlayer {
     protected String name;
     protected TikTakToePlayerState state;
+    protected char boardChar;
     public Client client;
+    protected TikTakToe game;
 
     /**
      * Makes a player
      * 
      * TODO: this
      */
-    public AbstractTikTakToePlayer(String name) {
+    public AbstractTikTakToePlayer(String name, TikTakToe tikTakToe) {
         try {
+            this.game = tikTakToe;
             this.name = name;
             this.connectToServer();
             this.state = TikTakToePlayerState.INITIALIZED;
@@ -45,7 +49,7 @@ public abstract class AbstractTikTakToePlayer {
     /**
      * Does a move
      */
-    protected abstract void doMove();
+    public abstract void doMove();
 
     /**
      * connects to a server
@@ -106,7 +110,29 @@ public abstract class AbstractTikTakToePlayer {
         }
     }
 
+    /**
+     * gets the server listener
+     * 
+     * @return the server listener
+     */
     public ServerListener getListener() {
         return this.client.getListener();
+    }
+
+    /**
+     * sets this players board char
+     * 
+     * @param toSet the char
+     */
+    public void setBoardChar(char toSet) {
+        this.boardChar = toSet;
+    }
+
+    /**
+     * gets the board char
+     * @return the char
+     */
+    public Character getBoardChar() {
+        return this.boardChar;
     }
 }
