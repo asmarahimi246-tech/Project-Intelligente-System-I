@@ -1,0 +1,24 @@
+# Maven output directories
+target/
+
+# IDE's
+/.idea/
+/.project
+/.classpath
+/.settings/
+/.vscode/
+
+# Maven wrapper
+/mvnw
+/mvnw.cmd
+
+# Logs
+*.log
+
+# OS-specifiek
+.DS_Store
+Thumbs.db
+
+# Andere IDE-specifieke bestanden
+*.iml
+/.idea/

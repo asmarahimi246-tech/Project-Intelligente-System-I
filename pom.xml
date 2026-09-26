@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>app</groupId>
+  <artifactId>Project-Intelligente-Systemen</artifactId>
+
+<!--                              -->
+<!-- vvv HIER STAAT DE VERSIE vvv -->
+<!--                              -->
+
+  <version>0.0.1</version>
+
+  <name>Project-Intelligente-Systemen</name>
+  <description>Project met meerdere games en AI</description>
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.kasia.games</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.10.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+<profiles>
+  <profile>
+    <id>uml-generation</id>
+    <properties>
+      <skipTests>true</skipTests>
+    </properties>
+    <build>
+      <plugins>
+        <!-- Clean plugin -->
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.4.0</version>
+          <executions>
+            <execution>
+              <id>auto-clean</id>
+              <phase>initialize</phase>
+              <goals>
+                <goal>clean</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+    <plugin>
+      <artifactId>plantuml-generator-maven-plugin</artifactId>
+      <groupId>de.elnarion.maven</groupId>
+      <version>2.4.1</version>
+      <executions>
+        <!-- Generate Class Diagram -->
+        <execution>
+          <id>generate-class-diagram</id>
+          <phase>compile</phase>
+          <goals>
+            <goal>generate</goal>
+          </goals>
+          <configuration>
+            <maxVisibilityMethods>PROTECTED</maxVisibilityMethods>
+            <maxVisibilityFields>PROTECTED</maxVisibilityFields>
+            <useShortClassNamesInFieldsAndMethods>true</useShortClassNamesInFieldsAndMethods>
+            <outputDirectory>Documentatie/generated-docs</outputDirectory>
+            <outputFilename>classdiagram.puml</outputFilename>
+            <scanPackages>
+              <scanPackage>app</scanPackage>
+            </scanPackages>
+          </configuration>
+        </execution>
+        <!-- Generate Sequence Diagram -->
+        <execution>
+          <id>generate-sequence-diagram</id>
+          <phase>compile</phase>
+          <goals>
+            <goal>generateSequenceDiagram</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>Documentatie/generated-docs</outputDirectory>
+            <outputFilename>sequencediagram.puml</outputFilename>
+            <startClass>app.menus.MainMenu</startClass>
+            <startMethod>open</startMethod>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+
+        <!-- Uml to image plugin-->
+        <plugin>
+          <groupId>com.github.jeluard</groupId>
+          <artifactId>plantuml-maven-plugin</artifactId>
+          <version>1.2</version>
+          <executions>
+          <execution>
+             <id>generate-plantuml</id>
+              <phase>generate-resources</phase>
+              <goals>
+                <goal>generate</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <outputInSourceDirectory>true</outputInSourceDirectory>
+            <sourceFiles>
+              <directory>${basedir}</directory>
+              <includes>
+                <include>Documentatie/generated-docs/sequencediagram.puml</include>
+                <include>Documentatie/generated-docs/classdiagram.puml</include>
+              </includes>
+            </sourceFiles>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>net.sourceforge.plantuml</groupId>
+              <artifactId>plantuml</artifactId>
+             <version>8031</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </build>
+  </profile>
+</profiles>
+
+<build>
+  <sourceDirectory>src</sourceDirectory>
+  <testSourceDirectory>test</testSourceDirectory>
+  <plugins>
+
+    <!-- Compile plugin-->
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>3.13.0</version>
+      <configuration>
+        <parameters>true</parameters>
+        <testCompilerArgument>-parameters</testCompilerArgument>
+        <source>11</source>
+        <target>11</target>
+      </configuration>
+    </plugin>
+
+    <!-- Exec plugin --> 
+    <plugin>
+      <groupId>org.codehaus.mojo</groupId>
+      <artifactId>exec-maven-plugin</artifactId>
+      <version>3.0.0</version>
+      <configuration>
+        <mainClass>app.App</mainClass>
+      </configuration>
+    </plugin>
+
+    <!-- Clean plugin -->
+    <plugin>
+      <artifactId>maven-clean-plugin</artifactId>
+      <version>3.4.0</version>
+      <executions>
+        <execution>
+          <id>auto-clean</id>
+          <phase>initialize</phase>
+          <goals>
+            <goal>clean</goal>
+          </goals>
+        </execution>
+      </executions>
+    </plugin>
+
+    <!-- Resources plugin -->
+    <plugin>
+      <artifactId>maven-resources-plugin</artifactId>
+      <version>3.3.1</version>
+    </plugin>
+
+    <!-- Surefire plugin -->
+    <plugin>
+      <artifactId>maven-surefire-plugin</artifactId>
+      <version>3.5.3</version>
+      <dependencies>
+        <dependency>
+          <groupId>me.fabriciorby</groupId>
+          <artifactId>maven-surefire-junit5-tree-reporter</artifactId>
+          <version>1.5.1</version>
+        </dependency>
+      </dependencies>
+      <configuration>
+        <argLine>--add-opens=java.desktop/com.sun.imageio.plugins.png=ALL-UNNAMED</argLine>
+        <reportFormat>plain</reportFormat>
+        <consoleOutputReporter>
+          <disable>true</disable>
+        </consoleOutputReporter>
+        <statelessTestsetInfoReporter
+                implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5StatelessTestsetInfoTreeReporter">
+          <printStacktraceOnError>true</printStacktraceOnError>
+          <printStacktraceOnFailure>true</printStacktraceOnFailure>
+          <printStdoutOnError>true</printStdoutOnError>
+          <printStdoutOnFailure>true</printStdoutOnFailure>
+          <printStdoutOnSuccess>false</printStdoutOnSuccess>
+          <printStderrOnError>true</printStderrOnError>
+          <printStderrOnFailure>true</printStderrOnFailure>
+          <printStderrOnSuccess>false</printStderrOnSuccess>
+          <hideResultsOnSuccess>true</hideResultsOnSuccess>
+        </statelessTestsetInfoReporter>
+      </configuration>
+    </plugin>
+    
+    <!-- Checkstyle plugin -->
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-checkstyle-plugin</artifactId>
+      <version>3.6.0</version>
+      <dependencies>
+        <dependency>
+          <groupId>com.thomasjensen.checkstyle.addons</groupId>
+          <artifactId>checkstyle-addons</artifactId>
+          <version>7.0.1</version>
+        </dependency>
+      </dependencies>
+      <executions>
+        <execution>
+          <phase>validate</phase>
+          <goals>
+            <goal>check</goal>
+          </goals>
+        </execution>
+      </executions>
+      <configuration>
+        <configLocation>checkstyle.xml</configLocation>
+        <failsOnError>true</failsOnError>
+        <consoleOutput>true</consoleOutput>
+        <linkXRef>false</linkXRef>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </reporting>
+</project>

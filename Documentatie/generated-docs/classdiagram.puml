@@ -1,0 +1,215 @@
+@startuml
+
+class app.App {
+	{method}  {static} +main ( args : String[] ) : void
+	{method}  {static} +sendCloseSignal () : void
+}
+
+
+class app.common.network.Client {
+	{method} +close () : void
+	{method} +isOk () : boolean
+	{method} +sendCommand ( command : String ) : void
+}
+
+
+class app.common.network.ServerListener {
+	{method} +getNextOkMessage () : String
+	{method} +getNextSvrMessage () : String
+	{method} +isError () : boolean
+	{method} +run () : void
+}
+
+
+class app.common.util.Config {
+	{field} {static} +DEBUG : boolean
+	{field} {static} +LOCALPORT : int
+	{field} {static} +ONLINEIP : String
+	{field} {static} +ONLINEPORT : int
+	{field} {static} +SERVERJAR : Path
+}
+
+
+class app.common.util.Logger {
+	{method}  {static} +logDebug ( message : String ) : void
+}
+
+
+class app.common.util.ScannerSingleton {
+	{method}  {static} +closeInstance () : void
+}
+
+
+class app.common.util.WHYsonParser {
+	{method} +getValue ( param : String ) : String
+}
+
+
+class app.common.widgets.cliInputFields.CLIIntegerField {
+	{method} +getInput () : Integer
+	{method} +print () : void
+}
+
+
+class app.common.widgets.cliInputFields.CLIIntegerField$Builder {
+	{method} +build () : CLIIntegerField
+	{method} +max ( value : int ) : Builder
+	{method} +min ( value : int ) : Builder
+	{method} #self () : Builder
+}
+
+
+abstract class app.common.widgets.cliInputFields.common.CLIField {
+	{field} #defaultInput : Object
+	{field} #errorMessage : String
+	{field} #readText : String
+	{field} #scanner : Scanner
+	{method}  {abstract} #getInput () : Object
+	{method}  {abstract} #print () : void
+}
+
+
+abstract class app.common.widgets.cliInputFields.common.CLIField$Builder {
+	{field} +defaultInput : Object
+	{field} +errorMessage : String
+	{field} +hasDefault : boolean
+	{field} +scanner : Scanner
+	{method}  {abstract} +build () : CLIField
+	{method} +defaultInput ( value : Object ) : Builder
+	{method}  {abstract} #self () : Builder
+}
+
+
+class app.common.widgets.cliMenu.CLIMenu {
+	{method} +addOption ( option : Option ) : void
+	{method} +clearScreen () : void
+	{method} +printOptionsList () : void
+	{method} +runOption ( scanner : Scanner ) : void
+}
+
+
+class app.common.widgets.cliMenu.parts.Option {
+	{method} +run ( scanner : Scanner ) : void
+}
+
+
+interface app.common.widgets.cliMenu.parts.ToExecute {
+	{method}  {abstract} +execute () : void
+}
+
+
+class app.games.TikTakToe.TikTakToe {
+	{method} +processNextMessage () : void
+	{method} +run () : void
+	{method} +sendCloseSignal () : void
+}
+
+
+class app.games.TikTakToe.TikTakToeModel {
+}
+
+
+class app.games.TikTakToe.TikTakToeView {
+	{method} +printBoard ( board : char[] ) : void
+}
+
+
+abstract class app.games.TikTakToe.common.AbstractTikTakToePlayer {
+	{field} #name : String
+	{method} +disconnect () : void
+	{method}  {abstract} #doMove () : void
+	{method} +getListener () : ServerListener
+	{method} +login () : void
+	{method} +subscribe ( gameName : String ) : void
+	{method} +toString () : String
+}
+
+
+enum app.games.TikTakToe.common.TikTakToePlayerState {
+	{field} +EXECUTED_TURN
+	{field} +FINISHED_GAME
+	{field} +INITIALIZED
+	{field} +LOGGED_IN
+	{field} +SUBSCRIBED
+}
+
+
+class app.games.TikTakToe.common.Timer {
+	{method} +closeInSeconds ( seconds : int ) : void
+}
+
+
+class app.games.TikTakToe.players.Bot {
+	{method} +doMove () : void
+}
+
+
+class app.games.TikTakToe.players.Local {
+	{method} +doMove () : void
+}
+
+
+class app.games.TikTakToe.players.Remote {
+	{method} +doMove () : void
+}
+
+
+class app.games.workInProgress.GameSession {
+}
+
+
+class app.games.workInProgress.SessionContext {
+}
+
+
+interface app.games.workInProgress.SessionState {
+	{method}  {abstract} +close () : void
+	{method}  {abstract} +run () : void
+	{method}  {abstract} +setup () : void
+}
+
+
+class app.menus.GameMenu {
+	{method} +open () : void
+}
+
+
+class app.menus.MainMenu {
+	{method} +open () : void
+}
+
+
+class app.menus.common.MenuContext {
+}
+
+
+interface app.menus.common.MenuState {
+	{method}  {abstract} +open () : void
+}
+
+
+
+
+app.App -->  app.App : INSTANCE
+app.common.network.Client -->  app.common.network.ServerListener : listener
+app.common.widgets.cliInputFields.CLIIntegerField --|>  app.common.widgets.cliInputFields.common.CLIField
+app.common.widgets.cliInputFields.CLIIntegerField$Builder --|>  app.common.widgets.cliInputFields.common.CLIField$Builder
+app.common.widgets.cliMenu.CLIMenu "1" o-- "0..*"  app.common.widgets.cliMenu.parts.Option : optionsList
+app.common.widgets.cliMenu.parts.Option -->  app.common.widgets.cliMenu.parts.ToExecute : function
+app.games.TikTakToe.TikTakToe "1" o-- "0..*"  app.games.TikTakToe.common.AbstractTikTakToePlayer : players
+app.games.TikTakToe.TikTakToe -->  app.common.network.ServerListener : listener
+app.games.TikTakToe.TikTakToe -->  app.games.TikTakToe.TikTakToeView : view
+app.games.TikTakToe.common.AbstractTikTakToePlayer -->  app.common.network.Client : client
+app.games.TikTakToe.common.AbstractTikTakToePlayer -->  app.games.TikTakToe.common.TikTakToePlayerState : state
+app.games.TikTakToe.players.Bot --|>  app.games.TikTakToe.common.AbstractTikTakToePlayer
+app.games.TikTakToe.players.Local --|>  app.games.TikTakToe.common.AbstractTikTakToePlayer
+app.games.TikTakToe.players.Remote --|>  app.games.TikTakToe.common.AbstractTikTakToePlayer
+app.games.workInProgress.SessionContext -->  app.games.workInProgress.SessionContext : INSTANCE
+app.games.workInProgress.SessionContext -->  app.games.workInProgress.SessionState : state
+app.menus.GameMenu ..|>  app.menus.common.MenuState
+app.menus.MainMenu ..|>  app.menus.common.MenuState
+app.menus.common.MenuContext -->  app.menus.common.MenuContext : INSTANCE
+app.menus.common.MenuContext -->  app.menus.common.MenuState : state
+
+
+@enduml

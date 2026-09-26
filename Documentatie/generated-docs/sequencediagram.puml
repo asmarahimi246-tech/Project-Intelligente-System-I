@@ -1,0 +1,80 @@
+@startuml
+
+participant MainMenu
+participant MenuContext
+participant CLIMenu
+participant Option
+participant ScannerSingleton
+participant CLIIntegerField$Builder
+participant CLIField$Builder
+participant CLIIntegerField
+participant ToExecute
+
+activate MainMenu
+	MainMenu -> MenuContext : getInstance
+	activate MenuContext
+		MenuContext --> MainMenu
+	deactivate MenuContext
+	MainMenu -> CLIMenu : addOption
+	activate CLIMenu
+		CLIMenu --> MainMenu
+	deactivate CLIMenu
+	MainMenu -> CLIMenu : addOption
+	activate CLIMenu
+		CLIMenu --> MainMenu
+	deactivate CLIMenu
+	MainMenu -> CLIMenu : printOptionsList
+	activate CLIMenu
+		CLIMenu -> Option : getDescription
+		activate Option
+			Option --> CLIMenu
+		deactivate Option
+		CLIMenu --> MainMenu
+	deactivate CLIMenu
+	MainMenu -> ScannerSingleton : getInstance
+	activate ScannerSingleton
+		ScannerSingleton --> MainMenu
+	deactivate ScannerSingleton
+	MainMenu -> CLIMenu : runOption
+	activate CLIMenu
+		CLIMenu -> CLIIntegerField$Builder : defaultInput
+		activate CLIIntegerField$Builder
+			CLIIntegerField$Builder -> CLIField$Builder : defaultInput
+			activate CLIField$Builder
+				CLIField$Builder -> CLIField$Builder : self
+				activate CLIField$Builder
+					CLIField$Builder --> CLIField$Builder
+				deactivate CLIField$Builder
+				CLIField$Builder --> CLIIntegerField$Builder
+			deactivate CLIField$Builder
+			CLIIntegerField$Builder --> CLIMenu
+		deactivate CLIIntegerField$Builder
+		CLIMenu -> CLIIntegerField$Builder : min
+		activate CLIIntegerField$Builder
+			CLIIntegerField$Builder --> CLIMenu
+		deactivate CLIIntegerField$Builder
+		CLIMenu -> CLIIntegerField$Builder : max
+		activate CLIIntegerField$Builder
+			CLIIntegerField$Builder --> CLIMenu
+		deactivate CLIIntegerField$Builder
+		CLIMenu -> CLIIntegerField$Builder : build
+		activate CLIIntegerField$Builder
+			CLIIntegerField$Builder --> CLIMenu
+		deactivate CLIIntegerField$Builder
+		CLIMenu -> CLIIntegerField : getInput
+		activate CLIIntegerField
+			CLIIntegerField --> CLIMenu
+		deactivate CLIIntegerField
+		CLIMenu -> Option : run
+		activate Option
+			Option -> ToExecute : execute
+			activate ToExecute
+				ToExecute --> Option
+			deactivate ToExecute
+			Option --> CLIMenu
+		deactivate Option
+		CLIMenu --> MainMenu
+	deactivate CLIMenu
+deactivate MainMenu
+
+@enduml
