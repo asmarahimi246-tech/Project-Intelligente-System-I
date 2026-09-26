@@ -1,55 +1,66 @@
-package app.games;
+package app.games.TikTakToe;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import app.common.util.Config;
 import app.common.util.WHYsonParser;
-import app.games.common.Game;
-import app.games.common.Player;
-import app.games.players.TikTakToePlayer;
+import app.games.TikTakToe.common.AbstractTikTakToePlayer;
+import app.games.TikTakToe.common.Timer;
+import app.games.TikTakToe.players.Local;
 
 
 /**
  * TikTakToe
  */
-public class TikTakToe extends Game {
-    private ArrayList<Player> players = new ArrayList<Player>();
+public class TikTakToe {
+    private String name;
+    private TikTakToeView view = new TikTakToeView(); 
+    private ArrayList<AbstractTikTakToePlayer> players = new ArrayList<AbstractTikTakToePlayer>();
+    private char[] board = {'1', '2', '3', '4', '5', '6', '7', '8', '9'};
+    private boolean gameRunning;
 
     /**
      * Constructor
      */
     public TikTakToe() {
-        super();
         // this needs to be the same as on the server
-        super.name = "tic-tac-toe";
+        this.name = "tic-tac-toe";
+        // TODO: this
+        this.setup();
     }
 
     /**
      * Setup
+     * 
+     * TODO: finish the setup
      */
     private void setup() {
         // make test players
-        Player player1 = new TikTakToePlayer("madeline", this);
-        Player player2 = new TikTakToePlayer("badeline", this);
+        AbstractTikTakToePlayer player1 = new Local("madeline");
+        AbstractTikTakToePlayer player2 = new Local("badeline");
+        System.err.println("a");
 
         this.players.add(player1);
         this.players.add(player2);
+        System.err.println("b");
 
         // setup players with finite state machine
         boolean playersSetup = false;
         while (!playersSetup) {
             playersSetup = true;
-            for (Player player : players) {
+            for (AbstractTikTakToePlayer player : players) {
                 switch(player.getState()) {
                     case INITIALIZED:
                         player.login();
                         playersSetup = false;
+                        System.err.println("c");
                         break;
                     case LOGGED_IN:
-                        player.subscribe();
+                        player.subscribe(this.name);
                         playersSetup = false;
+                        System.err.println("d");
                         break;
                     case SUBSCRIBED:
+                        System.err.println("e");
                         break;
                     default:
                         break;
@@ -62,27 +73,35 @@ public class TikTakToe extends Game {
      * closes the game
      */
     private void close() {
-        for (Player player : this.players) {
+        for (AbstractTikTakToePlayer player : this.players) {
             player.disconnect();
         }
-        super.closeInSeconds();
+        Timer timer = new Timer();
+        timer.closeInSeconds(5);
     }
 
-    //TODO: Place setup in setup
-    @Override
+    // TODO: fix gameloop order
+    /**
+     * run
+     */
     public void run() {
         this.setup();
-        super.gameRunning = true;
+        this.gameRunning = true;
 
         //gameloop
-        while(super.gameRunning) {
-            for (Player player : players) {
-                if (!super.gameRunning) {
+        while(this.gameRunning) {
+            // render
+            this.view.printBoard(board);
+
+            // input / update
+            for (AbstractTikTakToePlayer player : players) {
+                if (!this.gameRunning) {
                     break;
                 }
-                player.doMove();
+                //player.doMove();
+                this.gameRunning = false;
             }
-            if (!super.gameRunning) {
+            if (!this.gameRunning) {
                 break;
             }
         }
@@ -90,7 +109,11 @@ public class TikTakToe extends Game {
         this.close();
     }
 
-    @Override
+    /**
+     * processes server mesages
+     * 
+     * @param answer the message
+     */
     public void processMessage(String answer) {
         WHYsonParser why = new WHYsonParser(answer);
 
@@ -135,25 +158,27 @@ public class TikTakToe extends Game {
      */
     private void sortPlayers(String value) {
         System.out.println(value);
-        ArrayList<Player> sorted = new ArrayList<Player>();
+        ArrayList<AbstractTikTakToePlayer> sorted = new ArrayList<AbstractTikTakToePlayer>();
 
-        for (Player player : players) {
+        for (AbstractTikTakToePlayer player : players) {
             if (player.toString().equals(value)) {
                 sorted.add(player);
             }
         }
  
-        for (Player player : players) {
+        for (AbstractTikTakToePlayer player : players) {
             if (!player.toString().equals(value)) {
                 sorted.add(player);
             }
         }
 
-        this.players = new ArrayList<Player>(sorted);
+        this.players = new ArrayList<AbstractTikTakToePlayer>(sorted);
     }
  
-    @Override
+    /**
+     * Sends a close signal
+     */
     public void sendCloseSignal() {
-        super.gameRunning = false;
+        this.gameRunning = false;
     }
 }

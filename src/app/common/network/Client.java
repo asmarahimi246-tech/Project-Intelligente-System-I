@@ -64,15 +64,14 @@ public class Client {
      * checks if the client is ok or if theres an error
      * 
      * @return true if its ok
-     * @throws IOException if there is an error
      */
-    public boolean isOk() throws IOException{
+    public boolean isOk(){
         // wait for ok
         // by checking queue
         boolean ok = false;
         while (!ok) {
             if (this.listener.isError()) {
-                throw new IOException("Error received from server");
+                System.err.println("Error received from server");
             } else if (this.listener.getNextOkMessage() != null) {
                 ok = true;
             }

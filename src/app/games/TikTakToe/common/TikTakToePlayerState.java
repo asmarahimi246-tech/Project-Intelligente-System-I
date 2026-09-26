@@ -1,9 +1,9 @@
-package app.games.common;
+package app.games.TikTakToe.common;
 
 /**
  * All posible playerstates
  */
-public enum PlayerState {
+public enum TikTakToePlayerState {
     // start state
     INITIALIZED,
 

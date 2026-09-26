@@ -5,6 +5,9 @@ participant MenuContext
 participant CLIMenu
 participant Option
 participant ScannerSingleton
+participant CLIIntegerField$Builder
+participant CLIField$Builder
+participant CLIIntegerField
 participant ToExecute
 
 activate MainMenu
@@ -34,10 +37,34 @@ activate MainMenu
 	deactivate ScannerSingleton
 	MainMenu -> CLIMenu : runOption
 	activate CLIMenu
-		CLIMenu -> CLIMenu : inputInt
-		activate CLIMenu
-			CLIMenu --> CLIMenu
-		deactivate CLIMenu
+		CLIMenu -> CLIIntegerField$Builder : defaultInput
+		activate CLIIntegerField$Builder
+			CLIIntegerField$Builder -> CLIField$Builder : defaultInput
+			activate CLIField$Builder
+				CLIField$Builder -> CLIField$Builder : self
+				activate CLIField$Builder
+					CLIField$Builder --> CLIField$Builder
+				deactivate CLIField$Builder
+				CLIField$Builder --> CLIIntegerField$Builder
+			deactivate CLIField$Builder
+			CLIIntegerField$Builder --> CLIMenu
+		deactivate CLIIntegerField$Builder
+		CLIMenu -> CLIIntegerField$Builder : min
+		activate CLIIntegerField$Builder
+			CLIIntegerField$Builder --> CLIMenu
+		deactivate CLIIntegerField$Builder
+		CLIMenu -> CLIIntegerField$Builder : max
+		activate CLIIntegerField$Builder
+			CLIIntegerField$Builder --> CLIMenu
+		deactivate CLIIntegerField$Builder
+		CLIMenu -> CLIIntegerField$Builder : build
+		activate CLIIntegerField$Builder
+			CLIIntegerField$Builder --> CLIMenu
+		deactivate CLIIntegerField$Builder
+		CLIMenu -> CLIIntegerField : getInput
+		activate CLIIntegerField
+			CLIIntegerField --> CLIMenu
+		deactivate CLIIntegerField
 		CLIMenu -> Option : run
 		activate Option
 			Option -> ToExecute : execute

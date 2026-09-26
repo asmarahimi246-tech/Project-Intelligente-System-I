@@ -1,4 +1,4 @@
-package app.games.common;
+package app.games.workInProgress;
 
 /**
  * GameSession

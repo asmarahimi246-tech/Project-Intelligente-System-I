@@ -2,6 +2,8 @@ package app.common.widgets.cliMenu;
 
 import java.util.Scanner;
 
+import app.common.widgets.cliInputFields.CLIIntegerField;
+import app.common.widgets.cliInputFields.common.CLIField;
 import app.common.widgets.cliMenu.parts.Option;
 
 import java.util.ArrayList;
@@ -14,7 +16,6 @@ import java.util.List;
  */
 public class CLIMenu {
     private String printText;
-    private String readText;
     private List<Option> optionsList;
 
     /**
@@ -22,9 +23,8 @@ public class CLIMenu {
      * @param printText printText.
      * @param readText readText.
      */
-    public CLIMenu(String printText, String readText) {
+    public CLIMenu(String printText) {
         this.printText = printText;
-        this.readText = readText;;
         this.optionsList = new ArrayList<>();
     }
     
@@ -56,42 +56,16 @@ public class CLIMenu {
     }
 
     /**
-     * Does input for int and some error handling.
-     * @param scanner the scanner.
-     * @param errorMessage the errorMessage to print when an error occurs.
-     * @param defaultInt the defaultInt to fall back on.
-     * @param min the min value that is accepted.
-     * @param max the max value that is accepted.
-     * @return toReturn the value to return.
-     */
-    private int inputInt(Scanner scanner, String errorMessage, int defaultInt, int min, int max){
-        int toReturn = defaultInt;
-        try {
-            toReturn = scanner.nextInt();
-            if(toReturn > max || toReturn < min){
-                System.err.println("input out of range");
-                System.err.println("using default: " + defaultInt);
-                toReturn = defaultInt;
-                System.err.println("press enter to exit error");
-                scanner.nextLine();
-            }
-        } catch (InputMismatchException e) {
-            System.err.println(errorMessage);
-            System.err.println("using default: " + defaultInt);
-            System.err.println("press enter to exit error");
-            scanner.nextLine();
-        }
-        scanner.nextLine();
-        return toReturn;
-    }
-
-    /**
      * This scans for input and runs the selected option. 
      * @param scanner the scanner. 
      */
     public void runOption(Scanner scanner) {
-        System.out.println(readText);
-        int selectedOptionInt = this.inputInt(scanner, "illegal option", -1, -2, optionsList.size());
+        CLIIntegerField field = new CLIIntegerField.Builder(scanner, "illegal option")
+            .defaultInput(1)
+            .min(-2)
+            .max(optionsList.size())
+            .build();
+        int selectedOptionInt = field.getInput();
         //this.clearScreen();
         if (selectedOptionInt < 0 || selectedOptionInt > this.optionsList.size() - 1){
             System.out.println("");

@@ -24,7 +24,7 @@ public class MainMenu implements MenuState {
         MenuState gameMenu = new GameMenu();
 
         // Make menu
-        CLIMenu menu = new CLIMenu("What do you want to do?", " ");
+        CLIMenu menu = new CLIMenu("What do you want to do?");
 
         // Add options
         Option toAdd = new Option("start local game", () -> context.setState(gameMenu));
