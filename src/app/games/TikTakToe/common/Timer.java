@@ -8,9 +8,6 @@ public class Timer {
      * Closes game in x seconds
      */
     public void closeInSeconds(int seconds) {
-
-        // for testing
-        System.out.println("[info] game ends in " + seconds + "s");
         try {
 			Thread.sleep(seconds*1000);
 		} catch (InterruptedException e) {

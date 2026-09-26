@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Client
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Made with help from a lot of youtube videos and explenations from deepai
  */
 public class Client {
+    private final AtomicBoolean closing = new AtomicBoolean(false);
     private Socket socket;
     private BufferedReader reader;
     private PrintWriter writer;
@@ -36,14 +38,14 @@ public class Client {
      */
     private void connectToServer() throws IOException{
         // make writers
-        reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
         writer = new PrintWriter(this.socket.getOutputStream(), true);
+        reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
 
         // still dont exactly know how concurent linked queue works i do know that its a thread save queue
-        // make server listen
+        // make server listen with a lambda function
         ConcurrentLinkedQueue<String> okQueue = new ConcurrentLinkedQueue<>();
         ConcurrentLinkedQueue<String> svrQueue = new ConcurrentLinkedQueue<>();
-        this.listener = new ServerListener(reader, okQueue, svrQueue);
+        this.listener = new ServerListener(reader, okQueue, svrQueue, () -> closing.get());
 
         //place it on a thread and start it
         Thread thread = new Thread(listener);
@@ -78,6 +80,30 @@ public class Client {
         }
 
         return true;
+    }
+
+    /**
+     * closes the socket
+     * 
+     * TODO: error handling
+     */
+    public void close() {
+        try {
+            // this should also automaticly closes the listener
+            closing.set(true);
+            socket.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * gets the listener
+     * @return the listemer
+    */
+    public ServerListener getListener() {
+        return this.listener;
     }
     
 }

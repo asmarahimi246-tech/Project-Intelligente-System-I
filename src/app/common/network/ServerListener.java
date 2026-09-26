@@ -2,7 +2,9 @@ package app.common.network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.BooleanSupplier;
 
 /**
  * Client
@@ -15,7 +17,9 @@ public class ServerListener implements Runnable {
     private volatile boolean errorFlag = false;
     private final ConcurrentLinkedQueue<String> okQueue;
     private final ConcurrentLinkedQueue<String> svrQueue;
+    private final BooleanSupplier clientClosing;
     private BufferedReader reader;
+    private Socket socket;
 
     /**
      * Constructor
@@ -24,10 +28,11 @@ public class ServerListener implements Runnable {
      * @param okQueue okQueue
      * @param svrQueue scrQueue
      */
-    public ServerListener(BufferedReader reader, ConcurrentLinkedQueue<String> okQueue, ConcurrentLinkedQueue<String> svrQueue) {
+    public ServerListener(BufferedReader reader, ConcurrentLinkedQueue<String> okQueue, ConcurrentLinkedQueue<String> svrQueue, BooleanSupplier clientClosing) {
         this.reader = reader;
         this.okQueue = okQueue;
         this.svrQueue = svrQueue;
+        this.clientClosing = clientClosing;
     }
 
     /**    (non-Javadoc)
@@ -37,8 +42,8 @@ public class ServerListener implements Runnable {
     @Override
     public void run() {
         try {
-            while (true) {
-                String message = reader.readLine(); // your method
+            String message;
+            while ((message = reader.readLine()) != null) {
                 if (message.contains("ERR")) {
                     System.err.println("[error] " + message);
                     errorFlag = true;
@@ -48,8 +53,15 @@ public class ServerListener implements Runnable {
                     svrQueue.add(message);
                 }
             }
+
+            if (!clientClosing.getAsBoolean()) {
+                System.err.println("Server closed the connection");
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            if (!clientClosing.getAsBoolean()) {
+                System.err.println("Connection with server lost");
+                e.printStackTrace();
+            }
         }
     }
 
