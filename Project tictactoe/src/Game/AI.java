@@ -10,7 +10,15 @@ public class AI {
         return false;
     }
 
-    private boolean checkWin(char[] board, char player) {
-        return false;
+    private int checkMove(char[] move, char player) {
+
+    }
+
+    private int checkWin(char[] board, char player) {
+        if () {
+
+        }
+        return 1;
+
     }
 }
