@@ -2,7 +2,7 @@ package Game;
 
 public class AI {
 
-    public AI() {
+    private int boardFull(char[] board) {
 
     }
 
