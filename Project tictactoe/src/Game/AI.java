@@ -1,8 +1,5 @@
 package Game;
 
-/**
- * AI
- */
 public class AI {
 
     /**
