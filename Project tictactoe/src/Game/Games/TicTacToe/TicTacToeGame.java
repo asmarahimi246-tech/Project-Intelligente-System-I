@@ -16,20 +16,54 @@ public class TicTacToeGame {
     }
 
     public void Turn() {
-        printBoard();
+
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Player " + player1);
         System.out.print("Choose an number [1-9]: ");
 
         int input = scanner.nextInt();
         input -= 1;
-        System.out.println(input);
 
         if (board[input] != 'X' && board[input] != 'O') {
             board[input] = player1;
             System.out.println("Tussenstand:");
             printBoard();
-            listener.sendMoveToServer(input);
+
+            if (checkWinner()){
+                System.out.println("Player " + player1 + " won!");
+                System.exit(0);
+            }
+
+
+            if (listener != null) {
+                    listener.sendMoveToServer(input);
+                }
+            }
+    }
+
+    public boolean checkWinner() {
+        if (board[0] == board[1] && board[1] == board[2]) {
+            return true;
         }
+        if (board[3] == board[4] && board[4] == board[5]) {
+            return true;
+        }
+        if (board[6] == board[7] && board[7] == board[8]) {
+            return true;
+        }
+        if (board[0] == board[3] && board[3] == board[6]) {
+            return true;
+        }
+        if (board[1] == board[4] && board[4] == board[7]) {
+            return true;
+        }
+        if (board[2] == board[5] && board[5] == board[8]) {
+            return true;
+        }
+        if (board[2] == board[4] && board[4] == board[6]) {
+            return true;
+        }
+        return false;
     }
 
     public void Move(int number) {
