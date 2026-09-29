@@ -8,6 +8,9 @@ public class ServerListener {
 
     public ServerListener(Client client, TicTacToeGame game) {
         this.client = client;
+    }
+
+    public void setGame(TicTacToeGame game) {
         this.game = game;
     }
 
