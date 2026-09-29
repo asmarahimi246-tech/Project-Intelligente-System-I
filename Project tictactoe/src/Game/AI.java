@@ -21,9 +21,9 @@ public class AI {
     }
 
     private int checkLoss(char[] board, char player) {
-        if () {
-
-        }
+//        if () {
+//
+//        }
         return -1;
 
     }
