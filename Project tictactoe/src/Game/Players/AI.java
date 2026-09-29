@@ -2,8 +2,11 @@ package Game.Players;
 
 public class AI {
 
-    private int boardFull(char[] board) {
+    private boolean boardFull(char[] board) {
 
+        
+
+        return false;
     }
 
     private int checkMove(char[] move, char player) {
