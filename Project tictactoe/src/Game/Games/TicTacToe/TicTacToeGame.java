@@ -5,7 +5,7 @@ import Network.ServerListener;
 import java.util.Scanner;
 
 public class TicTacToeGame {
-    private Client client;
+    private ServerListener listener;
     private char player1 = 'X';
     private char[] board = {'1','2','3','4','5','6','7','8','9'};
 
