@@ -6,7 +6,7 @@ public class ServerListener {
     private TicTacToeGame game;
     private boolean turn = false;
 
-    public ServerListener(Client client, TicTacToeGame game) {
+    public ServerListener(Client client) {
         this.client = client;
     }
 
