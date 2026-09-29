@@ -3,7 +3,7 @@ package Game.Players;
 public class AI {
 
     // toekomst eerst bezig met random AI/eigen AI die soortvan beste move pakt.
-    private int randomNumber(char[] move, char player) {
+    private int numberAI(char[] move, char player) {
 
 
 
