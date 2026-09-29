@@ -7,7 +7,8 @@ public class AI {
     }
 
     private boolean isBoardFull(char[] board) {
-        return false;
+        
+        return true;
     }
 
     private int checkMove(char[] move, char player) {
