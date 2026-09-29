@@ -9,7 +9,7 @@ public class Main {
         Client client = new Client();
         TicTacToeGame game = new TicTacToeGame(client);
 
-        ServerListener listener = new ServerListener(client, game);
+        listener.setGame(game);
 
         Onlineplayer onlineplayer = new Onlineplayer(client);
 
