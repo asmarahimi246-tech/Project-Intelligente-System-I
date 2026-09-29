@@ -12,6 +12,8 @@ public class Onlineplayer {
     String playername = "Player" + randomnumber;
 
     public Onlineplayer() throws IOException {
+        client.sendCommand("login " + playername);
+        client.sendCommand("subscribe tic-tac-toe");
     }
     client.sendCommand("login " + playername);
     client.sendCommand("subscribe tic-tac-toe");
