@@ -17,7 +17,7 @@ public class AI {
     }
 
     private int checkWin(char[] board, char player) {
-        if () {
+
 
         }
         return 1;
