@@ -1,6 +1,5 @@
 package Network;
 
-
 public class ServerListener {
     private Client client;
     private Game game;
