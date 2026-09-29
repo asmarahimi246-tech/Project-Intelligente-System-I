@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Onlineplayer {
-    Client client = new Client();
+    private Client client;
 
     Random random = new Random();
     int randomnumber = 1000 + random.nextInt(9000);
