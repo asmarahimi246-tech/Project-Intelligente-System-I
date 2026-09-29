@@ -11,7 +11,6 @@ public class Main {
         TicTacToeGame game = new TicTacToeGame(listener);
 
         listener.setGame(game);
-
         Onlineplayer onlineplayer = new Onlineplayer(client);
 
         String message;
