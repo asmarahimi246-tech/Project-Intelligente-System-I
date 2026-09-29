@@ -11,7 +11,7 @@ public class Main {
 
         ServerListener listener = new ServerListener(client, game);
 
-        new Onlineplayer(client);
+        Onlineplayer onlineplayer = new Onlineplayer(client);
 
         String message;
         while ((message = client.getReader().readLine()) != null) {
