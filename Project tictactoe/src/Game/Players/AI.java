@@ -12,6 +12,8 @@ public class AI {
     private boolean checkMove(char[] move, char player) {
 
 
+
+        return false;
     }
 
     private int checkWin(char[] board, char player) {
