@@ -15,6 +15,4 @@ public class Onlineplayer {
         client.sendCommand("login " + playername);
         client.sendCommand("subscribe tic-tac-toe");
     }
-    client.sendCommand("login " + playername);
-    client.sendCommand("subscribe tic-tac-toe");
 }
