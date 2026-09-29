@@ -35,7 +35,7 @@ public class AI {
     private int checkDraw(char[] board, char player) {
 
 
-        }
+
         return 0;
 
     }
