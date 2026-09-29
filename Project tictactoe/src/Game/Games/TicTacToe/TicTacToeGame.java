@@ -9,8 +9,8 @@ public class TicTacToeGame {
     private char player1 = 'X';
     private char[] board = {'1','2','3','4','5','6','7','8','9'};
 
-    public TicTacToeGame(Client client) {
-        this.client = client;
+    public TicTacToeGame(ServerListener listener) {
+        this.listener = listener;
     }
 
     public void Symbol(char symbol) {
