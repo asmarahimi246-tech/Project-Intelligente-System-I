@@ -30,7 +30,7 @@ public class TicTacToeGame {
             board[input] = player1;
             System.out.println("Tussenstand:");
             printBoard();
-            client.sendCommand("move " + input);
+            listener.sendMoveToServer(input);
         }
     }
 
