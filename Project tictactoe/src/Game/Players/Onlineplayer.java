@@ -1,4 +1,7 @@
 package Game.Players;
+import Network.Client;
+
+import java.io.IOException;
 import java.util.Random;
 
 public class Onlineplayer {
