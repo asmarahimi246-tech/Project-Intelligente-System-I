@@ -11,6 +11,10 @@ public class ServerListener {
         this.game = game;
     }
 
+    public void sendMoveToServer(int input) {
+        client.sendCommand("move " + input);
+    }
+
     public void Commandhandler(String message) {
         System.out.println(message);
 
