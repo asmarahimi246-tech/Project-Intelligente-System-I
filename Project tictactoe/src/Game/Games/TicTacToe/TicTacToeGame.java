@@ -1,5 +1,7 @@
 package Game.Games.TicTacToe;
 import Network.Client;
+import Network.ServerListener;
+
 import java.util.Scanner;
 
 public class TicTacToeGame {
