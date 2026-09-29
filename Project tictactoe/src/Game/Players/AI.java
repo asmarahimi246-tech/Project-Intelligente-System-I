@@ -4,7 +4,7 @@ public class AI {
 
     private boolean boardFull(char[] board) {
 
-        
+
 
         return false;
     }
