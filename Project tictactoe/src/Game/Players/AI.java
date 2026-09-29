@@ -9,7 +9,8 @@ public class AI {
         return false;
     }
 
-    private int checkMove(char[] move, char player) {
+    private boolean checkMove(char[] move, char player) {
+
 
     }
 
