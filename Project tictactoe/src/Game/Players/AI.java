@@ -2,9 +2,9 @@ package Game.Players;
 
 public class AI {
 
-    private int randomnumer(char[] move, char player) {
+    private int randomNumber(char[] move, char player) {
 
-        
+
 
         return 0;
     }
