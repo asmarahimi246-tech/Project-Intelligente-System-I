@@ -2,7 +2,7 @@ package Game;
 
 public class AI {
 
-    private boolean isBoardFull(char[] board) {
+    private boolean checkBoard(char[] board) {
 
         return true;
     }
