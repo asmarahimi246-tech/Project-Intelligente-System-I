@@ -1,5 +1,7 @@
 package Network;
 
+import Game.Games.TicTacToe.TicTacToeGame;
+
 public class ServerListener {
     private Client client;
     private Game game;
