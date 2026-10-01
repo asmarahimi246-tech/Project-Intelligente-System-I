@@ -57,7 +57,7 @@ public class AI {
         char a = board[pos];
         board[pos] = player;
 
-        if (checkWin(board, player)) {
+        if (checkWinningMove(board, player)) {
             board[pos] = a;
             return true;
         }
