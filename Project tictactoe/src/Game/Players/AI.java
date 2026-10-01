@@ -12,42 +12,73 @@ public class AI {
         return 0;
     }
 
-    // toekomstig
-//    private boolean boardFull(char[] board) {
-//
-//
-//
-//        return false;
-//    }
-//
-//    private boolean checkMove(char[] move, char player) {
-//
-//
-//
-//        return false;
-//    }
-//
-//    private int checkWin(char[] board, char player) {
-//
-//
-//
-//        return 1;
-//
-//    }
-//
-//    private int checkLoss(char[] board, char player) {
-//
-//
-//
-//        return -1;
-//
-//    }
-//
-//    private int checkDraw(char[] board, char player) {
-//
-//
-//
-//        return 0;
-//
-//    }
+    private boolean boardFull(char[] board) {
+        for (char vak: board) {
+            if (vak != 'X' && vak !='O') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkWin(char[] board, char winningMove) {
+        if (board[0] == winningMove && board[1] == winningMove && board[2] == winningMove) {
+            return true;
+        }
+        if (board[3] == winningMove && board[4] == winningMove && board[5] == winningMove) {
+            return true;
+        }
+        if (board[6] == winningMove && board[7] == winningMove && board[8] == winningMove) {
+            return true;
+        }
+        if (board[0] == winningMove && board[3] == winningMove && board[6] == winningMove) {
+            return true;
+        }
+        if (board[1] == winningMove && board[4] == winningMove && board[7] == winningMove) {
+            return true;
+        }
+        if (board[2] == winningMove && board[5] == winningMove && board[8] == winningMove) {
+            return true;
+        }
+        if (board[0] == winningMove && board[4] == winningMove && board[8] == winningMove) {
+            return true;
+        }
+        if (board[2] == winningMove && board[4] == winningMove && board[6] == winningMove) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkMove(char[] board, char player, int pos) {
+        if (board[pos] == 'X' || board[pos] == 'O') {
+            return false;
+        }
+
+        char a = board[pos];
+        board[pos] = player;
+
+        if (checkWin(board, player)) {
+            board[pos] = a;
+            return true;
+        }
+        board[pos] = a;
+
+        return false;
+    }
+
+    private int checkLoss(char[] board, char player) {
+
+
+
+        return -1;
+
+    }
+
+    private int checkDraw(char[] board, char player) {
+
+
+
+        return 0;
+
+    }
 }
