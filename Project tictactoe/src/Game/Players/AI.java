@@ -66,6 +66,14 @@ public class AI {
         return false;
     }
 
+    private int checkWin(char[] board, char player) {
+
+
+
+        return 1;
+
+    }
+
     private int checkLoss(char[] board, char player) {
 
 
