@@ -14,7 +14,7 @@ public class AI {
         return 0;
     }
 
-    private boolean boardFull(char[] board) {
+    private boolean isBoardFull(char[] board) {
         for (char vak: board) {
             if (vak != 'X' && vak !='O') {
                 return false;
