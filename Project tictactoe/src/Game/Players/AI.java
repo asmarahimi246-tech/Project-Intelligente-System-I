@@ -21,7 +21,7 @@ public class AI {
         return true;
     }
 
-    private boolean checkWin(char[] board, char winningMove) {
+    private boolean checkWinningMove(char[] board, char winningMove) {
         if (board[0] == winningMove && board[1] == winningMove && board[2] == winningMove) {
             return true;
         }
