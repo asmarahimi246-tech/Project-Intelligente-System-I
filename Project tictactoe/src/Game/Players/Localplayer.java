@@ -5,6 +5,7 @@ public class Localplayer {
     private TicTacToeGame game;
 
     public Localplayer(TicTacToeGame game) {
+
         this.game = game;
     }
 
