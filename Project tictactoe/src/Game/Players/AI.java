@@ -78,23 +78,8 @@ public class AI {
             return false;
         }
 
-    private int checkMove(char[] move, char player) {
-
-    }
-
-    private int checkWin(char[] board, char player) {
-        if () {
-
-        }
-        return 1;
-
-    }
-
-    private int checkLoss(char[] board, char player) {
-        if () {
-
-        }
-        return -1;
+        char a = board[pos];
+        board[pos] = player;
 
     }
 
