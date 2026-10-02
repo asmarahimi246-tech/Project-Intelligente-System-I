@@ -20,7 +20,20 @@ public class AI {
             opponent = 'X';
         }
 
-        return 0;
+        for (int i = 0; i < 9; i++) {
+            if (checkMove(move, opponent, i)) {
+                return i + 1;
+            }
+        }
+        Random random = new Random();
+
+        while (true) {
+            int randomMove = random.nextInt(9) + 1;
+
+            if (move[randomMove] != 'X' && move[randomMove] != 'O') {
+                return randomMove + 1;
+            }
+        }
     }
 
     private boolean isBoardFull(char[] board) {
