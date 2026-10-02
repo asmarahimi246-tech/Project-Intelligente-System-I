@@ -1,4 +1,4 @@
-import Framework.Game;
+import Game.Games.TicTacToe.TicTacToeGame;
 import Network.Client;
 import Game.Players.Onlineplayer;
 import Network.ServerListener;
