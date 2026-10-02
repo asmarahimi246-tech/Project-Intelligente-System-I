@@ -41,6 +41,8 @@ public class TicTacToeGame {
             }
 
             board[number] = player2;
+
+            System.out.println("Tussenstand:");
             printBoard();
         }
     }
