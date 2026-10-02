@@ -23,7 +23,11 @@ public class ServerListener {
 
         if (message.startsWith("SVR GAME YOURTURN")) {
             turn = true;
-            game.Turn();
+            if (game.useAI()) {
+                game.aiTurn();
+            } else {
+                game.Turn();
+            }
         }
 
         if (message.startsWith("SVR GAME MOVE")) {
