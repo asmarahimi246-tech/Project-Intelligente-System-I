@@ -1,4 +1,4 @@
-package Game.TicTacToe;
+package Game.Games.TicTacToe;
 
 public class TicTacToeModel {
 }
