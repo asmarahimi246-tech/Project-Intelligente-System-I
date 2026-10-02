@@ -16,7 +16,6 @@ public class TicTacToeGame {
     }
 
     public void Turn() {
-        printBoard();
         Scanner scanner = new Scanner(System.in);
         System.out.print("Choose an number [1-9]: ");
 
