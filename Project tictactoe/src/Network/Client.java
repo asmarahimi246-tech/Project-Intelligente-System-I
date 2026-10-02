@@ -14,12 +14,6 @@ public class Client {
     private BufferedReader reader;
     private PrintWriter writer;
 
-    /**
-     * A constructor
-     * makes a Client 
-     * 
-     * @throws IOException when something goes wrong with the socket
-     */
     public Client() throws IOException {
         socket = new Socket("localhost", 7789);
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
