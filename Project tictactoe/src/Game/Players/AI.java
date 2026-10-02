@@ -12,6 +12,13 @@ public class AI {
             }
         }
 
+        char opponent;
+
+        if (player == 'X') {
+            opponent = 'O';
+        } else {
+            opponent = 'X';
+        }
 
         return 0;
     }
