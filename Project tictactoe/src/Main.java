@@ -4,9 +4,6 @@ import Game.Players.Onlineplayer;
 import Network.ServerListener;
 import java.io.IOException;
 
-/**
- * Main
- */
 public class Main {
 
     /**
