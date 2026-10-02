@@ -8,7 +8,7 @@ public class TicTacToeGame {
     private char player1 = 'X';
     private char[] board = {'1','2','3','4','5','6','7','8','9'};
     private AI ai = new AI();
-    private boolean useAI = true;
+    private boolean useAI;
 
     public boolean useAI() {
         return useAI;
