@@ -11,7 +11,7 @@ public class Main {
 
         Client client = new Client();
         ServerListener listener = new ServerListener(client);
-        TicTacToeGame game = new TicTacToeGame(listener, useAI);
+        TicTacToeGame game = new TicTacToeGame(listener);
 
         listener.setGame(game);
         Onlineplayer onlineplayer = new Onlineplayer(client);
