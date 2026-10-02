@@ -7,10 +7,8 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         Client client = new Client();
-        // make a new game
-        Game game = new Game(client);
-        // make a new serverListener
-        ServerListener listener = new ServerListener(client, game);
+        ServerListener listener = new ServerListener(client);
+        TicTacToeGame game = new TicTacToeGame(listener);
 
         // login to the server and subscribe to the game
         client.sendCommand("login " + playername);
