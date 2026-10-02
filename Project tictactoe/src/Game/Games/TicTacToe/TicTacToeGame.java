@@ -10,7 +10,7 @@ public class TicTacToeGame {
     private AI ai = new AI();
     private boolean useAI;
 
-    public TicTacToeGame(ServerListener listener, boolean useAI) {
+    public TicTacToeGame(ServerListener listener) {
         this.listener = listener;
         this.useAI = useAI;
     }
