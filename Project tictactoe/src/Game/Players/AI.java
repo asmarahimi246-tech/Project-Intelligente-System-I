@@ -28,7 +28,7 @@ public class AI {
         Random random = new Random();
 
         while (true) {
-            int randomMove = random.nextInt(9) + 1;
+            int randomMove = random.nextInt(9);
 
             if (move[randomMove] != 'X' && move[randomMove] != 'O') {
                 return randomMove + 1;
