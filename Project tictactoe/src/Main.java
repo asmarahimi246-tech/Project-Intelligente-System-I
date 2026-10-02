@@ -1,5 +1,7 @@
 import Framework.Game;
 import Network.Client;
+import Game.Players.Onlineplayer;
+import Network.ServerListener;
 import java.io.IOException;
 import Framework.ServerListener;
 
