@@ -16,7 +16,6 @@ public class Main {
         String message;
         while ((message = client.getReader().readLine()) != null) {
             listener.Commandhandler(message);
-            System.out.println("SERVER: " + message);
         }
     }
 }
