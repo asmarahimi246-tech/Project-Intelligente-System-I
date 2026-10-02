@@ -30,6 +30,10 @@ public class AI {
         while (true) {
             int randomMove = random.nextInt(9);
 
+            if (move[randomMove] != 'X' && move[randomMove] != 'O') {
+                return randomMove + 1;
+            }
+        }
     }
 
     private boolean isBoardFull(char[] board) {
