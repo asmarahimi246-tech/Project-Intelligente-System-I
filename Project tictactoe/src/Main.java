@@ -13,7 +13,6 @@ public class Main {
         listener.setGame(game);
         Onlineplayer onlineplayer = new Onlineplayer(client);
 
-        // infinitly reads from the server
         String message;
         while ((message = client.getReader().readLine()) != null) {
             listener.Commandhandler(message);
