@@ -7,7 +7,7 @@ import Network.Client;
  */
 public class ServerListener {
     private Client client;
-    private Game game;
+    private TicTacToeGame game;
     private boolean turn = false;
 
     public ServerListener(Client client) {
