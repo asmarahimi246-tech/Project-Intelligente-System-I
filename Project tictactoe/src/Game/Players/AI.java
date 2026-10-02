@@ -87,11 +87,8 @@ public class AI {
         }
         board[pos] = a;
 
-    private int checkDraw(char[] board, char player) {
-        if () {
-
-        }
-        return 0;
+        return false;
+    }
 
     }
 }
