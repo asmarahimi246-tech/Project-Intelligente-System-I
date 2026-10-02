@@ -19,7 +19,6 @@ public class ServerListener {
     }
 
     public void Commandhandler(String message) {
-
         if (message.startsWith("SVR GAME YOURTURN")) {
             turn = true;
             game.Turn();
