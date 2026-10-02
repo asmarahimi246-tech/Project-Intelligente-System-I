@@ -35,11 +35,6 @@ public class Client {
         writer.println(command);
     }
 
-    /**
-     * Gets the reader that is used to read from the server
-     * 
-     * @return the reader
-     */
     public BufferedReader getReader() {
         return reader;
     }
