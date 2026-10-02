@@ -22,15 +22,10 @@ public class ServerListener {
         this.game = game;
     }
 
-    /**
-     * TODO: better comments for this
-     * 
-     * Handles commands that start with the following:
-     * SVR GAME YOURTURN -> does a turn
-     * SVR GAME MOVE -> something
-     * 
-     * @param message containing the command
-     */
+    public void sendMoveToServer(int input) {
+        client.sendCommand("move " + input);
+    }
+
     public void Commandhandler(String message) {
         System.out.println(message);
 
