@@ -35,7 +35,7 @@ public class TicTacToeGame {
     }
 
     public void aiMove() {
-        
+
     }
 
     public void Move(int number) {
