@@ -5,13 +5,6 @@ import Network.ServerListener;
 import java.io.IOException;
 
 public class Main {
-
-    /**
-     * Entry point of application
-     * 
-     * @param args args
-     * @throws IOException IOException
-     */
     public static void main(String[] args) throws IOException {
         // make a UUID for the player
         String uniqueID = java.util.UUID.randomUUID().toString().substring(0, 5);
