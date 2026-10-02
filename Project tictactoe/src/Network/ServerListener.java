@@ -10,14 +10,7 @@ public class ServerListener {
     private Game game;
     private boolean turn = false;
 
-    /**
-     * Constructor
-     * Makes a serverListener with a client and game
-     * 
-     * @param client the client
-     * @param game the game
-     */
-    public ServerListener(Client client, Game game) {
+    public ServerListener(Client client) {
         this.client = client;
     }
 
