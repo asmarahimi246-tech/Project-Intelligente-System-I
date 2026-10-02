@@ -19,6 +19,9 @@ public class ServerListener {
      */
     public ServerListener(Client client, Game game) {
         this.client = client;
+    }
+
+    public void setGame(TicTacToeGame game) {
         this.game = game;
     }
 
