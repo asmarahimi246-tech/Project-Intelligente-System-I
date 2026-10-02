@@ -15,6 +15,10 @@ public class TicTacToeGame {
         this.useAI = useAI;
     }
 
+    public boolean useAI() {
+        return useAI;
+    }
+
     public void Symbol(char symbol) {
         this.player1 = symbol;
     }
