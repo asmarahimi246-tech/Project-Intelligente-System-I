@@ -1,10 +1,5 @@
 package Framework;
 
-import Network.Client;
-
-/**
- * ServerListener
- */
 public class ServerListener {
     private Client client;
     private TicTacToeGame game;
