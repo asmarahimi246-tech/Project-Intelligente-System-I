@@ -7,6 +7,8 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException {
         boolean useAI = true;
+
+
         Client client = new Client();
         ServerListener listener = new ServerListener(client);
         TicTacToeGame game = new TicTacToeGame(listener, useAI);
