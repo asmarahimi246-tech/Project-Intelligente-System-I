@@ -1,6 +1,7 @@
 package Game.Games.TicTacToe;
 import Network.ServerListener;
 import java.util.Scanner;
+import Game.Players.AI;
 
 public class TicTacToeGame {
     private ServerListener listener;
