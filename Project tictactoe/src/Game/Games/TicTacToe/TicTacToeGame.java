@@ -15,27 +15,6 @@ public class TicTacToeGame {
         this.player1 = symbol;
     }
 
-    public void aiTurn() {
-        printBoard();
-
-        char player2;
-
-        if (player1 == 'X') {
-            player2 = 'O';
-        } else {
-            player2 = 'X';
-        }
-
-        int input = ai.numberAI(board, player2);
-        input -= 1;
-        if (board[input] != 'X' && board[input] != 'O') {
-            board[input] = player2;
-            System.out.println("Tussenstand:");
-            printBoard();
-            listener.sendMoveToServer(input);
-        }
-    }
-
     public void Turn() {
         printBoard();
         Scanner scanner = new Scanner(System.in);
