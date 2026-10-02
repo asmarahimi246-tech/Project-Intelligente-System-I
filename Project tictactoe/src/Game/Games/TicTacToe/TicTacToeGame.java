@@ -32,6 +32,10 @@ public class TicTacToeGame {
         }
     }
 
+    public void aiMove() {
+        
+    }
+
     public void Move(int number) {
         if (board[number] != 'X' && board[number] != 'O') {
             char player2;
