@@ -24,6 +24,7 @@ public class TicTacToeGame {
 
         if (board[input] != 'X' && board[input] != 'O') {
             board[input] = player1;
+
             System.out.println("Tussenstand:");
             printBoard();
             listener.sendMoveToServer(input);
