@@ -7,8 +7,6 @@ public class TicTacToeGame {
     private ServerListener listener;
     private char player1 = 'X';
     private char[] board = {'1','2','3','4','5','6','7','8','9'};
-    private AI ai = new AI();
-    private boolean useAI;
 
     public TicTacToeGame(ServerListener listener) {
         this.listener = listener;
