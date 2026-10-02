@@ -21,7 +21,6 @@ public class TicTacToeGame {
 
         int input = scanner.nextInt();
         input -= 1;
-        System.out.println(input);
 
         if (board[input] != 'X' && board[input] != 'O') {
             board[input] = player1;
