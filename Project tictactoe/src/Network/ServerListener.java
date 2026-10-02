@@ -26,6 +26,10 @@ public class ServerListener {
             game.Turn();
         }
 
+        if (message.startsWith("SVR GAME MATCH")) {
+            game.printBoard();
+        }
+
         if (message.startsWith("SVR GAME MOVE")) {
             if (message.contains("MOVE:")) {
                 if (!turn) {
