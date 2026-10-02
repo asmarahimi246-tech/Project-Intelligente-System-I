@@ -6,11 +6,6 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        // make a UUID for the player
-        String uniqueID = java.util.UUID.randomUUID().toString().substring(0, 5);
-        String playername = "Player" + uniqueID;
-
-        // make a new client
         Client client = new Client();
         // make a new game
         Game game = new Game(client);
