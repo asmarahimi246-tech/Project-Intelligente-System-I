@@ -81,7 +81,11 @@ public class AI {
         char a = board[pos];
         board[pos] = player;
 
-    }
+        if (checkWinningMove(board, player)) {
+            board[pos] = a;
+            return true;
+        }
+        board[pos] = a;
 
     private int checkDraw(char[] board, char player) {
         if () {
