@@ -12,6 +12,7 @@ public class TicTacToeGame {
 
     public TicTacToeGame(ServerListener listener, boolean useAI) {
         this.listener = listener;
+        this.useAI = useAI;
     }
 
     public void Symbol(char symbol) {
