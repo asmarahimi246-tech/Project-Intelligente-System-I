@@ -9,7 +9,7 @@ public class Main {
         boolean useAI = false;
         Client client = new Client();
         ServerListener listener = new ServerListener(client);
-        TicTacToeGame game = new TicTacToeGame(listener);
+        TicTacToeGame game = new TicTacToeGame(listener, useAI);
 
         listener.setGame(game);
         Onlineplayer onlineplayer = new Onlineplayer(client);
