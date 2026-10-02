@@ -4,7 +4,8 @@ import java.util.Random;
 public class AI {
 
     // toekomst eerst bezig met random AI/eigen AI die soortvan beste move pakt.
-    private int numberAI(char[] move, char player) {
+    public int numberAI(char[] move, char player) {
+
         for (int i = 0; i < 9; i++) {
             if (checkMove(move, player, i)) {
                 return i + 1;
