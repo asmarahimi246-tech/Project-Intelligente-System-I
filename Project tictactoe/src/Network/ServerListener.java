@@ -4,8 +4,14 @@ import Game.Games.TicTacToe.TicTacToeGame;
 public class ServerListener {
     private Client client;
     private TicTacToeGame game;
+
+    // houd bij of deze client aan de beurt is
     private boolean turn = false;
+
+    // houd bij of deze client als AI speelt
     private boolean aiMode = false;
+
+    // houd bij of het symbool van deze player al bepaald is
     private boolean symbol = false; // houd bij of het symbool al is gekozen
 
     public ServerListener(Client client) {
@@ -63,7 +69,7 @@ public class ServerListener {
                     game.Move(number, true);
                     turn = false;
                 } else {
-                    // de move komt van de andere speler
+                    // de ontvangen move komt van de andere speler
                     game.Move(number, false);
                 }
             }

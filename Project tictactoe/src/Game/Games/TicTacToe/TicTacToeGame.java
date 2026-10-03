@@ -37,8 +37,8 @@ public class TicTacToeGame {
         }
     }
 
+    // laat de AI een zet doen
     public void aiMove() {
-
         int move = ai.numberAI(board, player1);
 
         System.out.println("AI move: " + move);
@@ -47,21 +47,22 @@ public class TicTacToeGame {
     }
 
     public void Move(int number, boolean move) {
+
+        // checkt of de gekozen pos vrij is
         if (board[number] != 'X' && board[number] != 'O') {
 
+            // de move is van de eigen client
             if (move) {
                 board[number] = player1;
             } else {
 
-                // zet de move van de tegenstander
+                // de move is voor de tegenstander
                 if (player1 == 'X') {
                     board[number] = 'O';
                 } else {
                     board[number] = 'X';
                 }
             }
-
-
             System.out.println("Tussenstand:");
             printBoard();
         }
