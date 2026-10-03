@@ -32,42 +32,39 @@ public class TicTacToeGame {
             System.out.println("Tussenstand:");
             printBoard();
 
-            if (aiMode) {
-                aiMove();
-            } else {
-                listener.sendMoveToServer(input);
-            }
-
+            listener.sendMoveToServer(input);
         }
     }
 
     public void aiMove() {
-        char aiPlayer;
+        char player2;
 
         if (player1 == 'X') {
-            aiPlayer = 'O';
+            player2 = 'O';
         } else {
-            aiPlayer = 'X';
+            player2 = 'X';
         }
 
-        int move = ai.numberAI(board, aiPlayer);
+        int move = ai.numberAI(board, player2);
 
         System.out.println("AI move: " + move);
 
         listener.sendMoveToServer(move - 1);
     }
 
-    public void Move(int number) {
+    public void Move(int number, boolean move) {
         if (board[number] != 'X' && board[number] != 'O') {
-            char player2;
 
-            if (player1 == 'X') {
-                player2 = 'O';
+            if (move) {
+                board[number] = player1;
             } else {
-                player2 = 'X';
+                if (player1 == 'X') {
+                    board[number] = 'O';
+                } else {
+                    board[number] = 'X';
+                }
             }
 
-            board[number] = player2;
 
             System.out.println("Tussenstand:");
             printBoard();

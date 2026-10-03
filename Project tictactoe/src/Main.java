@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+
+        // tijdelijk
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("1. Player");
@@ -16,17 +18,20 @@ public class Main {
         int choice = scanner.nextInt();
 
         boolean aiMode = choice == 2;
+        //
 
         Client client = new Client();
         ServerListener listener = new ServerListener(client);
         TicTacToeGame game = new TicTacToeGame(listener, aiMode);
 
         listener.setGame(game);
+        listener.AiMode(aiMode);
         Onlineplayer onlineplayer = new Onlineplayer(client);
 
         String message;
         while ((message = client.getReader().readLine()) != null) {
             listener.Commandhandler(message);
+            System.out.println(message);
         }
     }
 }

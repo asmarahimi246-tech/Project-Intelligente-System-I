@@ -6,7 +6,7 @@ public class ServerListener {
     private TicTacToeGame game;
     private boolean turn = false;
     private boolean aiMode = false;
-    private boolean symbol = false;
+    private boolean symbol = false; // houd bij of het symbool al is gekozen
 
     public ServerListener(Client client) {
         this.client = client;
@@ -28,10 +28,13 @@ public class ServerListener {
         if (message.startsWith("SVR GAME YOURTURN")) {
             turn = true;
 
+            // de eerste speler die aan de beurt is krijgt X
             if (!symbol) {
                 game.Symbol('X');
                 symbol = true;
             }
+
+            // laat de AI of speler een zet doen
             if (aiMode) {
                 game.aiMove();
             } else {
@@ -45,33 +48,37 @@ public class ServerListener {
 
         if (message.startsWith("SVR GAME MOVE")) {
             if (message.contains("MOVE:")) {
-                if (!turn) {
-                    game.Symbol('O');
-                    turn = true;
-                }
-
                 int index = message.indexOf("MOVE:") + 7;
                 char caracter = message.charAt(index);
                 int number = Character.getNumericValue(caracter);
 
-                game.Move(number);
+                // als de client nog geen symbool heeft is dit de tweede speler
+                if (!symbol) {
+                    game.Symbol('O'); // als ik nog moet wachten op mijn beurt ben ik O
+                    symbol = true;
+                }
+
+                // controlleert of de move van jezelf (eigen client) komt
+                if (turn) {
+                    game.Move(number, true);
+                    turn = false;
+                } else {
+                    // de move komt van de andere speler
+                    game.Move(number, false);
+                }
             }
         }
 
         if (message.startsWith("SVR GAME WIN")) {
-            gameOver = true;
             System.out.println("You won!");
         }
 
         if (message.startsWith("SVR GAME DRAW")) {
-            gameOver = true;
             System.out.println("Draw!");
         }
 
         if (message.startsWith("SVR GAME LOSS")) {
-            gameOver = true;
             System.out.println("You lost!");
         }
-
     }
 }
