@@ -9,7 +9,7 @@ public class TicTacToeGame {
     private char[] board = {'1','2','3','4','5','6','7','8','9'};
     private AI ai = new AI();
 
-    public TicTacToeGame(ServerListener listener) {
+    public TicTacToeGame(ServerListener listener, boolean aiMode) {
         this.listener = listener;
     }
 
