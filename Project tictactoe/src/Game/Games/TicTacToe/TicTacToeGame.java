@@ -37,15 +37,8 @@ public class TicTacToeGame {
     }
 
     public void aiMove() {
-        char player2;
 
-        if (player1 == 'X') {
-            player2 = 'O';
-        } else {
-            player2 = 'X';
-        }
-
-        int move = ai.numberAI(board, player2);
+        int move = ai.numberAI(board, player1);
 
         System.out.println("AI move: " + move);
 
