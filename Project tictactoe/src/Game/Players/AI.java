@@ -2,8 +2,7 @@ package Game.Players;
 import java.util.Random;
 
 public class AI {
-
-    // toekomst eerst bezig met random AI/eigen AI die soortvan beste move pakt.
+    
     public int numberAI(char[] board, char player) {
         for (int i = 0; i < 9; i++) {
             if (checkMove(board, player, i)) {
