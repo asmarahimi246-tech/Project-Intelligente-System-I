@@ -28,12 +28,14 @@ public class ServerListener {
         if (message.startsWith("SVR GAME YOURTURN")) {
             turn = true;
 
-
-                if (aiMode) {
-                    game.aiMove();
-                } else {
-                    game.Turn();
-                }
+            if (!symbol) {
+                game.Symbol('X');
+                symbol = true;
+            }
+            if (aiMode) {
+                game.aiMove();
+            } else {
+                game.Turn();
             }
         }
 
