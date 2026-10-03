@@ -8,11 +8,9 @@ public class TicTacToeGame {
     private char player1 = 'X';
     private char[] board = {'1','2','3','4','5','6','7','8','9'};
     private AI ai = new AI();
-    private boolean aiMode;
 
-    public TicTacToeGame(ServerListener listener, boolean aiMode) {
+    public TicTacToeGame(ServerListener listener) {
         this.listener = listener;
-        this.aiMode = aiMode;
     }
 
     public void Symbol(char symbol) {
@@ -21,48 +19,37 @@ public class TicTacToeGame {
 
     public void Turn() {
         Scanner scanner = new Scanner(System.in);
+        System.out.print("Choose an number [1-9]: ");
 
-        while (true) {
-            System.out.print("Choose an number [1-9]: ");
+        int input = scanner.nextInt();
+        input -= 1;
 
-            int input = scanner.nextInt();
-            input -= 1;
+        if (board[input] != 'X' && board[input] != 'O') {
+            board[input] = player1;
 
-            if (board[input] != 'X' && board[input] != 'O') {
-                listener.sendMoveToServer(input);
-                break;
-            }
+            System.out.println("Tussenstand:");
+            printBoard();
 
-            System.out.println("Die plek is al bezet maak een andere move!");
+            listener.sendMoveToServer(input);
         }
     }
 
-    // laat de AI een zet doen
     public void aiMove() {
-        int move = ai.numberAI(board, player1);
 
-        System.out.println("AI move: " + move);
-
-        listener.sendMoveToServer(move - 1);
     }
 
-    public void Move(int number, boolean move) {
-
-        // checkt of de gekozen pos vrij is
+    public void Move(int number) {
         if (board[number] != 'X' && board[number] != 'O') {
+            char player2;
 
-            // de move is van de eigen client
-            if (move) {
-                board[number] = player1;
+            if (player1 == 'X') {
+                player2 = 'O';
             } else {
-
-                // de move is voor de tegenstander
-                if (player1 == 'X') {
-                    board[number] = 'O';
-                } else {
-                    board[number] = 'X';
-                }
+                player2 = 'X';
             }
+
+            board[number] = player2;
+
             System.out.println("Tussenstand:");
             printBoard();
         }
