@@ -32,7 +32,12 @@ public class TicTacToeGame {
             System.out.println("Tussenstand:");
             printBoard();
 
-            listener.sendMoveToServer(input);
+            if (aiMode) {
+                aiMove();
+            } else {
+                listener.sendMoveToServer(input);
+            }
+
         }
     }
 
