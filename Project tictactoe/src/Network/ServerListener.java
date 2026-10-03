@@ -11,8 +11,8 @@ public class ServerListener {
     // houd bij of deze client als AI speelt
     private boolean aiMode = false;
 
-    // houd bij of het symbool van deze player al bepaald is
-    private boolean symbol = false; // houd bij of het symbool al is gekozen
+    // houd bij of het symbool al is gekozen
+    private boolean symbol = false;
 
     public ServerListener(Client client) {
         this.client = client;

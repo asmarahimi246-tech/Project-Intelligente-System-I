@@ -1,28 +1,33 @@
 import Game.Games.TicTacToe.TicTacToeGame;
-import Network.Client;
+import Game.Players.Localplayer;
 import Game.Players.Onlineplayer;
+import Menus.GameMenu;
+import Network.Client;
 import Network.ServerListener;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException {
+        GameMenu menu = new GameMenu();
 
-        // tijdelijk
-        Scanner scanner = new Scanner(System.in);
+        // haalt de gekozen spelmodus op lokaal of online
+        boolean online = menu.mainMenu();
 
-        System.out.println("1. Player");
-        System.out.println("2. AI");
-        System.out.print("Choose player type: ");
+        // haalt op of een player online wil spelen
+        boolean aiMode = menu.menu(online);
 
-        int choice = scanner.nextInt();
+        if (!online) {
+            TicTacToeGame game = new TicTacToeGame(null);
 
-        boolean aiMode = choice == 2;
-        //
+            // start een lokaal spel op met de AI modus
+            Localplayer localplayer = new Localplayer(game, aiMode);
+            localplayer.play();
+            return;
+        }
 
         Client client = new Client();
         ServerListener listener = new ServerListener(client);
-        TicTacToeGame game = new TicTacToeGame(listener, aiMode);
+        TicTacToeGame game = new TicTacToeGame(listener);
 
         listener.setGame(game);
         listener.AiMode(aiMode);
@@ -31,9 +36,6 @@ public class Main {
         String message;
         while ((message = client.getReader().readLine()) != null) {
             listener.Commandhandler(message);
-
-            // voor het bekijken van de SVR msges
-            //System.out.println(message);
         }
     }
 }

@@ -1,18 +1,19 @@
 package Game.Games.TicTacToe;
 import Game.Players.AI;
 import Network.ServerListener;
-import java.util.Scanner;
 
 public class TicTacToeGame {
     private ServerListener listener;
+    private TicTacToeModel model;
+    private TicTacToeView view;
+    private AI ai;
     private char player1 = 'X';
-    private char[] board = {'1','2','3','4','5','6','7','8','9'};
-    private AI ai = new AI();
-    private boolean aiMode;
 
-    public TicTacToeGame(ServerListener listener, boolean aiMode) {
+    public TicTacToeGame(ServerListener listener) {
         this.listener = listener;
-        this.aiMode = aiMode;
+        this.model = new TicTacToeModel();
+        this.view = new TicTacToeView();
+        this.ai = new AI();
     }
 
     public void Symbol(char symbol) {
@@ -20,61 +21,69 @@ public class TicTacToeGame {
     }
 
     public void Turn() {
-        Scanner scanner = new Scanner(System.in);
-
         while (true) {
-            System.out.print("Choose an number [1-9]: ");
-
-            int input = scanner.nextInt();
+            int input = view.readMove();
             input -= 1;
 
-            if (board[input] != 'X' && board[input] != 'O') {
-                listener.sendMoveToServer(input);
-                break;
-            }
+            if (model.placeMove(input, player1)) {
+                view.printTussenstand();
+                printBoard();
 
-            System.out.println("Die plek is al bezet maak een andere move!");
+                // als het een online game is stuurt die de zet naar de server
+                if (listener != null) {
+                    listener.sendMoveToServer(input);
+                }
+                return;
+            }
+            view.printInvalidMove();
         }
     }
 
     // laat de AI een zet doen
     public void aiMove() {
-        int move = ai.numberAI(board, player1);
+        int move = ai.numberAI(model.getBoard(), player1);
 
         System.out.println("AI move: " + move);
 
-        listener.sendMoveToServer(move - 1);
+        int index = move - 1;
+
+        if (model.placeMove(index, player1)) {
+            view.printTussenstand();
+            printBoard();
+
+            // stuurt de AI move naar de server bij een online game
+            if (listener != null) {
+                listener.sendMoveToServer(index);
+            }
+        }
     }
 
-    public void Move(int number, boolean move) {
-
-        // checkt of de gekozen pos vrij is
-        if (board[number] != 'X' && board[number] != 'O') {
-
-            // de move is van de eigen client
-            if (move) {
-                board[number] = player1;
-            } else {
-
-                // de move is voor de tegenstander
-                if (player1 == 'X') {
-                    board[number] = 'O';
-                } else {
-                    board[number] = 'X';
-                }
+    // verwerkt een move die lokaal is of van de tegenstander komt
+    public void Move(int number, boolean ownMove) {
+        char symbol;
+        if (ownMove) {
+            symbol = player1;
+        } else {
+            if (player1 == 'X') { symbol = 'O';
+            } else { symbol = 'X';
             }
-            System.out.println("Tussenstand:");
+        }
+
+        if (model.placeMove(number, symbol)) {
+            view.printTussenstand();
             printBoard();
         }
     }
 
+    public boolean checkWinner() {
+        return model.checkWinner();
+    }
+
+    public boolean isBoardFull() {
+        return model.isBoardFull();
+    }
+
     public void printBoard() {
-        System.out.println("|---|---|---|");
-        System.out.println("| " + board[0] + " | " + board[1] + " | " + board[2] + " |");
-        System.out.println("|-----------|");
-        System.out.println("| " + board[3] + " | " + board[4] + " | " + board[5] + " |");
-        System.out.println("|-----------|");
-        System.out.println("| " + board[6] + " | " + board[7] + " | " + board[8] + " |");
-        System.out.println("|---|---|---|");
+        view.printBoard(model.getBoard());
     }
 }
