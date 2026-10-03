@@ -5,6 +5,8 @@ public class ServerListener {
     private Client client;
     private TicTacToeGame game;
     private boolean turn = false;
+    private boolean aiMode;
+    private boolean gameOver;
 
     public ServerListener(Client client) {
         this.client = client;
