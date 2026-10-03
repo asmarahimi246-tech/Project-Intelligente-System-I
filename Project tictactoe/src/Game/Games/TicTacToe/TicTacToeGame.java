@@ -21,18 +21,19 @@ public class TicTacToeGame {
 
     public void Turn() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Choose an number [1-9]: ");
 
-        int input = scanner.nextInt();
-        input -= 1;
+        while (true) {
+            System.out.print("Choose an number [1-9]: ");
 
-        if (board[input] != 'X' && board[input] != 'O') {
-            board[input] = player1;
+            int input = scanner.nextInt();
+            input -= 1;
 
-            System.out.println("Tussenstand:");
-            printBoard();
+            if (board[input] != 'X' && board[input] != 'O') {
+                listener.sendMoveToServer(input);
+                break;
+            }
 
-            listener.sendMoveToServer(input);
+            System.out.println("Die plek is al bezet maak een andere move!");
         }
     }
 
@@ -51,6 +52,8 @@ public class TicTacToeGame {
             if (move) {
                 board[number] = player1;
             } else {
+
+                // zet de move van de tegenstander
                 if (player1 == 'X') {
                     board[number] = 'O';
                 } else {

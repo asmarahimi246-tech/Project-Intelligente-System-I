@@ -54,7 +54,7 @@ public class ServerListener {
 
                 // als de client nog geen symbool heeft is dit de tweede speler
                 if (!symbol) {
-                    game.Symbol('O'); // als ik nog moet wachten op mijn beurt ben ik O
+                    game.Symbol('O');
                     symbol = true;
                 }
 
