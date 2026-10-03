@@ -20,7 +20,7 @@ public class AI {
         }
 
         for (int i = 0; i < 9; i++) {
-            if (checkMove(move, opponent, i)) {
+            if (checkMove(board, opponent, i)) {
                 return i + 1;
             }
         }
