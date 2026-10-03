@@ -3,11 +3,11 @@ import java.util.Random;
 
 public class AI {
 
-    // toekomst eerst bezig met random AI/eigen AI die soortvan beste move pakt.
-    public int numberAI(char[] move, char player) {
+    public int numberAI(char[] board, char player) {
 
+        // zoekt eerst naar een winnende zet voor de AI
         for (int i = 0; i < 9; i++) {
-            if (checkMove(move, player, i)) {
+            if (checkMove(board, player, i)) {
                 return i + 1;
             }
         }
@@ -20,30 +20,25 @@ public class AI {
             opponent = 'X';
         }
 
+        // probeert een winnende zet van de tegenstander te blokkeren
         for (int i = 0; i < 9; i++) {
-            if (checkMove(move, opponent, i)) {
+            if (checkMove(board, opponent, i)) {
                 return i + 1;
             }
         }
+
+        // als er geen directe winnende zet of block is kiest de AI een random positie
         Random random = new Random();
 
         while (true) {
             int randomMove = random.nextInt(9);
 
-            if (move[randomMove] != 'X' && move[randomMove] != 'O') {
+            // controlleert of een pos vrij is
+            if (board[randomMove] != 'X' && board[randomMove] != 'O') {
                 return randomMove + 1;
             }
         }
     }
-
-//    private boolean isBoardFull(char[] board) {
-//        for (char vak: board) {
-//            if (vak != 'X' && vak !='O') {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
 
     private boolean checkWinningMove(char[] board, char winningMove) {
         if (board[0] == winningMove && board[1] == winningMove && board[2] == winningMove) {
@@ -73,7 +68,10 @@ public class AI {
         return false;
     }
 
+    // controlleert of een pos gebruikt kan worden voor een winnende zet
     private boolean checkMove(char[] board, char player, int pos) {
+
+        // een bezette pos mag niet
         if (board[pos] == 'X' || board[pos] == 'O') {
             return false;
         }
@@ -81,6 +79,7 @@ public class AI {
         char a = board[pos];
         board[pos] = player;
 
+        // checkt of deze zet een winning move is
         if (checkWinningMove(board, player)) {
             board[pos] = a;
             return true;
@@ -89,6 +88,15 @@ public class AI {
 
         return false;
     }
+
+//    private boolean isBoardFull(char[] board) {
+//        for (char vak: board) {
+//            if (vak != 'X' && vak !='O') {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
 //    private int checkWin(char[] board, char player) {
 //
