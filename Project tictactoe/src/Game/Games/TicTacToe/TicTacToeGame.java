@@ -50,6 +50,11 @@ public class TicTacToeGame {
             aiPlayer = 'X';
         }
 
+        int move = ai.numberAI(board, aiPlayer);
+
+        System.out.println("AI move: " + move);
+
+        listener.sendMoveToServer(move - 1);
     }
 
     public void Move(int number) {
