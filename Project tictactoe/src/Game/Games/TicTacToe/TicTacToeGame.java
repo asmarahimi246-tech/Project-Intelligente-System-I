@@ -42,6 +42,13 @@ public class TicTacToeGame {
     }
 
     public void aiMove() {
+        char aiPlayer;
+
+        if (player1 == 'X') {
+            aiPlayer = 'O';
+        } else {
+            aiPlayer = 'X';
+        }
 
     }
 
