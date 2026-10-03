@@ -2,7 +2,7 @@ package Game.Players;
 import java.util.Random;
 
 public class AI {
-    
+
     public int numberAI(char[] board, char player) {
         for (int i = 0; i < 9; i++) {
             if (checkMove(board, player, i)) {
