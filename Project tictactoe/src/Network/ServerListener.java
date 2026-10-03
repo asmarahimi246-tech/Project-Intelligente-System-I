@@ -42,5 +42,21 @@ public class ServerListener {
                 game.Move(number);
             }
         }
+
+        if (message.startsWith("SVR GAME WIN")) {
+            gameOver = true;
+            System.out.println("You won!");
+        }
+
+        if (message.startsWith("SVR GAME DRAW")) {
+            gameOver = true;
+            System.out.println("Draw!");
+        }
+
+        if (message.startsWith("SVR GAME LOSS")) {
+            gameOver = true;
+            System.out.println("You lost!");
+        }
+
     }
 }
