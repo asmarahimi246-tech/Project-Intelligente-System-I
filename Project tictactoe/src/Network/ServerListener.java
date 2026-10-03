@@ -16,6 +16,10 @@ public class ServerListener {
         this.game = game;
     }
 
+    public void AiMode(boolean aiMode) {
+        this.aiMode = aiMode;
+    }
+
     public void sendMoveToServer(int input) {
         client.sendCommand("move " + input);
     }
