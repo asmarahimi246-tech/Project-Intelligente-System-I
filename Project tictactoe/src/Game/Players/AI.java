@@ -29,7 +29,7 @@ public class AI {
         while (true) {
             int randomMove = random.nextInt(9);
 
-            if (move[randomMove] != 'X' && move[randomMove] != 'O') {
+            if (board[randomMove] != 'X' && board[randomMove] != 'O') {
                 return randomMove + 1;
             }
         }
