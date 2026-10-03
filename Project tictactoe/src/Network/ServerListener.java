@@ -26,8 +26,7 @@ public class ServerListener {
 
     public void Commandhandler(String message) {
         if (message.startsWith("SVR GAME YOURTURN")) {
-            if (!gameOver) {
-                turn = true;
+            turn = true;
 
 
                 if (aiMode) {
