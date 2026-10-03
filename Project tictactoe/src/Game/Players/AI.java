@@ -90,6 +90,15 @@ public class AI {
         return false;
     }
 
+//    private boolean isBoardFull(char[] board) {
+//        for (char vak: board) {
+//            if (vak != 'X' && vak !='O') {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+
 //    private int checkWin(char[] board, char player) {
 //
 //
