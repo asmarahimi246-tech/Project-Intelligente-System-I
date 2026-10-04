@@ -1,12 +1,11 @@
 package Game.Games.TicTacToe;
 import Game.Players.AI;
 import Network.ServerListener;
-import java.util.Scanner;
 
 public class TicTacToeGame {
     private ServerListener listener;
     private char player1 = 'X';
-    private char[] board = {'1','2','3','4','5','6','7','8','9'};
+    private TicTacToeModel model = new TicTacToeModel();
     private AI ai = new AI();
 
     public TicTacToeGame(ServerListener listener) {
@@ -18,16 +17,11 @@ public class TicTacToeGame {
     }
 
     public void Turn() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Choose an number [1-9]: ");
-
-        int input = scanner.nextInt();
+        int input = view.readMove();
         input -= 1;
 
-        if (board[input] != 'X' && board[input] != 'O') {
-            board[input] = player1;
-
-            System.out.println("Tussenstand:");
+        if (model.placeMove(input, player1)) {
+            view.printStatus();
             printBoard();
 
             listener.sendMoveToServer(input);
@@ -39,29 +33,23 @@ public class TicTacToeGame {
     }
 
     public void Move(int number) {
-        if (board[number] != 'X' && board[number] != 'O') {
-            char player2;
+        char player2;
 
-            if (player1 == 'X') {
-                player2 = 'O';
-            } else {
-                player2 = 'X';
-            }
+        if (player1 == 'X') {
+            player2 = 'O';
+        } else {
+            player2 = 'X';
+        }
 
-            board[number] = player2;
-
-            System.out.println("Tussenstand:");
+        if (model.placeMove(number, player2)) {
+            view.printStatus();
             printBoard();
         }
     }
 
+    private TicTacToeView view = new TicTacToeView();
+
     public void printBoard() {
-        System.out.println("|---|---|---|");
-        System.out.println("| " + board[0] + " | " + board[1] + " | " + board[2] + " |");
-        System.out.println("|-----------|");
-        System.out.println("| " + board[3] + " | " + board[4] + " | " + board[5] + " |");
-        System.out.println("|-----------|");
-        System.out.println("| " + board[6] + " | " + board[7] + " | " + board[8] + " |");
-        System.out.println("|---|---|---|");
+        view.printBoard(model.getBoard());
     }
 }
