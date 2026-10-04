@@ -11,10 +11,10 @@ public class Localplayer {
 
     public void play() {
         while(true){
-            game.Symbol('x');
+            game.Symbol('X');
             game.Turn();
 
-            game.Symbol('o');
+            game.Symbol('O');
             game.Turn();
         }
 
