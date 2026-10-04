@@ -1,4 +1,4 @@
-package Network;
+package network;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,3 +24,15 @@ public class Client {
         return reader;
     }
 }
+
+/*
+> handles connection to server
+> send/recieve network data
+> can be hard coded???
+
+EX:
+> connect() --> open socket
+> send() --> send message
+> disconnect() --> close socket
+> receive() --> with ServerListener
+*/

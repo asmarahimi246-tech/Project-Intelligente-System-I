@@ -1,0 +1,90 @@
+>> COMPONENT OVERVIEW <<
+
+TYPE - COMPONENT        RESPONSIBILITY
+
+C - Main                create a GameApp object and run it
+
+C - GameApp             runs app and controls app flow
+
+C - GameFramework       create game of given GameType
+E - GameType            list of playable games
+
+I - Game	            generic game interface
+I - Move                generic move interface
+E - GameResult          list of game results (works separate from server)
+E - GameEndReason       list of game ending types (works separate from server)
+C - TicTacToeModel	    rules & game state
+C - TicTacToeView	    display game/board
+C - TicTacToeController	bridge between Model and View
+C - TicTacToeMove       game specific move constructor
+
+C - Client	            handles connection to server
+E - MessageType         list of general server message types
+E - MessageSubtype      list of specific server message types
+I - ServerListener      deals with incoming server messages
+C - ServerMessageParser cut up server messages into type, subtype & fields --> Map<String, String>
+C - ServerMessage       constructor + getters
+
+I - Player              generic player interface
+C - localPlayer         create an instance of a local player
+C - Ai                  decide what move to make
+C - OnlinePlayer        create an instance of a player on the server
+
+C - Ui                  General UI layer
+C - MainMenu            display main menu options & get user input
+C - GameMenu            display game menu options & get user input
+
+
+
+>> APP FLOW <<
+
+1. start app
+Main --> GameApp
+
+2. main menu
+GameApp --> MainMenu --> "play"
+
+3. choose game
+GameApp --> GameMenu --> TIC_TAC_TOE (GameType)
+
+4. framework creates game
+GameApp --> GameFramework --> TicTacToeModel
+
+5. MVC system
+TicTacToeModel <-->    TicTacToeController    <--> TicTacToeView
+check moves/   <-->  get response from Model  <--> update with new move
+game state           tell View to update
+
+6. making moves
+terminal (UI) input --> controller --> Model.doMove(...) --> AI.pickMove() --> Model isValidMove() --> controller --> View.printBoard(...)
+(human makes move)                                      (bot makes move)
+
+> localPlayer --> move input from (G)UI (terminal for now)
+> Ai --> move input from calculation based on current board state
+> onlinePlayer --> move input from server message
+
+
+
+>> ONLINE PLAY FLOW <<
+own move
+terminal (UI) input --> controller --> model --> client --> server
+
+opponent move
+server --> client --> ServerListener --> ServerMessageParser --> ServerMessage --> controller --> model --> view
+
+
+
+
+>> SERVER MESSAGE FLOW <<
+
+server --message--> Client --> ServerMessageParser --> ServerMessage --> other classes
+
+
+
+>> LOCAL GAME FLOW <<
+
+MainMenu --"play"--> GameMenu --"tic-tac-toe" + "local"--> GameFactory --> TicTacToeModel --[player makes move]-->
+
+    TicTacToeController --> TicTacToeMove(5 or col 2, row 2) --> TicTacToeModel --update--> TicTacToeView
+      check move &                     do move                    tell View to
+      game state                                                 update with move

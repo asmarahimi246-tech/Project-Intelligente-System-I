@@ -1,16 +1,16 @@
-package Network;
-import Game.Games.TicTacToe.TicTacToeGame;
+package network;
+import games.tictactoe.TicTacToeController;
 
 public class ServerListener {
     private Client client;
-    private TicTacToeGame game;
+    private TicTacToeController game;
     private boolean turn = false;
 
     public ServerListener(Client client) {
         this.client = client;
     }
 
-    public void setGame(TicTacToeGame game) {
+    public void setGame(TicTacToeController game) {
         this.game = game;
     }
 
@@ -44,3 +44,12 @@ public class ServerListener {
         }
     }
 }
+
+/*
+> deal with incoming server messages
+> interface so app doesn't have to keep checking for messages
+
+> onMessage() --> pass on ServerMessage
+> onDisconnect()
+> onError() --> throw exception
+*/

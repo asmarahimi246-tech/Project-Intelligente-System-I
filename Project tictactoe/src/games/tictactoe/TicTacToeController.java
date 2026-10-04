@@ -1,15 +1,15 @@
-package Game.Games.TicTacToe;
-import Game.Players.AI;
-import Network.ServerListener;
+package games.tictactoe;
+import players.AI;
+import network.ServerListener;
 import java.util.Scanner;
 
-public class TicTacToeGame {
+public class TicTacToeController {
     private ServerListener listener;
     private char player1 = 'X';
     private char[] board = {'1','2','3','4','5','6','7','8','9'};
     private AI ai = new AI();
 
-    public TicTacToeGame(ServerListener listener) {
+    public TicTacToeController(ServerListener listener) {
         this.listener = listener;
     }
 
@@ -65,3 +65,13 @@ public class TicTacToeGame {
         System.out.println("|---|---|---|");
     }
 }
+
+/*
+> connect View with Model
+> get input & make Model do the work then tell View what to display
+
+EX:
+> doMove()
+    --> make model check if move is valid
+    --> if true, make view update with the move added
+*/

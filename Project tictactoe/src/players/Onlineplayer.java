@@ -1,5 +1,11 @@
-package Game.Players;
-import Network.Client;
+/*
+> player on the server
+> shouldn't communicate with server directly, Client class does that
+> implements Player
+*/
+
+package players;
+import network.Client;
 import java.io.IOException;
 import java.util.Random;
 

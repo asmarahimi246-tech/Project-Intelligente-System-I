@@ -1,8 +1,21 @@
-package Game.Players;
+/*
+> decides what move to make
+> implements Player
+
+EX:
+> getName() = "PC" "COMP" "BOT" or smth
+> pickMove()
+    > check current state of board
+    > make decision
+    > return chosen move
+*/
+
+package players;
 import java.util.Random;
 
 public class AI {
 
+    // toekomst eerst bezig met random AI/eigen AI die soortvan beste move pakt.
     public int numberAI(char[] move, char player) {
 
         for (int i = 0; i < 9; i++) {
