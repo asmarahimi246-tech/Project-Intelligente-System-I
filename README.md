@@ -1,6 +1,9 @@
 # Class diagram van het project
 ![puml](Documentatie/generated-docs/classdiagram.png)
 
+# Notities
+[Notities](Documentatie/Notes.md)
+
 # Hoe je het Maven-project compileert en uitvoert (deels gegenereerd door ai)
 
 ## Vereisten
