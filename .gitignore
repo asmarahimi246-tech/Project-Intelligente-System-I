@@ -1,5 +1,5 @@
 # Maven output directories
-Project-Intelligente-Systemen/target/
+.mvn/target/
 
 # IDE's
 /.idea/
