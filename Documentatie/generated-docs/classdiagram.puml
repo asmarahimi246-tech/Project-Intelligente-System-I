@@ -99,13 +99,16 @@ interface app.common.widgets.cliMenu.parts.ToExecute {
 
 
 class app.games.TikTakToe.TikTakToe {
-	{method} +processNextMessage () : void
+	{method} +processNextMessage ( listener : ServerListener ) : void
 	{method} +run () : void
 	{method} +sendCloseSignal () : void
+	{method} +setTile ( location : int , toSet : char ) : boolean
 }
 
 
 class app.games.TikTakToe.TikTakToeModel {
+	{method} +setTile ( location : int , toSet : char ) : void
+	{method} +tileIsEmpty ( location : int , tocheck : ArrayList ) : boolean
 }
 
 
@@ -115,9 +118,10 @@ class app.games.TikTakToe.TikTakToeView {
 
 
 abstract class app.games.TikTakToe.common.AbstractTikTakToePlayer {
+	{field} +boardChar : char
 	{field} #name : String
 	{method} +disconnect () : void
-	{method}  {abstract} #doMove () : void
+	{method}  {abstract} +doMove () : void
 	{method} +getListener () : ServerListener
 	{method} +login () : void
 	{method} +subscribe ( gameName : String ) : void
@@ -135,6 +139,7 @@ enum app.games.TikTakToe.common.TikTakToePlayerState {
 
 
 class app.games.TikTakToe.common.Timer {
+	{method} +closeInMiliSeconds ( miliSeconds : int ) : void
 	{method} +closeInSeconds ( seconds : int ) : void
 }
 
@@ -196,10 +201,12 @@ app.common.widgets.cliInputFields.CLIIntegerField --|>  app.common.widgets.cliIn
 app.common.widgets.cliInputFields.CLIIntegerField$Builder --|>  app.common.widgets.cliInputFields.common.CLIField$Builder
 app.common.widgets.cliMenu.CLIMenu "1" o-- "0..*"  app.common.widgets.cliMenu.parts.Option : optionsList
 app.common.widgets.cliMenu.parts.Option -->  app.common.widgets.cliMenu.parts.ToExecute : function
+app.games.TikTakToe.TikTakToe "1" o-- "0..*"  app.common.network.ServerListener : listeners
 app.games.TikTakToe.TikTakToe "1" o-- "0..*"  app.games.TikTakToe.common.AbstractTikTakToePlayer : players
-app.games.TikTakToe.TikTakToe -->  app.common.network.ServerListener : listener
+app.games.TikTakToe.TikTakToe -->  app.games.TikTakToe.TikTakToeModel : model
 app.games.TikTakToe.TikTakToe -->  app.games.TikTakToe.TikTakToeView : view
 app.games.TikTakToe.common.AbstractTikTakToePlayer -->  app.common.network.Client : client
+app.games.TikTakToe.common.AbstractTikTakToePlayer -->  app.games.TikTakToe.TikTakToe : game
 app.games.TikTakToe.common.AbstractTikTakToePlayer -->  app.games.TikTakToe.common.TikTakToePlayerState : state
 app.games.TikTakToe.players.Bot --|>  app.games.TikTakToe.common.AbstractTikTakToePlayer
 app.games.TikTakToe.players.Local --|>  app.games.TikTakToe.common.AbstractTikTakToePlayer
