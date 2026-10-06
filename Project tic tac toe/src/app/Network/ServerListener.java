@@ -1,5 +1,5 @@
-package Network;
-import Game.Games.TicTacToe.TicTacToeGame;
+package app.Network;
+import app.Game.Games.TicTacToe.TicTacToeGame;
 
 public class ServerListener {
     private Client client;

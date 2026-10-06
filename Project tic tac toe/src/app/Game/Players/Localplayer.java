@@ -1,5 +1,5 @@
-package Game.Players;
-import Game.Games.TicTacToe.TicTacToeGame;
+package app.Game.Players;
+import app.Game.Games.TicTacToe.TicTacToeGame;
 
 public class Localplayer {
     private TicTacToeGame game;

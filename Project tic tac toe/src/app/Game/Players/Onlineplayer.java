@@ -1,5 +1,5 @@
-package Game.Players;
-import Network.Client;
+package app.Game.Players;
+import app.Network.Client;
 import java.io.IOException;
 import java.util.Random;
 

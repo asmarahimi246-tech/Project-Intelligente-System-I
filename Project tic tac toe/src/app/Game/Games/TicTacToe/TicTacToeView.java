@@ -1,4 +1,4 @@
-package Game.Games.TicTacToe;
+package app.Game.Games.TicTacToe;
 import java.util.Scanner;
 
 public class TicTacToeView {

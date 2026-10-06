@@ -1,6 +1,6 @@
-package Game.Games.TicTacToe;
-import Game.Players.AI;
-import Network.ServerListener;
+package app.Game.Games.TicTacToe;
+import app.Game.Players.AI;
+import app.Network.ServerListener;
 
 public class TicTacToeGame {
     private ServerListener listener;

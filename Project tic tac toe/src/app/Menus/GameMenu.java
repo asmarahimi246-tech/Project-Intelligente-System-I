@@ -1,4 +1,4 @@
-package Menus; import java.util.Scanner; public class GameMenu {
+package app.Menus; import java.util.Scanner; public class GameMenu {
     private Scanner scanner;
 
     public GameMenu() {
@@ -20,12 +20,12 @@ package Menus; import java.util.Scanner; public class GameMenu {
         System.out.println();
 
         if (online) {
-            System.out.println("===Online Game===");
+            System.out.println("===Online app.Game===");
             System.out.println("1. Player");
             System.out.println("2. AI");
 
         } else {
-            System.out.println("===Local Game===");
+            System.out.println("===Local app.Game===");
             System.out.println("1. Player");
             System.out.println("2. AI");
         }

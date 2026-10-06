@@ -1,4 +1,4 @@
-package Game.Players;
+package app.Game.Players;
 
 public class AbstractPlayer {
 }

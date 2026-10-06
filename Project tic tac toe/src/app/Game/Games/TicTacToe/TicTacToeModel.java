@@ -1,4 +1,4 @@
-package Game.Games.TicTacToe;
+package app.Game.Games.TicTacToe;
 
 public class TicTacToeModel {
     private char[] board = {'1','2','3','4','5','6','7','8','9'};

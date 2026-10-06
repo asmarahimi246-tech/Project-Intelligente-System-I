@@ -1,4 +1,4 @@
-package Game.Players;
+package app.Game.Players;
 import java.util.Random;
 
 public class AI {

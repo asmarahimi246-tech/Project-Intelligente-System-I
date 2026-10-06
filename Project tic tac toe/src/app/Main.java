@@ -1,9 +1,11 @@
-import Game.Games.TicTacToe.TicTacToeGame;
-import Game.Players.Localplayer;
-import Game.Players.Onlineplayer;
-import Menus.GameMenu;
-import Network.Client;
-import Network.ServerListener;
+package app;
+
+import app.Game.Games.TicTacToe.TicTacToeGame;
+import app.Game.Players.Localplayer;
+import app.Game.Players.Onlineplayer;
+import app.Menus.GameMenu;
+import app.Network.Client;
+import app.Network.ServerListener;
 import java.io.IOException;
 
 public class Main {
