@@ -1,10 +1,10 @@
 package games;
 
-public interface Game {
+public class AbstractGame {
 }
 
 /*
-> not a specific game --> INTERFACE
+> not a specific game
 > what all games have in common
 
 EX:

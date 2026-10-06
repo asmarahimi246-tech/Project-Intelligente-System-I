@@ -30,7 +30,7 @@ C - localPlayer         create an instance of a local player
 C - Ai                  decide what move to make
 C - OnlinePlayer        create an instance of a player on the server
 
-C - Ui                  General UI layer
+C - Ui                  General ui layer
 C - MainMenu            display main menu options & get user input
 C - GameMenu            display game menu options & get user input
 
@@ -56,10 +56,10 @@ check moves/   <-->  get response from Model  <--> update with new move
 game state           tell View to update
 
 6. making moves
-terminal (UI) input --> controller --> Model.doMove(...) --> AI.pickMove() --> Model isValidMove() --> controller --> View.printBoard(...)
+terminal (ui) input --> controller --> Model.doMove(...) --> AI.pickMove() --> Model isValidMove() --> controller --> View.printBoard(...)
 (human makes move)                                      (bot makes move)
 
-> localPlayer --> move input from (G)UI (terminal for now)
+> localPlayer --> move input from (G)ui (terminal for now)
 > Ai --> move input from calculation based on current board state
 > onlinePlayer --> move input from server message
 
@@ -67,7 +67,7 @@ terminal (UI) input --> controller --> Model.doMove(...) --> AI.pickMove() --> M
 
 >> ONLINE PLAY FLOW <<
 own move
-terminal (UI) input --> controller --> model --> client --> server
+terminal (ui) input --> controller --> model --> client --> server
 
 opponent move
 server --> client --> ServerListener --> ServerMessageParser --> ServerMessage --> controller --> model --> view

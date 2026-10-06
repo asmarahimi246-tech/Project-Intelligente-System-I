@@ -1,6 +1,12 @@
 package players;
 
+import games.Move;
+
 public interface Player {
+
+    String getName();
+
+    public abstract Move getMove(Board board);
 }
 
 /*
@@ -9,5 +15,4 @@ public interface Player {
 
 EX:
 > player name --> getName()
-> make a move --> doMove()
 */

@@ -14,7 +14,7 @@ public class Main {
         Onlineplayer onlineplayer = new Onlineplayer(client);
 
         String message;
-        while ((message = client.getReader().readLine()) != null) {
+        while ((message = client.receive().readLine()) != null) {
             listener.Commandhandler(message);
         }
     }

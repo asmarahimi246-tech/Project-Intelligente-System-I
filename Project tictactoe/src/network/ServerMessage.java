@@ -5,6 +5,7 @@ public class ServerMessage {
 
 /*
 > create objects based on parsed server message
+> use whyson parser for fields
 
 EX:
     > enum MessageType

@@ -1,6 +1,12 @@
 package framework;
 
-public class GameFramework {
+public class GameBuilder {
+    setMode
+    setGame
+    setPlayer
+    setGame
+    getGame // geeft game terug
+
 }
 
 /*

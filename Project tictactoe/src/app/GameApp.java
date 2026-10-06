@@ -1,6 +1,20 @@
 package app;
 
+import framework.GameType;
+import players.Player;
+
 public class GameApp {
+  GameType game = new GameType();
+  Player player = new Player();
+
+  startGame(game, player) {
+      // return model of chosen game
+      // run game in chosen mode
+  }
+  game = gameframewrork new game
+  game.run()
+
+
 }
 
 /*

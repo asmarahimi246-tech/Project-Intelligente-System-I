@@ -15,7 +15,7 @@ public class ServerListener {
     }
 
     public void sendMoveToServer(int input) {
-        client.sendCommand("move " + input);
+        client.send("move " + input);
     }
 
     public void Commandhandler(String message) {
