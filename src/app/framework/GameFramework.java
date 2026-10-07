@@ -1,16 +1,18 @@
 package app.framework;
 
 /**
+ * <pre>
  * GameFramework
- * > create game of selected GameType
- * > using a frameworks keeps the checking of game type separate from the GameApp
- *      which should only focus on running the actual games
-
+ * &gt; Creates a game of the selected GameType.
+ * &gt; Keeps game-type checks separate from GameApp, which should focus
+ *   on running the games.
+ *
  * EX:
- * > Game class
- *  > input = GameType
- *  > check which game it is --> switch/case
- *  > return new [insert game type]Model()
+ * &gt; Game class
+ *   &gt; Input: GameType
+ *   &gt; Check which game it is (e.g., with switch/case)
+ *   &gt; Return a new instance of the corresponding game model
+ * </pre>
  */
 public class GameFramework {
 }

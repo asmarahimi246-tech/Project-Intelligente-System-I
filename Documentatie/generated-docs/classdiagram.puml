@@ -41,9 +41,11 @@ interface app.games.Move {
 }
 
 
-class app.games.tictactoe.TicTacToeController {
+class app.games.tictactoe.TicTacToeGame {
 	{method} +aiMove () : void
-	{method} +move ( number : int ) : void
+	{method} +checkWinner () : boolean
+	{method} +isBoardFull () : boolean
+	{method} +move ( number : int , ownMove : boolean ) : void
 	{method} +printBoard () : void
 	{method} +symbol ( symbol : char ) : void
 	{method} +turn () : void
@@ -51,6 +53,9 @@ class app.games.tictactoe.TicTacToeController {
 
 
 class app.games.tictactoe.TicTacToeModel {
+	{method} +checkWinner () : boolean
+	{method} +isBoardFull () : boolean
+	{method} +placeMove ( number : int , symbol : char ) : boolean
 }
 
 
@@ -59,6 +64,20 @@ class app.games.tictactoe.TicTacToeMove {
 
 
 class app.games.tictactoe.TicTacToeView {
+	{method} +printBoard ( board : char[] ) : void
+	{method} +printInvalidMove () : void
+	{method} +printTussenstand () : void
+	{method} +readMove () : int
+}
+
+
+class app.menus.GameMenu {
+	{method} +mainMenu () : boolean
+	{method} +menu ( online : boolean ) : boolean
+}
+
+
+class app.menus.MainMenu {
 }
 
 
@@ -88,6 +107,7 @@ enum app.network.MessageType {
 
 
 class app.network.ServerListener {
+	{method} +aiMode ( aiMode : boolean ) : void
 	{method} +commandhandler ( message : String ) : void
 	{method} +sendMoveToServer ( input : int ) : void
 }
@@ -102,15 +122,16 @@ class app.network.ServerMessageParser {
 
 
 class app.players.AI {
-	{method} +numberAI ( move : char[] , player : char ) : int
+	{method} +numberAI ( board : char[] , player : char ) : int
 }
 
 
 class app.players.LocalPlayer {
+	{method} +play () : void
 }
 
 
-class app.players.Onlineplayer {
+class app.players.OnlinePlayer {
 }
 
 
@@ -118,25 +139,16 @@ interface app.players.Player {
 }
 
 
-class app.ui.GameMenu {
-}
 
 
-class app.ui.MainMenu {
-}
-
-
-class app.ui.Ui {
-}
-
-
-
-
-app.games.tictactoe.TicTacToeController -->  app.network.ServerListener : listener
-app.games.tictactoe.TicTacToeController -->  app.players.AI : ai
-app.network.ServerListener -->  app.games.tictactoe.TicTacToeController : game
+app.games.tictactoe.TicTacToeGame -->  app.games.tictactoe.TicTacToeModel : model
+app.games.tictactoe.TicTacToeGame -->  app.games.tictactoe.TicTacToeView : view
+app.games.tictactoe.TicTacToeGame -->  app.network.ServerListener : listener
+app.games.tictactoe.TicTacToeGame -->  app.players.AI : ai
+app.network.ServerListener -->  app.games.tictactoe.TicTacToeGame : game
 app.network.ServerListener -->  app.network.Client : client
-app.players.Onlineplayer -->  app.network.Client : client
+app.players.LocalPlayer -->  app.games.tictactoe.TicTacToeGame : game
+app.players.OnlinePlayer -->  app.network.Client : client
 
 
 @enduml

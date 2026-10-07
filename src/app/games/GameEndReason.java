@@ -1,11 +1,13 @@
 package app.games;
 
 /**
- * > represents why a game ended
- * > used for showing game info in (G)UI
- * > is separate from server WIN/LOSS/DRAW messages
- *         so can be used in both local AND online games
- * > used inside/determined by Model class of a game
+ * <pre>
+ * &gt; Represents why a game ended.
+ * &gt; Used to display game information in the UI.
+ * &gt; Separate from server WIN/LOSS/DRAW messages so it can be used
+ *   in both local and online games.
+ * &gt; Determined and used by a game's Model class.
+ * </pre>
  */
 public enum GameEndReason {
     NORMAL,

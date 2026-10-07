@@ -1,12 +1,14 @@
 package app.players;
 
 /**
- * > not a specific player --> INTERFACE
- * > what all players have in common
- * 
- * EX:
- * > player name --> getName()
- * > make a move --> doMove()
+ * <pre>
+ * &gt; Represents the common functionality of all players.
+ * &gt; This is an interface, not a specific player.
+ *
+ * Examples:
+ * &gt; Get the player's name: {@code getName()}.
+ * &gt; Make a move: {@code doMove()}.
+ * </pre>
  */
 public interface Player {
 }

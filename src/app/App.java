@@ -1,19 +1,20 @@
 package app;
 
 /**
- * > runs app and controls app flow
+ * <pre>
+ * Runs the app and controls its flow.
  *
- * EX:
- * > show main menu
- * > ask user what they want to do
- *     > execute given command such as:
- *         > start selected game
- * > return to menu or exit
- * 
- * > startGame()
- *     > choose game & mode
- *     > create chosen game
- *     > start game
+ * Examples:
+ * &gt; Show the main menu.
+ * &gt; Ask the user what they want to do.
+ * &gt; Execute the selected command, such as starting a game.
+ * &gt; Return to the menu or exit.
+ *
+ * {@code startGame()}:
+ * &gt; Choose a game and mode.
+ * &gt; Create the selected game.
+ * &gt; Start the game.
+ * </pre>
  */
 public class App {
 }

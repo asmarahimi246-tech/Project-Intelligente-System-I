@@ -1,35 +1,40 @@
 package app.network;
 
 /**
- * > create objects based on parsed server message
- * 
- * EX:
- *     > enum MessageType
- *         > OK
- *         > ERR
- *         > SRV
- *     > enum MessageSubtype
- *         > GAMELIST
- *         > PLAYERLIST
- *         > HELP
- *         > MATCH
- *         > YOURTURN
- *         > MOVE
- *         > WIN_LOSS_DRAW
- *         > CHALLENGE
- *     > Map<String, String> fields // rest of server message info
- *     + getters
- * 
- *     EX:
- *     SVR GAME MATCH {PLAYERTOMOVE: "<naam speler1>", GAMTYPE: "<speltype>", OPPONENT: "<naam tegenstander>"}
- *         > MessageType = SVR
- *         > MessageSubtype = MATCH
- *         > fields =
- *             PLAYERTOMOVE: "bob",
- *             GAMETYPE: "tic-tac-toe",
- *             OPPONENT: "henk"
- *         > to make fields handling easier put keyword in getter call
- *             --> getOpponent() --> return fields.get("OPPONENT") // "henk"
+ * <pre>
+ * &gt; Creates objects from parsed server messages.
+ *
+ * Example:
+ * &gt; enum MessageType
+ *     &gt; OK
+ *     &gt; ERR
+ *     &gt; SRV
+ * &gt; enum MessageSubtype
+ *     &gt; GAMELIST
+ *     &gt; PLAYERLIST
+ *     &gt; HELP
+ *     &gt; MATCH
+ *     &gt; YOURTURN
+ *     &gt; MOVE
+ *     &gt; WIN_LOSS_DRAW
+ *     &gt; CHALLENGE
+ * &gt; Map&lt;String, String&gt; fields // Remaining message data
+ * &gt; Getters
+ *
+ * Example message:
+ * SVR GAME MATCH {PLAYERTOMOVE: "player1", GAMETYPE: "tic-tac-toe",
+ *                 OPPONENT: "opponent"}
+ *
+ *     &gt; MessageType = SRV
+ *     &gt; MessageSubtype = MATCH
+ *     &gt; fields =
+ *         PLAYERTOMOVE: "player1"
+ *         GAMETYPE: "tic-tac-toe"
+ *         OPPONENT: "opponent"
+ *
+ * To simplify field access, provide getters that look up the relevant key:
+ *     &gt; getOpponent() --> returns fields.get("OPPONENT") // "opponent"
+ * </pre>
  */
 public class ServerMessage {
 }

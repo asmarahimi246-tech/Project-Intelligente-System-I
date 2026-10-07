@@ -2,15 +2,17 @@ package app.players;
 import java.util.Random;
 
 /**
- * > decides what move to make
- * > implements Player
- * 
- * EX:
- * > getName() = "PC" "COMP" "BOT" or smth
- * > pickMove()
- *     > check current state of board
- *     > make decision
- *     > return chosen move
+ * <pre>
+ * &gt; Decides which move to make.
+ * &gt; Implements {@code Player}.
+ *
+ * Example:
+ *     &gt; getName() returns a name such as "PC", "COMP", or "BOT".
+ *     &gt; pickMove():
+ *         &gt; Checks the current board state.
+ *         &gt; Chooses a move.
+ *         &gt; Returns the chosen move.
+ * </pre>
  */
 public class AI {
     // TODO: do iets met de interface player 
@@ -24,10 +26,11 @@ public class AI {
      * daarvoor is een abstractie laag genaamd de interfece player
      * die heeft de functie die de game roept
     */
-    public int numberAI(char[] move, char player) {
+    public int numberAI(char[] board, char player) {
 
+        // zoekt eerst naar een winnende zet voor de AI
         for (int i = 0; i < 9; i++) {
-            if (checkMove(move, player, i)) {
+            if (checkMove(board, player, i)) {
                 return i + 1;
             }
         }
@@ -40,38 +43,28 @@ public class AI {
             opponent = 'X';
         }
 
+        // probeert een winnende zet van de tegenstander te blokkeren
         for (int i = 0; i < 9; i++) {
-            if (checkMove(move, opponent, i)) {
+            if (checkMove(board, opponent, i)) {
                 return i + 1;
             }
         }
+
+        // als er geen directe winnende zet of block is kiest de AI een random positie
         Random random = new Random();
 
         while (true) {
             int randomMove = random.nextInt(9);
 
-            if (move[randomMove] != 'X' && move[randomMove] != 'O') {
+            // controlleert of een pos vrij is
+            if (board[randomMove] != 'X' && board[randomMove] != 'O') {
                 return randomMove + 1;
             }
         }
     }
 
-//    private boolean isBoardFull(char[] board) {
-//        for (char vak: board) {
-//            if (vak != 'X' && vak !='O') {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-
     /**
-     * TODO: wat doet dit hier
-     * dit hoort in de game model
-     * de game model heeft de regels van de game 
-     * de ai niet
-     * de ai leest van de game
-     * 
+     * TODO: hoort hier niet te staan
      * @param board
      * @param winningMove
      * @return
@@ -105,7 +98,7 @@ public class AI {
     }
 
     /**
-     * TODO: het zelfdegeld voor deze functie
+     * controlleert of een pos gebruikt kan worden voor een winnende zet
      * 
      * @param board
      * @param player
@@ -113,6 +106,8 @@ public class AI {
      * @return
      */
     private boolean checkMove(char[] board, char player, int pos) {
+
+        // een bezette pos mag niet
         if (board[pos] == 'X' || board[pos] == 'O') {
             return false;
         }
@@ -120,6 +115,7 @@ public class AI {
         char a = board[pos];
         board[pos] = player;
 
+        // checkt of deze zet een winning move is
         if (checkWinningMove(board, player)) {
             board[pos] = a;
             return true;
@@ -128,28 +124,4 @@ public class AI {
 
         return false;
     }
-
-//    private int checkWin(char[] board, char player) {
-//
-//
-//
-//        return 1;
-//
-//    }
-//
-//    private int checkLoss(char[] board, char player) {
-//
-//
-//
-//        return -1;
-//
-//    }
-//
-//    private int checkDraw(char[] board, char player) {
-//
-//
-//
-//        return 0;
-//
-//    }
 }

@@ -1,4 +1,5 @@
 package app.network;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -6,16 +7,17 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * > handles connection to server
- * > send/recieve network data
- * > can be hard coded???
- * > preferable aproach is finite state machine
- * 
- * EX:
- * > connect() --> open socket
- * > send() --> send message
- * > disconnect() --> close socket
- * > receive() --> with ServerListener
+ * <pre>
+ * &gt; Handles the connection to the server.
+ * &gt; Sends and receives network data.
+ * &gt; Could be hard-coded, but a finite-state-machine approach is preferable.
+ *
+ * Example:
+ * &gt; connect()    --> opens a socket
+ * &gt; send()       --> sends a message
+ * &gt; disconnect() --> closes the connection
+ * &gt; receive()    --> receives data through a ServerListener
+ * </pre>
  */
 public class Client {
     private Socket socket;

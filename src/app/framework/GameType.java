@@ -1,8 +1,9 @@
 package app.framework;
 /**
- *
- * > enum for the playable games --> only tictactoe for now
- * > makes GameFramework and menus easier
+ * <pre>
+ * &gt; Enum of playable games (only Tic-Tac-Toe for now).
+ * &gt; Makes GameFramework and menus easier to manage.
+ * </pre>
  */
 public enum GameType {
     TIC_TAC_TOE

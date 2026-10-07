@@ -1,13 +1,15 @@
 package app.games;
 
 /**
- * > not a specific game --> INTERFACE
- * > what all games have in common
- * 
+ * <pre>
+ * &gt; not a specific game --&gt; INTERFACE
+ * &gt; what all games have in common
+ *
  * EX:
- * > doMove() <-- takes Move object
- * > GameResult getResult()
- * > bool isGameOver()
+ * &gt; doMove() &lt;-- takes Move object
+ * &gt; GameResult getResult()
+ * &gt; bool isGameOver()
+ * </pre>
  */
 public interface Game {
 }
