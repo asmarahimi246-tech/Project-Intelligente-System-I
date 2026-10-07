@@ -1,13 +1,19 @@
 package app.pages;
 
-import app.pages.context.PageState;
+import javax.swing.JPanel;
 
-public class GamePage implements PageState {
+import app.pages.context.Page;
+
+/**
+ * GamePage
+ * 
+ * The page where you play a game
+ */
+public class GamePage extends  Page {
 
     @Override
     public void open() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'open'");
     }
-    
 }

@@ -2,8 +2,11 @@ package app;
 
 import java.util.NoSuchElementException;
 
-import app.pages.context.PageContext;
-import app.pages.context.PageState;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import app.pages.context.Page;
+import app.pages.context.PageManager;
 
 /**
  * <pre>
@@ -17,10 +20,24 @@ import app.pages.context.PageState;
  */
 public class App {
     // volatile so the application can close when 
-    // a differnt thread gets an error or 
+    // a different thread gets an error or 
     // just wants to close the application
     // for example the server listener
     private static volatile boolean RUNNING;
+    private final JFrame applicationFrame = new JFrame("applicationFrame");
+
+
+    /**
+     * Constructor
+     */
+    public App () {
+        // swing setup
+        
+        applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        applicationFrame.setResizable(false);
+        applicationFrame.setSize(500, 500);
+        applicationFrame.setLocationRelativeTo(null);
+    }
 
     /**
      * Run the application
@@ -28,17 +45,28 @@ public class App {
     public void run() {
         RUNNING = true;
 
-        // get an instance of the current page state
-        PageContext context = PageContext.getInstance();
+        // get an instance of the page manager
+        PageManager manager = PageManager.getInstance();
 
-        // open the page page
         try {
             while (RUNNING) {
-                PageState page = context.getState();
-                page.open();
+                // only update when needed
+                // prevents flickering in swing
+                if (manager.changed()) {
+                    // get the page
+                    Page page = manager.getCurrentPage();
+
+                    // open the page 
+                    page.open();
+
+                    // set the page for swing 
+                    // this works because page extends JPanel
+                    setContentPane(page);
+                }
             }
         } catch (NoSuchElementException e) {
-            System.out.println("Something went wrong. Closing application.");
+            System.err.println("Something went wrong. Closing application.");
+            e.printStackTrace(System.err);
         }
     }
 
@@ -49,5 +77,19 @@ public class App {
      */
     public static void close() {
         RUNNING = false;
+    }
+
+    /**
+     * shows a page
+     * 
+     * note: expects the ui to already be build
+     * 
+     * @param page
+     */
+    private void setContentPane(JPanel page) {
+        applicationFrame.setContentPane(page);
+        applicationFrame.revalidate();
+        applicationFrame.repaint();
+        applicationFrame.setVisible(true);
     }
 }

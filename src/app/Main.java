@@ -3,10 +3,15 @@ import app.games.tictactoe.TicTacToeGame;
 import app.network.Client;
 import app.network.ServerListener;
 import app.pages.GameMenu;
+import app.pages.MainPage;
+import app.pages.context.PageManager;
+import app.pages.context.Page;
 import app.players.LocalPlayer;
 import app.players.OnlinePlayer;
+import app.util.ScannerSingleton;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  * <pre>
@@ -26,34 +31,17 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        GameMenu menu = new GameMenu();
+        // new code v
+        // set a start page
+        PageManager manager = PageManager.getInstance();
+        Page page = new MainPage();
+        manager.setCurrentPage(page);
 
-        // haalt de gekozen spelmodus op lokaal of online
-        boolean online = menu.mainMenu();
+        // make an app and run it
+        App app = new App();
+        app.run();
 
-        // haalt op of een player online wil spelen
-        boolean aiMode = menu.menu(online);
-
-        if (!online) {
-            TicTacToeGame game = new TicTacToeGame(null);
-
-            // start een lokaal spel op met de AI modus
-            LocalPlayer localplayer = new LocalPlayer(game, aiMode);
-            localplayer.play();
-            return;
-        }
-
-        Client client = new Client();
-        ServerListener listener = new ServerListener(client);
-        TicTacToeGame game = new TicTacToeGame(listener);
-
-        listener.setGame(game);
-        listener.aiMode(aiMode);
-        OnlinePlayer onlineplayer = new OnlinePlayer(client);
-
-        String message;
-        while ((message = client.getReader().readLine()) != null) {
-            listener.commandhandler(message);
-        }
+        // close the scanner
+        ScannerSingleton.closeInstance();
     }
 }
