@@ -1,8 +1,8 @@
 package app;
 import app.games.tictactoe.TicTacToeGame;
-import app.menus.GameMenu;
 import app.network.Client;
 import app.network.ServerListener;
+import app.pages.GameMenu;
 import app.players.LocalPlayer;
 import app.players.OnlinePlayer;
 

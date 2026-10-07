@@ -1,9 +1,11 @@
-package app.menus; 
+package app.pages; 
+
+import java.util.Scanner; 
 
 /**
  * TODO:
  */
-import java.util.Scanner; public class GameMenu {
+public class GameMenu {
     private Scanner scanner;
 
     /**

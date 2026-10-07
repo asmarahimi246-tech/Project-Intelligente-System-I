@@ -1,20 +1,53 @@
 package app;
 
+import java.util.NoSuchElementException;
+
+import app.pages.context.PageContext;
+import app.pages.context.PageState;
+
 /**
  * <pre>
- * Runs the app and controls its flow.
+ * Runs the app and controls its flow from a high level.
  *
  * Examples:
- * &gt; Show the main menu.
- * &gt; Ask the user what they want to do.
- * &gt; Execute the selected command, such as starting a game.
+ * &gt; Show the main page.
  * &gt; Return to the menu or exit.
  *
- * {@code startGame()}:
- * &gt; Choose a game and mode.
- * &gt; Create the selected game.
- * &gt; Start the game.
  * </pre>
  */
 public class App {
+    // volatile so the application can close when 
+    // a differnt thread gets an error or 
+    // just wants to close the application
+    // for example the server listener
+    private static volatile boolean RUNNING;
+
+    /**
+     * Run the application
+     */
+    public void run() {
+        RUNNING = true;
+
+        // get an instance of the current page state
+        PageContext context = PageContext.getInstance();
+
+        // open the page page
+        try {
+            while (RUNNING) {
+                PageState page = context.getState();
+                page.open();
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("Something went wrong. Closing application.");
+        }
+    }
+
+    /**
+     * Close the application
+     * 
+     * Static so it can be closed everywhere
+     */
+    public static void close() {
+        RUNNING = false;
+    }
 }

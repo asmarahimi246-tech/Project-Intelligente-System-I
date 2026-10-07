@@ -1,7 +1,7 @@
 # Component Overview
 
 | Type | Component | Responsibility |
-|---|---|---|
+| --- | --- | --- |
 | C | `Main` | Creates a `GameApp` object and runs it. |
 | C | `GameApp` | Runs the app and controls app flow. |
 | C | `GameFramework` | Creates a game of the given `GameType`. |
@@ -30,44 +30,40 @@
 
 **Legend:** `C` = class · `I` = interface · `E` = enum
 
-
-
 # App Flow
 
-## 1. Start the app
+## 1\. Start the app
 
 Main → GameApp
 
-## 2. Show the main menu
+## 2\. Show the main menu
 
-GameApp → MainMenu → "Play"
+GameApp → MainMenu → “Play”
 
-## 3. Choose a game
+## 3\. Choose a game
 
-GameApp → GameMenu → TIC_TAC_TOE (GameType)
+GameApp → GameMenu → TIC\_TAC\_TOE (GameType)
 
-## 4. Create the game
+## 4\. Create the game
 
 GameApp → GameFramework → TicTacToeModel
 
-## 5. MVC system
+## 5\. MVC system
 
 TicTacToeModel ↔ TicTacToeController ↔ TicTacToeView
 
-- The controller checks moves and game state with the model.
-- The controller gets responses from the model.
-- The controller tells the view to update.
-- The view updates with the new move.
+*   The controller checks moves and game state with the model.
+*   The controller gets responses from the model.
+*   The controller tells the view to update.
+*   The view updates with the new move.
 
-## 6. Make moves
+## 6\. Make moves
 
-Terminal (UI) input → Controller → Model.doMove(...) → AI.pickMove() → Model.isValidMove() → Controller → View.printBoard(...)
+Terminal (UI) input → Controller → Model.doMove(…) → AI.pickMove() → Model.isValidMove() → Controller → View.printBoard(…)
 
-- **Local player:** Gets move input from the UI (terminal for now).
-- **AI:** Calculates a move based on the current board state.
-- **Online player:** Gets move input from a server message.
-
-
+*   **Local player:** Gets move input from the UI (terminal for now).
+*   **AI:** Calculates a move based on the current board state.
+*   **Online player:** Gets move input from a server message.
 
 # Online Play Flow
 
@@ -81,12 +77,14 @@ Server --> Client --> ServerListener --> ServerMessageParser --> ServerMessage -
 
 # Server Message Flow
 
-Server --message--> Client --> ServerMessageParser --> ServerMessage --> Other Classes
+Server --message–> Client --> ServerMessageParser --> ServerMessage --> Other Classes
 
 # Local Game Flow
 
-MainMenu --"play"--> GameMenu --"tic-tac-toe" + "local"--> GameFactory --> TicTacToeModel --[player makes move]-->
+MainMenu --“play”–> GameMenu --“tic-tac-toe” + “local”–> GameFactory --> TicTacToeModel --\[player makes move\]–>
 
-    TicTacToeController --> TicTacToeMove (5 or col 2, row 2) --> TicTacToeModel --update--> TicTacToeView
-      check move &                     do move                    tell View to
-      game state                                                 update with move
+```
+TicTacToeController --> TicTacToeMove (5 or col 2, row 2) --> TicTacToeModel --update--> TicTacToeView
+  check move &                     do move                    tell View to
+  game state                                                 update with move
+```
