@@ -3,6 +3,7 @@ package app.pages;
 
 import java.util.Scanner;
 
+import app.App;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.pages.gameBuilder.GameBuilderPage;
@@ -24,17 +25,16 @@ public class MainPage extends Page {
     @Override
     public void open() {
         // print
-        System.out.println("=== Tic Tac Toe ===");
-        System.out.println("1. Local game");
-        System.out.println("2. Online game");
-        System.out.println("3. Test swing");
-        System.out.println("4. Exit application");
+        System.out.println("=== Main Menu ===");
+        System.out.println("1. Play TicTacToe");
+        System.out.println("2. Test swing");
+        System.out.println("3. Exit application");
         System.out.print("Enter your choice: ");
 
         // get input
         Scanner scanner = ScannerSingleton.getInstance();
         CLIIntegerField field = new CLIIntegerField.Builder(scanner, "Something went wrong.")
-            .max(4)
+            .max(3)
             .min(1)
             .build();
         int choice = field.getInput();
@@ -43,21 +43,17 @@ public class MainPage extends Page {
         PageManager manager = PageManager.getInstance();
         switch (choice) {
             case 1:
-                Page localGame = new GameBuilderPage("local");
+                Page localGame = new GameBuilderPage();
                 manager.setCurrentPage(localGame);
                 break;
 
             case 2:
-                Page onlineGame = new GameBuilderPage("online");
-                manager.setCurrentPage(onlineGame);
-                break;
-
-            case 3:
                 Page swingTest = new SwingTestPage();
                 manager.setCurrentPage(swingTest);
                 break;
 
-            case 4:
+            case 3:
+                App.close();
                 break;
         
             default:

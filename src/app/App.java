@@ -56,18 +56,22 @@ public class App {
                     // get the page
                     Page page = manager.getCurrentPage();
 
-                    // open the page 
-                    page.open();
-
                     // set the page for swing 
                     // this works because page extends JPanel
+                    // shows a white page if empty
                     setContentPane(page);
+
+                    // open the page 
+                    page.open();
                 }
             }
         } catch (NoSuchElementException e) {
-            System.err.println("Something went wrong. Closing application.");
+            System.err.println("Something went wrong.");
             e.printStackTrace(System.err);
         }
+
+        System.out.println("Closing application.");
+        applicationFrame.dispose();
     }
 
     /**
