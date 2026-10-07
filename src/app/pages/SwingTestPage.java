@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 
 import app.pages.context.Page;
+import app.util.Config;
 
 /**
  * SwingTestPage
@@ -26,8 +27,8 @@ public class SwingTestPage extends Page {
         setLayout(new GridLayout(3, 3));
         for (int i = 0; i < 9; i++) {
             JButton button = new JButton();
-            button.setBackground(Color.DARK_GRAY);
-            button.setForeground(Color.WHITE);
+            button.setBackground(Config.BACKGROUND_COLOR);
+            button.setForeground(Config.FOREGROUND_COLOR);
             button.setFont(new Font("Arial", Font.BOLD, 120));
 
             button.addActionListener(event -> {
