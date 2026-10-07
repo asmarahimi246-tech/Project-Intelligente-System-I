@@ -1,5 +1,6 @@
 package app.pages.context;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -10,6 +11,16 @@ import javax.swing.JPanel;
  * It also allows the storing of any page as a Page and as a JPanel
  */
 public abstract class Page extends JPanel {
+    /**
+     * Constructor
+     */
+    protected Page () {
+        createSwingUi();
+    }
+
+    protected void createSwingUi () {
+        add(new JLabel("UI not implemented"));
+    }
 
     /** 
      * opens the page 

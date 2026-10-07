@@ -27,6 +27,11 @@ public class SwingTestPage extends Page {
      * Makes the page using swing
      */
     public SwingTestPage() {
+        super();
+    }
+
+    @Override
+    protected void createSwingUi() {
         setLayout(new GridLayout(3, 3));
         for (int i = 0; i < 9; i++) {
             JButton button = new JButton();

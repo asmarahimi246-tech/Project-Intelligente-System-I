@@ -26,6 +26,13 @@ public class GameBuilderPage extends Page {
     private String oponenent;
 
     /**
+     * Constructor
+     */
+    public GameBuilderPage () {
+        super();
+    }
+
+    /**
      * TODO: use builder
      */
     @Override

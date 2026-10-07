@@ -22,6 +22,13 @@ public class MainPage extends Page {
         return toReturn;
     }
 
+    /**
+     * Constructor
+     */
+    public MainPage () {
+        super();
+    }
+
     @Override
     public void open() {
         // print

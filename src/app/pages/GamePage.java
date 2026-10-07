@@ -10,6 +10,9 @@ import app.pages.context.Page;
  * The page where you play a game
  */
 public class GamePage extends  Page {
+    public GamePage () {
+        super();
+    }
 
     @Override
     public void open() {
