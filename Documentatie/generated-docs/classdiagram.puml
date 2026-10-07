@@ -1,0 +1,142 @@
+@startuml
+
+class app.App {
+}
+
+
+class app.Main {
+	{method}  {static} +main ( args : String[] ) : void
+}
+
+
+class app.framework.GameFramework {
+}
+
+
+enum app.framework.GameType {
+	{field} +TIC_TAC_TOE
+}
+
+
+interface app.games.Game {
+}
+
+
+enum app.games.GameEndReason {
+	{field} +DISCONNECTED
+	{field} +FORFEITED
+	{field} +NORMAL
+}
+
+
+enum app.games.GameResult {
+	{field} +DRAW
+	{field} +IN_PROGRESS
+	{field} +PLAYER_LOST
+	{field} +PLAYER_WON
+}
+
+
+interface app.games.Move {
+}
+
+
+class app.games.tictactoe.TicTacToeController {
+	{method} +aiMove () : void
+	{method} +move ( number : int ) : void
+	{method} +printBoard () : void
+	{method} +symbol ( symbol : char ) : void
+	{method} +turn () : void
+}
+
+
+class app.games.tictactoe.TicTacToeModel {
+}
+
+
+class app.games.tictactoe.TicTacToeMove {
+}
+
+
+class app.games.tictactoe.TicTacToeView {
+}
+
+
+class app.network.Client {
+	{method} +close () : void
+	{method} +sendCommand ( command : String ) : void
+}
+
+
+enum app.network.MessageSubtype {
+	{field} +CHALLENGE
+	{field} +GAMELIST
+	{field} +HELP
+	{field} +MATCH
+	{field} +MOVE
+	{field} +PLAYERLIST
+	{field} +WIN_LOSS_DRAW
+	{field} +YOURTURN
+}
+
+
+enum app.network.MessageType {
+	{field} +ERR
+	{field} +OK
+	{field} +SRV
+}
+
+
+class app.network.ServerListener {
+	{method} +commandhandler ( message : String ) : void
+	{method} +sendMoveToServer ( input : int ) : void
+}
+
+
+class app.network.ServerMessage {
+}
+
+
+class app.network.ServerMessageParser {
+}
+
+
+class app.players.AI {
+	{method} +numberAI ( move : char[] , player : char ) : int
+}
+
+
+class app.players.LocalPlayer {
+}
+
+
+class app.players.Onlineplayer {
+}
+
+
+interface app.players.Player {
+}
+
+
+class app.ui.GameMenu {
+}
+
+
+class app.ui.MainMenu {
+}
+
+
+class app.ui.Ui {
+}
+
+
+
+
+app.games.tictactoe.TicTacToeController -->  app.network.ServerListener : listener
+app.games.tictactoe.TicTacToeController -->  app.players.AI : ai
+app.network.ServerListener -->  app.games.tictactoe.TicTacToeController : game
+app.network.ServerListener -->  app.network.Client : client
+app.players.Onlineplayer -->  app.network.Client : client
+
+
+@enduml

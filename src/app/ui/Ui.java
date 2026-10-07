@@ -1,0 +1,15 @@
+package app.ui;
+
+/**
+ * > general/generic UI layer --> Ui() = new Scanner
+ * > DOESN'T HANDLE GAME SPECIFIC PRINTS
+ * > get input from terminal
+ *         ex:
+ *         > getInput()
+ * > print messages to terminal
+ *         ex:
+ *         > showMessage()
+ *         > showError()
+ */
+public class Ui {
+}
