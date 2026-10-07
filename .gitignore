@@ -8,10 +8,11 @@
 /.settings/
 /.vscode/
 
-# Maven wrapper
-Project-Intelligente-Systemen/.mvn/
-Project-Intelligente-Systemen/mvnw
-Project-Intelligente-Systemen/mvnw.cmd
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+pom.xml
 
 # Logs
 *.log

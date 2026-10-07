@@ -50,4 +50,12 @@ public class Client {
     public BufferedReader getReader() {
         return reader;
     }
+
+    /**
+     * sluit de socket
+     * @throws IOException 
+     */
+    public void close() throws IOException {
+        this.socket.close();
+    }
 }
