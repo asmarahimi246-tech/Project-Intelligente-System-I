@@ -1,5 +1,6 @@
 package app.pages;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import app.pages.context.Page;
@@ -10,8 +11,15 @@ import app.pages.context.Page;
  * The page where you play a game
  */
 public class GamePage extends  Page {
+    @Override
+    public String toString() {
+        String toReturn = "game page";
+        return toReturn;
+    }
+
     public GamePage () {
         super();
+        add(new JLabel(toString()));
     }
 
     @Override

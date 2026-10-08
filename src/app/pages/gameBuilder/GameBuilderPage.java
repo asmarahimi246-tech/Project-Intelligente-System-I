@@ -3,6 +3,7 @@ package app.pages.gameBuilder;
 import java.io.IOException;
 import java.util.Scanner;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import app.games.players.Localplayer;
@@ -25,11 +26,17 @@ public class GameBuilderPage extends Page {
     private String gameMode;
     private String oponenent;
 
+    @Override
+    public String toString() {
+        String toReturn = "game builder page";
+        return toReturn;
+    }
     /**
      * Constructor
      */
     public GameBuilderPage () {
         super();
+        add(new JLabel(toString()));
     }
 
     /**

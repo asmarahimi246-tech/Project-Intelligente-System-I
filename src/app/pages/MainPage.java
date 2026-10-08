@@ -3,6 +3,8 @@ package app.pages;
 
 import java.util.Scanner;
 
+import javax.swing.JLabel;
+
 import app.App;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
@@ -27,6 +29,7 @@ public class MainPage extends Page {
      */
     public MainPage () {
         super();
+        add(new JLabel(toString()));
     }
 
     @Override
