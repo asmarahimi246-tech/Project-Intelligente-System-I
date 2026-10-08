@@ -16,7 +16,7 @@ import app.network.ServerListener;
 public class TicTacToeGame {
     private ServerListener listener;
     private TicTacToeModel model;
-    private TicTacToeView view;
+    private TicTacToePage view;
     private AI ai;
     private char player1 = 'X';
 
@@ -28,7 +28,7 @@ public class TicTacToeGame {
     public TicTacToeGame(ServerListener listener) {
         this.listener = listener;
         this.model = new TicTacToeModel();
-        this.view = new TicTacToeView();
+        this.view = new TicTacToePage();
         this.ai = new AI();
     }
 

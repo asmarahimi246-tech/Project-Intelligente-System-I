@@ -2,6 +2,8 @@ package app.games.tictactoe;
 
 import java.util.Scanner;
 
+import app.pages.context.Page;
+
 /**
  * <pre>
  * &gt; displays the game to the user
@@ -11,7 +13,7 @@ import java.util.Scanner;
  * &gt; printBoard() --&gt; gets the board state from the game and prints it
  * </pre>
  */
-public class TicTacToeView {
+public class TicTacToePage extends Page {
     private Scanner scanner = new Scanner(System.in);
 
     /**
@@ -47,5 +49,11 @@ public class TicTacToeView {
      */
     public void printInvalidMove() {
         System.out.println("Die plek is al bezet doe een andere move!");
+    }
+
+    @Override
+    public void open() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'open'");
     }
 }

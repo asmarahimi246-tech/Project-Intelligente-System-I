@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import app.games.players.Localplayer;
 import app.games.players.Onlineplayer;
@@ -21,6 +20,24 @@ import app.util.cliInputFields.CLIIntegerField;
  * GameBuilderPage
  * 
  * Contains the ui for building a game
+ * 
+ * Everything in seperate file
+ * 
+ * start
+ * 1. game select
+ * 2. game modes (local, online, tournament)
+ * 
+ * local
+ * 3. splayerr (against ai or speler)
+ * 
+ * online
+ * 3. player (against server)
+ * 
+ * tournament
+ * 3. player or ai (against server)
+ * 
+ * 4. build game
+ * 5. run game
  */
 public class GameBuilderPage extends Page {
     private String gameMode;
