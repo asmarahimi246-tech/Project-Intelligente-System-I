@@ -36,7 +36,7 @@ public class MainPage extends Page {
     public void open() {
         // print
         System.out.println("=== Main Menu ===");
-        System.out.println("1. Play TicTacToe");
+        System.out.println("1. Play Game");
         System.out.println("2. Test swing");
         System.out.println("3. Exit application");
         System.out.print("Enter your choice: ");

@@ -1,17 +1,11 @@
 package app;
-import app.games.tictactoe.TicTacToeGame;
-import app.network.Client;
-import app.network.ServerListener;
-import app.pages.GameMenu;
+
 import app.pages.MainPage;
 import app.pages.context.PageManager;
 import app.pages.context.Page;
-import app.players.LocalPlayer;
-import app.players.OnlinePlayer;
 import app.util.ScannerSingleton;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * <pre>
