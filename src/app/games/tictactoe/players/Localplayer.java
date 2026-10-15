@@ -1,4 +1,4 @@
-package app.games.players;
+package app.games.tictactoe.players;
 
 import app.games.tictactoe.TicTacToeGame;
 

@@ -29,7 +29,7 @@ public class Client {
      * om te voorkomen dat de applicatie vast loopt
      * 
      * Constructor
-     * @throws IOException
+     * @throws IOException it does
      */
     public Client() throws IOException {
         socket = new Socket("localhost", 7789);
@@ -39,7 +39,7 @@ public class Client {
 
     /**
      * TODO:
-     * @param command
+     * @param command the command to send
      */
     public void sendCommand(String command) {
         writer.println(command);
@@ -47,7 +47,7 @@ public class Client {
 
     /**
      * TODO:
-     * @return
+     * @return a BufferedReader
      */
     public BufferedReader getReader() {
         return reader;
@@ -55,7 +55,7 @@ public class Client {
 
     /**
      * sluit de socket
-     * @throws IOException 
+     * @throws IOException the exception
      */
     public void close() throws IOException {
         this.socket.close();

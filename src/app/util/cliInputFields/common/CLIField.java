@@ -24,10 +24,10 @@ public abstract class CLIField<T> {
      */
     protected abstract static class Builder<T, B extends Builder<T, B>> {
         // too lazy to make getters for this
-        public final Scanner scanner;
-        public final String errorMessage;
-        public T defaultInput;
-        public boolean hasDefault = false;
+        public final Scanner scanner; //scanner
+        public final String errorMessage; //errorMessage
+        public T defaultInput; //defaultInput
+        public boolean hasDefault = false; //hasDefault
 
         /**
          * constructor with non optional params

@@ -1,4 +1,4 @@
-package app.framework;
+package app.games.framework;
 /**
  * <pre>
  * &gt; Enum of playable games (only Tic-Tac-Toe for now).

@@ -1,4 +1,4 @@
-package app.games.players;
+package app.games.tictactoe.players;
 
 import java.io.IOException;
 import java.util.Random;
