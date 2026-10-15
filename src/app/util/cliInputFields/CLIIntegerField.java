@@ -15,10 +15,10 @@ import app.util.cliInputFields.common.CLIField;
  * 
  * (example v)
  * CLIIntegerField field = new CLIIntegerField.Builder(scanner, errorMessage)
- *      .defaultInput(5)                (<- note: these are optional)
+ *      .defaultInput(5)                (&lt; - note: these are optional)
  *      .min(1)
  *      .max(10)
- *      .build();                       (<- note: this is not optional)
+ *      .build();                       (&lt; - note: this is not optional)
  */
 public class CLIIntegerField extends CLIField<Integer> {
     private int min = Integer.MIN_VALUE;

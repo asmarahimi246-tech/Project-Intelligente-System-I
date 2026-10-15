@@ -1,5 +1,6 @@
 package app.games.tictactoe;
 import app.players.AI;
+import app.games.framework.Game;
 import app.network.ServerListener;
 
 /**
@@ -13,7 +14,7 @@ import app.network.ServerListener;
  *   --&gt; if true, make view update with the move added
  * </pre>
  */
-public class TicTacToeGame {
+public class TicTacToeGame implements Game {
     private ServerListener listener;
     private TicTacToeModel model;
     private TicTacToePage view;
@@ -31,6 +32,7 @@ public class TicTacToeGame {
         this.view = new TicTacToePage();
         this.ai = new AI();
     }
+
 
     /**
      * TODO: 

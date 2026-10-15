@@ -1,24 +1,13 @@
 @startuml
 
 class app.App {
+	{method}  {static} +close () : void
+	{method} +run () : void
 }
 
 
 class app.Main {
 	{method}  {static} +main ( args : String[] ) : void
-}
-
-
-class app.framework.GameFramework {
-}
-
-
-enum app.framework.GameType {
-	{field} +TIC_TAC_TOE
-}
-
-
-interface app.games.Game {
 }
 
 
@@ -38,6 +27,36 @@ enum app.games.GameResult {
 
 
 interface app.games.Move {
+}
+
+
+interface app.games.framework.Game {
+	{method}  {abstract} +toString () : String
+}
+
+
+abstract class app.games.framework.GameBuilder {
+	{field} #mode : String
+	{method}  {abstract} +build () : Game
+	{method}  {abstract} +printOptions () : void
+	{method}  {abstract} #self () : GameBuilder
+}
+
+
+enum app.games.framework.GameType {
+	{field} +TIC_TAC_TOE
+}
+
+
+class app.games.framework.Player {
+}
+
+
+class app.games.tictactoe.TicTacToeBuilder {
+	{method} +build () : TicTacToeGame
+	{method} +printOptions () : void
+	{method} #self () : TicTacToeBuilder
+	{method} +toString () : String
 }
 
 
@@ -63,7 +82,8 @@ class app.games.tictactoe.TicTacToeMove {
 }
 
 
-class app.games.tictactoe.TicTacToeView {
+class app.games.tictactoe.TicTacToePage {
+	{method} +open () : void
 	{method} +printBoard ( board : char[] ) : void
 	{method} +printInvalidMove () : void
 	{method} +printTussenstand () : void
@@ -71,13 +91,17 @@ class app.games.tictactoe.TicTacToeView {
 }
 
 
-class app.menus.GameMenu {
-	{method} +mainMenu () : boolean
-	{method} +menu ( online : boolean ) : boolean
+class app.games.tictactoe.players.AI {
+	{method} +numberAI ( board : char[] , player : char ) : int
 }
 
 
-class app.menus.MainMenu {
+class app.games.tictactoe.players.Localplayer {
+	{method} +play () : void
+}
+
+
+class app.games.tictactoe.players.Onlineplayer {
 }
 
 
@@ -121,6 +145,69 @@ class app.network.ServerMessageParser {
 }
 
 
+class app.pages.GameMenu {
+	{method} +mainMenu () : boolean
+	{method} +menu ( online : boolean ) : boolean
+}
+
+
+class app.pages.GamePage {
+	{method} +open () : void
+	{method} +toString () : String
+}
+
+
+class app.pages.MainPage {
+	{method} +open () : void
+	{method} +toString () : String
+}
+
+
+class app.pages.SwingTestPage {
+	{method} #createSwingUi () : void
+	{method} +open () : void
+	{method} +toString () : String
+}
+
+
+abstract class app.pages.context.Page {
+	{method} #createSwingUi () : void
+	{method}  {abstract} +open () : void
+}
+
+
+class app.pages.context.PageManager {
+	{method} +changed () : boolean
+	{method} +getCurrentPage () : Page
+	{method} +setCurrentPage ( page : Page ) : void
+}
+
+
+class app.pages.gameBuilder.GameBuilderPage {
+	{method} +open () : void
+}
+
+
+class app.pages.gameBuilder.ModePage {
+	{method} +open () : void
+	{method} +selectMode ( mode : String ) : void
+	{method} +toString () : String
+}
+
+
+class app.pages.gameBuilder.OldGameBuilderPage {
+	{method} +open () : void
+	{method} +toString () : String
+}
+
+
+class app.pages.gameBuilder.PlayerPage {
+	{method} +open () : void
+	{method} +selectMode ( mode : String ) : void
+	{method} +toString () : String
+}
+
+
 class app.players.AI {
 	{method} +numberAI ( board : char[] , player : char ) : int
 }
@@ -139,16 +226,91 @@ interface app.players.Player {
 }
 
 
+class app.util.Config {
+	{field} {static} +BACKGROUND_COLOR : Color
+	{field} {static} +DEBUG : boolean
+	{field} {static} +FOREGROUND_COLOR : Color
+	{field} {static} +LOCALPORT : int
+	{field} {static} +ONLINEIP : String
+	{field} {static} +ONLINEPORT : int
+	{field} {static} +SERVERJAR : Path
+}
 
 
+class app.util.Logger {
+	{method}  {static} +logDebug ( message : String ) : void
+}
+
+
+class app.util.ScannerSingleton {
+	{method}  {static} +closeInstance () : void
+}
+
+
+class app.util.cliInputFields.CLIIntegerField {
+	{method} +getInput () : Integer
+	{method} +print () : void
+}
+
+
+class app.util.cliInputFields.CLIIntegerField$Builder {
+	{method} +build () : CLIIntegerField
+	{method} +max ( value : int ) : Builder
+	{method} +min ( value : int ) : Builder
+	{method} #self () : Builder
+}
+
+
+abstract class app.util.cliInputFields.common.CLIField {
+	{field} #defaultInput : Object
+	{field} #errorMessage : String
+	{field} #readText : String
+	{field} #scanner : Scanner
+	{method}  {abstract} #getInput () : Object
+	{method}  {abstract} #print () : void
+}
+
+
+abstract class app.util.cliInputFields.common.CLIField$Builder {
+	{field} +defaultInput : Object
+	{field} +errorMessage : String
+	{field} +hasDefault : boolean
+	{field} +scanner : Scanner
+	{method}  {abstract} +build () : CLIField
+	{method} +defaultInput ( value : Object ) : Builder
+	{method}  {abstract} #self () : Builder
+}
+
+
+
+
+app.games.framework.GameBuilder "1" o-- "0..*"  app.games.framework.Player : players
+app.games.tictactoe.TicTacToeBuilder --|>  app.games.framework.GameBuilder
 app.games.tictactoe.TicTacToeGame -->  app.games.tictactoe.TicTacToeModel : model
-app.games.tictactoe.TicTacToeGame -->  app.games.tictactoe.TicTacToeView : view
+app.games.tictactoe.TicTacToeGame -->  app.games.tictactoe.TicTacToePage : view
 app.games.tictactoe.TicTacToeGame -->  app.network.ServerListener : listener
 app.games.tictactoe.TicTacToeGame -->  app.players.AI : ai
+app.games.tictactoe.TicTacToeGame ..|>  app.games.framework.Game
+app.games.tictactoe.TicTacToePage --|>  app.pages.context.Page
+app.games.tictactoe.players.Localplayer -->  app.games.tictactoe.TicTacToeGame : game
+app.games.tictactoe.players.Onlineplayer -->  app.network.Client : client
 app.network.ServerListener -->  app.games.tictactoe.TicTacToeGame : game
 app.network.ServerListener -->  app.network.Client : client
+app.pages.GamePage --|>  app.pages.context.Page
+app.pages.MainPage --|>  app.pages.context.Page
+app.pages.SwingTestPage --|>  app.pages.context.Page
+app.pages.context.PageManager -->  app.pages.context.Page : page
+app.pages.context.PageManager -->  app.pages.context.PageManager : INSTANCE
+app.pages.gameBuilder.GameBuilderPage --|>  app.pages.context.Page
+app.pages.gameBuilder.ModePage *--  app.games.framework.GameBuilder : builder
+app.pages.gameBuilder.ModePage --|>  app.pages.context.Page
+app.pages.gameBuilder.OldGameBuilderPage --|>  app.pages.context.Page
+app.pages.gameBuilder.PlayerPage *--  app.games.framework.GameBuilder : builder
+app.pages.gameBuilder.PlayerPage --|>  app.pages.context.Page
 app.players.LocalPlayer -->  app.games.tictactoe.TicTacToeGame : game
 app.players.OnlinePlayer -->  app.network.Client : client
+app.util.cliInputFields.CLIIntegerField --|>  app.util.cliInputFields.common.CLIField
+app.util.cliInputFields.CLIIntegerField$Builder --|>  app.util.cliInputFields.common.CLIField$Builder
 
 
 @enduml

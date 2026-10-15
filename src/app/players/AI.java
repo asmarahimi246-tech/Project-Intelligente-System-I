@@ -25,6 +25,11 @@ public class AI {
      * de game hoeft niet te weten dat de AI deze functie
      * daarvoor is een abstractie laag genaamd de interfece player
      * die heeft de functie die de game roept
+     * 
+     * @param board board
+     * @param player player
+     * 
+     * @return an int
     */
     public int numberAI(char[] board, char player) {
 
