@@ -204,12 +204,6 @@ class app.network.ServerMessageParser {
 }
 
 
-class app.pages.GameMenu {
-	{method} +mainMenu () : boolean
-	{method} +menu ( online : boolean ) : boolean
-}
-
-
 class app.pages.GamePage {
 	{method} +open () : void
 	{method} +toString () : String

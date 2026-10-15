@@ -65,6 +65,7 @@ public class TicTacToeModel {
      * TODO:
      * @return
      */
+    // Controleert of de opgegeven speler heeft gewonnen op het meegegeven bord.
     public boolean checkWinner() {
         if (board[0] == board[1] && board[1] == board[2]) {
             return true;
