@@ -1,4 +1,4 @@
-package app.games;
+package app.games.framework;
 
 /**
  * <pre>
@@ -12,4 +12,6 @@ package app.games;
  * </pre>
  */
 public interface Game {
+    @Override
+    String toString();
 }

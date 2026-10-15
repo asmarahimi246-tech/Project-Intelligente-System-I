@@ -1,7 +1,13 @@
 app
-app.framework
 app.games
+app.games.framework
 app.games.tictactoe
-app.menus
+app.games.tictactoe.players
 app.network
+app.pages
+app.pages.context
+app.pages.gameBuilder
 app.players
+app.util
+app.util.cliInputFields
+app.util.cliInputFields.common

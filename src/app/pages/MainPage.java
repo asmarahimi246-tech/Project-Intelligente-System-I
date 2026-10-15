@@ -1,6 +1,5 @@
 package app.pages;
 
-
 import java.util.Scanner;
 
 import javax.swing.JLabel;
@@ -53,8 +52,8 @@ public class MainPage extends Page {
         PageManager manager = PageManager.getInstance();
         switch (choice) {
             case 1:
-                Page localGame = new GameBuilderPage();
-                manager.setCurrentPage(localGame);
+                Page gameBuilder = new GameBuilderPage();
+                manager.setCurrentPage(gameBuilder);
                 break;
 
             case 2:
