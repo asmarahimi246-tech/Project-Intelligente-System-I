@@ -10,6 +10,7 @@ import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
+
 /**
  * ModePage
  * 
@@ -48,10 +49,6 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
         super();
         this.builder = builder;
         add(new JLabel(toString()));
-    }
-
-    public void selectMode(String mode) {
-        builder.setMode(mode);
     }
 
     @Override

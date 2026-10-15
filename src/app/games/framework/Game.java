@@ -1,5 +1,9 @@
 package app.games.framework;
 
+import java.util.ArrayList;
+
+import app.pages.context.Page;
+
 /**
  * <pre>
  * &gt; not a specific game --&gt; INTERFACE
@@ -11,7 +15,29 @@ package app.games.framework;
  * &gt; bool isGameOver()
  * </pre>
  */
-public interface Game {
+public abstract class Game {
+    protected Page page;
+    protected ArrayList<Player> players = new ArrayList<Player>();
+
+    /**
+     * Creates a game
+     * 
+     * @param page the page of the game
+     */
+    public Game(Page page, ArrayList<Player> players) {
+        this.page = page;
+        this.players = players;
+    }
+
     @Override
-    String toString();
+    public abstract String toString();
+
+    /**
+     * Gets the page
+     * 
+     * @return the page
+     */
+    public Page getPage() {
+        return page;
+    }
 }

@@ -1,7 +1,10 @@
 package app.games.tictactoe;
-import app.players.AI;
+import java.util.ArrayList;
+
 import app.games.framework.Game;
+import app.games.framework.Player;
 import app.network.ServerListener;
+import app.pages.context.Page;
 
 /**
  * <pre>
@@ -14,23 +17,22 @@ import app.network.ServerListener;
  *   --&gt; if true, make view update with the move added
  * </pre>
  */
-public class TicTacToeGame implements Game {
+public class TicTacToeGame extends Game {
     private ServerListener listener;
     private TicTacToeModel model;
     private TicTacToePage view;
-    private AI ai;
     private char player1 = 'X';
 
     /**
-     * Constructoor
-     * 
-     * @param listener
+     * Creates a TicTacToe game
+     *
+     * @param page the page used to display the game
+     * @param players the players participating in the game
      */
-    public TicTacToeGame(ServerListener listener) {
-        this.listener = listener;
+    public TicTacToeGame(Page page, ArrayList<Player> players) {
+        super(page, players);
         this.model = new TicTacToeModel();
         this.view = new TicTacToePage();
-        this.ai = new AI();
     }
 
 
@@ -101,22 +103,13 @@ public class TicTacToeGame implements Game {
      * een speler is een speler of het nou AI is of niet
      */
     public void aiMove() {
-        int move = ai.numberAI(model.getBoard(), player1);
-
-        System.out.println("AI move: " + move);
-
-        int index = move - 1;
-
-        if (model.placeMove(index, player1)) {
             view.printTussenstand();
             printBoard();
 
             // stuurt de AI move naar de server bij een online game
             if (listener != null) {
-                listener.sendMoveToServer(index);
             }
         }
-    }
 
 
     /**
@@ -134,6 +127,13 @@ public class TicTacToeGame implements Game {
 
     public boolean isBoardFull() {
         return model.isBoardFull();
+    }
+
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 
 }

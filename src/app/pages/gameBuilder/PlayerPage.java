@@ -1,14 +1,19 @@
 package app.pages.gameBuilder;
 
+import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JLabel;
 
 import app.games.framework.Game;
 import app.games.framework.GameBuilder;
+import app.games.framework.Player;
+import app.pages.MainPage;
 import app.pages.context.Page;
+import app.pages.context.PageManager;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
+import app.games.framework.PlayerOption;
 
 /**
  * PlayerPage
@@ -50,41 +55,43 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
         add(new JLabel(toString()));
     }
 
-    public void selectMode(String mode) {
-        builder.setMode(mode);
-    }
-
     @Override
     public void open() {
-        // print
-        System.out.println("=== " + builder.toString() + ": Player Selection ===");
+        // add the default players for the selected game mode
+        builder.addDefaultPlayers();
+        int playersLeft = builder.getPlayersToAdd() + 1;
 
+        // loop until all nessacary players are added
+        while (builder.getPlayersToAdd() > 0) {
+            // get choices
+            List<PlayerOption<? extends Player>> options = builder.getPlayerOptions();
 
-        builder.printOptions();
+            // print
+            System.out.println("=== " + builder.toString() + ": Player " + (playersLeft - builder.getPlayersToAdd()) + " Selection ===");
+            for (int index = 1; index <= options.size(); index ++) {
+                System.out.println(index + ". " + options.get(index - 1).label());
+            }
 
-        // get input
-        Scanner scanner = ScannerSingleton.getInstance();
-        CLIIntegerField field = new CLIIntegerField.Builder(scanner, "Something went wrong.")
-            .max(2)
-            .min(1)
-            .build();
-        int choice = field.getInput();
+            // get input
+            Scanner scanner = ScannerSingleton.getInstance();
+            CLIIntegerField field = new CLIIntegerField.Builder(scanner, "Something went wrong.")
+                .max(options.size())
+                .min(1)
+                .build();
+            int choice = field.getInput();
 
-        // process input
-        String gameMode = null;
-        switch (choice) {
-            case 1:
-                gameMode = "local";
-                break;
-            case 2:
-                gameMode = "online";
-                break;
-        
-            default:
-                break;
+            // proccess input
+            builder.addPlayer(options.get(choice - 1));
         }
-        builder.setMode(gameMode);
-        
-        System.out.println(gameMode);
+
+        // game page
+        PageManager manager = PageManager.getInstance();
+        Page game = builder.build().getPage();
+        if (game != null) {
+            manager.setCurrentPage(game);
+        } else {
+            Page main = new MainPage();
+            manager.setCurrentPage(main);
+        }
     }
 }

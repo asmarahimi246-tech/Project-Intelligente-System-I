@@ -3,6 +3,7 @@ package app.pages;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import app.games.framework.Game;
 import app.pages.context.Page;
 
 /**
@@ -17,7 +18,7 @@ public class GamePage extends  Page {
         return toReturn;
     }
 
-    public GamePage () {
+    public GamePage (Game game) {
         super();
         add(new JLabel(toString()));
     }

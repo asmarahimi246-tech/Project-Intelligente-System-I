@@ -30,15 +30,18 @@ interface app.games.Move {
 }
 
 
-interface app.games.framework.Game {
+abstract class app.games.framework.Game {
 	{method}  {abstract} +toString () : String
 }
 
 
 abstract class app.games.framework.GameBuilder {
 	{field} #mode : String
+	{field} #playersToAdd : int
+	{method}  {abstract} +addDefaultPlayers () : GameBuilder
+	{method} +addPlayer ( player : PlayerOption ) : GameBuilder
 	{method}  {abstract} +build () : Game
-	{method}  {abstract} +printOptions () : void
+	{method}  {abstract} +getPlayerOptions () : List
 	{method}  {abstract} #self () : GameBuilder
 }
 
@@ -48,13 +51,36 @@ enum app.games.framework.GameType {
 }
 
 
-class app.games.framework.Player {
+interface app.games.framework.Player {
+	{method}  {abstract} +doMove () : void
+	{method}  {abstract} +getState () : PlayerState
+}
+
+
+class app.games.framework.PlayerOption {
+	{method} +build () : Player
+	{method} +create () : Supplier
+	{method} +equals ( paramObject1 : Object ) : boolean
+	{method} +hashCode () : int
+	{method} +label () : String
+	{method} +toString () : String
+}
+
+
+enum app.games.framework.PlayerState {
+	{field} +CAN_MOVE
+	{field} +EXECUTED_TURN
+	{field} +FINISHED_GAME
+	{field} +INITIALIZED
+	{field} +LOGGED_IN
+	{field} +SUBSCRIBED
 }
 
 
 class app.games.tictactoe.TicTacToeBuilder {
+	{method} +addDefaultPlayers () : TicTacToeBuilder
 	{method} +build () : TicTacToeGame
-	{method} +printOptions () : void
+	{method} +getPlayerOptions () : List
 	{method} #self () : TicTacToeBuilder
 	{method} +toString () : String
 }
@@ -67,6 +93,7 @@ class app.games.tictactoe.TicTacToeGame {
 	{method} +move ( number : int , ownMove : boolean ) : void
 	{method} +printBoard () : void
 	{method} +symbol ( symbol : char ) : void
+	{method} +toString () : String
 	{method} +turn () : void
 }
 
@@ -91,17 +118,49 @@ class app.games.tictactoe.TicTacToePage {
 }
 
 
-class app.games.tictactoe.players.AI {
-	{method} +numberAI ( board : char[] , player : char ) : int
+class app.games.tictactoe.players.LocalPlayer {
+	{method} +doMove () : void
+	{method} +getState () : PlayerState
 }
 
 
-class app.games.tictactoe.players.Localplayer {
-	{method} +play () : void
+class app.games.tictactoe.players.OnlinePlayer {
+	{method} +doMove () : void
+	{method} +getState () : PlayerState
+	{method} +isFirst () : boolean
+	{method} +login () : void
+	{method} +subscribe ( string : String ) : void
+	{method} +waitForTurn () : void
 }
 
 
-class app.games.tictactoe.players.Onlineplayer {
+class app.games.tictactoe.players.RemotePlayer {
+	{method} +doMove () : void
+	{method} +getState () : PlayerState
+}
+
+
+class app.games.tictactoe.players.moveStrategies.AIStrategy {
+	{method} +getMove ( board : ArrayList , validateMove : Predicate ) : Move
+}
+
+
+class app.games.tictactoe.players.moveStrategies.Move {
+	{method} +column () : int
+	{method} +equals ( paramObject1 : Object ) : boolean
+	{method} +hashCode () : int
+	{method} +row () : int
+	{method} +toString () : String
+}
+
+
+interface app.games.tictactoe.players.moveStrategies.MoveSrategy {
+	{method}  {abstract} +getMove ( board : ArrayList , validateMove : Predicate ) : Move
+}
+
+
+class app.games.tictactoe.players.moveStrategies.UserStrategy {
+	{method} +getMove ( board : ArrayList , validateMove : Predicate ) : Move
 }
 
 
@@ -190,39 +249,13 @@ class app.pages.gameBuilder.GameBuilderPage {
 
 class app.pages.gameBuilder.ModePage {
 	{method} +open () : void
-	{method} +selectMode ( mode : String ) : void
-	{method} +toString () : String
-}
-
-
-class app.pages.gameBuilder.OldGameBuilderPage {
-	{method} +open () : void
 	{method} +toString () : String
 }
 
 
 class app.pages.gameBuilder.PlayerPage {
 	{method} +open () : void
-	{method} +selectMode ( mode : String ) : void
 	{method} +toString () : String
-}
-
-
-class app.players.AI {
-	{method} +numberAI ( board : char[] , player : char ) : int
-}
-
-
-class app.players.LocalPlayer {
-	{method} +play () : void
-}
-
-
-class app.players.OnlinePlayer {
-}
-
-
-interface app.players.Player {
 }
 
 
@@ -284,16 +317,24 @@ abstract class app.util.cliInputFields.common.CLIField$Builder {
 
 
 
-app.games.framework.GameBuilder "1" o-- "0..*"  app.games.framework.Player : players
+app.games.framework.Game "1" o-- "0..*"  app.games.framework.Player : players
+app.games.framework.Game -->  app.pages.context.Page : page
+app.games.framework.GameBuilder "1" o-- "0..*"  app.games.framework.PlayerOption : players
+app.games.tictactoe.TicTacToeBuilder -->  app.games.tictactoe.TicTacToePage : page
 app.games.tictactoe.TicTacToeBuilder --|>  app.games.framework.GameBuilder
 app.games.tictactoe.TicTacToeGame -->  app.games.tictactoe.TicTacToeModel : model
 app.games.tictactoe.TicTacToeGame -->  app.games.tictactoe.TicTacToePage : view
 app.games.tictactoe.TicTacToeGame -->  app.network.ServerListener : listener
-app.games.tictactoe.TicTacToeGame -->  app.players.AI : ai
-app.games.tictactoe.TicTacToeGame ..|>  app.games.framework.Game
+app.games.tictactoe.TicTacToeGame --|>  app.games.framework.Game
 app.games.tictactoe.TicTacToePage --|>  app.pages.context.Page
-app.games.tictactoe.players.Localplayer -->  app.games.tictactoe.TicTacToeGame : game
-app.games.tictactoe.players.Onlineplayer -->  app.network.Client : client
+app.games.tictactoe.players.LocalPlayer -->  app.games.tictactoe.players.moveStrategies.MoveSrategy : strategy
+app.games.tictactoe.players.LocalPlayer ..|>  app.games.framework.Player
+app.games.tictactoe.players.OnlinePlayer -->  app.games.tictactoe.players.moveStrategies.MoveSrategy : strategy
+app.games.tictactoe.players.OnlinePlayer ..|>  app.games.framework.Player
+app.games.tictactoe.players.RemotePlayer ..|>  app.games.framework.Player
+app.games.tictactoe.players.moveStrategies.AIStrategy ..|>  app.games.tictactoe.players.moveStrategies.MoveSrategy
+app.games.tictactoe.players.moveStrategies.UserStrategy -->  app.games.tictactoe.TicTacToePage : page
+app.games.tictactoe.players.moveStrategies.UserStrategy ..|>  app.games.tictactoe.players.moveStrategies.MoveSrategy
 app.network.ServerListener -->  app.games.tictactoe.TicTacToeGame : game
 app.network.ServerListener -->  app.network.Client : client
 app.pages.GamePage --|>  app.pages.context.Page
@@ -304,11 +345,8 @@ app.pages.context.PageManager -->  app.pages.context.PageManager : INSTANCE
 app.pages.gameBuilder.GameBuilderPage --|>  app.pages.context.Page
 app.pages.gameBuilder.ModePage *--  app.games.framework.GameBuilder : builder
 app.pages.gameBuilder.ModePage --|>  app.pages.context.Page
-app.pages.gameBuilder.OldGameBuilderPage --|>  app.pages.context.Page
 app.pages.gameBuilder.PlayerPage *--  app.games.framework.GameBuilder : builder
 app.pages.gameBuilder.PlayerPage --|>  app.pages.context.Page
-app.players.LocalPlayer -->  app.games.tictactoe.TicTacToeGame : game
-app.players.OnlinePlayer -->  app.network.Client : client
 app.util.cliInputFields.CLIIntegerField --|>  app.util.cliInputFields.common.CLIField
 app.util.cliInputFields.CLIIntegerField$Builder --|>  app.util.cliInputFields.common.CLIField$Builder
 

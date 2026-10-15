@@ -1,25 +1,54 @@
 package app.games.tictactoe.players;
 
-import java.io.IOException;
-import java.util.Random;
-import app.network.Client;
+import app.games.framework.Player;
+import app.games.framework.PlayerState;
+import app.games.tictactoe.players.moveStrategies.Move;
+import app.games.tictactoe.players.moveStrategies.MoveSrategy;
 
 /**
  * OnlinePlayer
  */
-public class Onlineplayer {
-    private Client client;
-    Random random = new Random();
-    int randomnumber = 1000 + random.nextInt(9000);
-    String playername = "Player" + randomnumber;
+public class OnlinePlayer implements Player {
+    private MoveSrategy strategy;
 
     /**
-     * Constructor
+     * Makes a online player
+     * 
+     * @param strategy the strategy to use for making a move
      */
-    public Onlineplayer(Client client) throws IOException {
-        this.client = client;
+    public OnlinePlayer(MoveSrategy strategy) {
+        this.strategy = strategy;
+    }
 
-        this.client.sendCommand("login " + playername);
-        this.client.sendCommand("subscribe tic-tac-toe");
+    @Override
+    public void doMove() {
+        Move move = strategy.getMove(null, null);
+
+    }
+
+    @Override
+    public PlayerState getState() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getState'");
+    }
+
+    public void login() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'login'");
+    }
+
+    public void subscribe(String string) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'subscribe'");
+    }
+
+    public void waitForTurn() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'waitForTurn'");
+    }
+
+    public boolean isFirst() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'isFirst'");
     }
 }

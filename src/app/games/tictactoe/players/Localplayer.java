@@ -1,59 +1,34 @@
 package app.games.tictactoe.players;
 
-import app.games.tictactoe.TicTacToeGame;
+import app.games.framework.Player;
+import app.games.framework.PlayerState;
+import app.games.tictactoe.players.moveStrategies.Move;
+import app.games.tictactoe.players.moveStrategies.MoveSrategy;
 
 /**
  * LocalPlayer
  */
-public class Localplayer {
-    private TicTacToeGame game;
-    private boolean aiMode;
+public class LocalPlayer implements Player {
+    private MoveSrategy strategy;
 
     /**
-     * Constructor
+     * Makes a local player
+     * 
+     * @param strategy the strategy to use for making a move
      */
-    public Localplayer(TicTacToeGame game, boolean aiMode) {
-        this.game = game;
-        this.aiMode = aiMode; }
+    public LocalPlayer(MoveSrategy strategy) {
+        this.strategy = strategy;
+    }
 
-    /**
-     * Play
-     */
-    public void play() {
-        boolean gameRunning = true;
-        while (gameRunning) {
-            game.symbol('X');
-            game.turn();
+    @Override
+    public void doMove() {
+        Move move = strategy.getMove(null, null);
 
-            if (game.checkWinner()) {
-                System.out.println("Player X wins!");
-                break;
-            }
+    }
 
-            if (game.isBoardFull()) {
-                System.out.println("Draw!");
-                break;
-            }
-            game.symbol('O');
-
-            // laat de speler of de AI een move doen
-            if (aiMode) {
-                game.aiMove();
-            } else {
-                game.turn();
-            }
-
-            if (game.checkWinner()) {
-                if (aiMode) {
-                    System.out.println("AI wins!");
-                } else {
-                    System.out.println("Player O wins!");
-                }
-                break; }
-            if (game.isBoardFull()) {
-                System.out.println("Draw!");
-                break;
-            }
-        }
+    @Override
+    public PlayerState getState() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getState'");
     }
 }
