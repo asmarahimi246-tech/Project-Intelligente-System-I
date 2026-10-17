@@ -44,6 +44,8 @@ public class ServerListener implements Runnable {
         try {
             String message;
             while ((message = reader.readLine()) != null) {
+                //TODO: message parser
+
                 if (message.contains("ERR")) {
                     System.err.println("[error] " + message);
                     errorFlag = true;
@@ -90,5 +92,12 @@ public class ServerListener implements Runnable {
      */
     public String getNextSvrMessage() {
         return svrQueue.poll(); // removes and returns the head of the queue
+    }
+
+    /**
+     * Returns an svr message back to the queue
+     */
+    public void returnSvrMessage(String message) {
+        throw new UnsupportedOperationException("Unimplemented method 'returnSvrMessage'");
     }
 }

@@ -11,9 +11,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Client
  * 
- * 
  * AI usage:
- * Made with help from a lot of youtube videos and explenations from deepai
+ * Made with help from a lot of youtube videos and explanations from deepai
  */
 public class Client {
     private final AtomicBoolean closing = new AtomicBoolean(false);
@@ -25,6 +24,9 @@ public class Client {
 
     /**
      * Constructor
+     * 
+     * Makes a new client
+     * 
      * @param socket the socket
      * @throws IOException 
      */
@@ -83,6 +85,26 @@ public class Client {
     }
 
     /**
+     * gets the next svr message
+     * 
+     * @return the message
+     */
+    public ServerMessage getNextSvrMessage() {
+        //TODO: add the message parser to the server listener
+        listener.getNextSvrMessage();
+        throw new UnsupportedOperationException("Unimplemented method 'getNextSvrMessage'");
+    }
+
+    /**
+     * Returns an svr message back to the queue
+     */
+    public void returnSvrMessage(ServerMessage message) {
+        //TODO: add the message parser to the server listener
+        listener.returnSvrMessage(null);
+        throw new UnsupportedOperationException("Unimplemented method 'returnSvrMessage'");
+    }
+
+    /**
      * closes the socket
      * 
      * TODO: error handling
@@ -97,13 +119,4 @@ public class Client {
             e.printStackTrace();
         }
     }
-
-    /**
-     * gets the listener
-     * @return the listemer
-    */
-    public ServerListener getListener() {
-        return this.listener;
-    }
-    
 }

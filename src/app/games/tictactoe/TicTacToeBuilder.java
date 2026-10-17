@@ -1,14 +1,19 @@
 package app.games.tictactoe;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 import app.games.framework.GameBuilder;
 import app.games.framework.Player;
 import app.games.tictactoe.players.RemotePlayer;
 import app.games.tictactoe.players.moveStrategies.AIStrategy;
 import app.games.tictactoe.players.moveStrategies.UserStrategy;
+import app.network.Client;
+import app.util.Config;
+import app.util.ScannerSingleton;
 import app.games.tictactoe.players.OnlinePlayer;
 import app.games.tictactoe.players.LocalPlayer;
 import app.games.framework.PlayerOption;
@@ -19,6 +24,7 @@ import app.games.framework.PlayerOption;
  */
 public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder> {
     private TicTacToePage page = new TicTacToePage();
+    private Client shared;
 
     /**
      * Constructor
@@ -26,6 +32,33 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
     public TicTacToeBuilder() {
         super();
         super.playersToAdd = 2;
+    }
+
+    @Override
+    public TicTacToeBuilder setMode(String mode) {
+        if (mode.equals("online")) {
+            try {
+                // make the socket for online gaming
+                Socket socket;
+                if (Config.DEBUG) {
+                    Scanner scanner = ScannerSingleton.getInstance();
+                    System.out.println("want to connect to localhost: (y/n)");
+                    String answer = scanner.nextLine();
+                    if (answer.equals("y")) {
+                        socket = new Socket("localhost", Config.LOCALPORT);
+                    } else {
+                        socket = new Socket(Config.ONLINEIP, Config.ONLINEPORT);
+                    }
+                } else {
+                    socket = new Socket(Config.ONLINEIP, Config.ONLINEPORT);
+                }
+
+                shared = new Client(socket);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+         }
+        return super.setMode(mode);
     }
 
     @Override
@@ -54,35 +87,17 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         // Online
         if (super.mode.equals("online")) {
             // setup online player
-            if (two instanceof OnlinePlayer onlinePlayer) {
-                boolean setupDone = false;
-                while (!setupDone) {
-                    switch (onlinePlayer.getState()) {
-                        case INITIALIZED:
-                            onlinePlayer.login();
-
-                        case LOGGED_IN:
-                            onlinePlayer.subscribe("tic-tac-toe");
-
-                        case SUBSCRIBED:
-                            onlinePlayer.waitForTurn();
-                            break;
-                
-                        default:
-                            System.err.println("something went wrong: closing game");
-                            return null;
-                    }
-                }
+            if (one instanceof RemotePlayer remotePlayer && two instanceof OnlinePlayer onlinePlayer) {
 
                 // server based order
                 // by waiting for Match message
-                boolean onlinePlayerFirst = onlinePlayer.isFirst();
-                if(onlinePlayerFirst) {
+                boolean remotePlayerFirst = remotePlayer.isFirst();
+                if(remotePlayerFirst) {
+                    players.add(remotePlayer);
                     players.add(onlinePlayer);
-                    players.add(one);
                 } else {
-                    players.add(one);
                     players.add(onlinePlayer);
+                    players.add(remotePlayer);
                 }
             }
 
@@ -109,7 +124,8 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
     public TicTacToeBuilder addDefaultPlayers(){
         // add remote player if online
         if (super.mode.equals("online")) {
-            PlayerOption<RemotePlayer> remote = new PlayerOption<RemotePlayer>("remote", () -> new RemotePlayer());
+
+            PlayerOption<RemotePlayer> remote = new PlayerOption<RemotePlayer>("remote", () -> new RemotePlayer(shared));
             super.addPlayer(remote);
         }
         // do nothing for local
@@ -124,9 +140,11 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
 
         // online players
         if (super.mode.equals("online")) {
+
+
             toReturn = List.of(
-                new PlayerOption<OnlinePlayer>("player", () -> new OnlinePlayer(new UserStrategy(page))),
-                new PlayerOption<OnlinePlayer>("ai", () -> new OnlinePlayer(new AIStrategy()))
+                new PlayerOption<OnlinePlayer>("player", () -> new OnlinePlayer(new UserStrategy(page), shared)),
+                new PlayerOption<OnlinePlayer>("ai", () -> new OnlinePlayer(new AIStrategy(), shared))
                 );
 
         // local players
