@@ -37,4 +37,5 @@ package app.network;
  * </pre>
  */
 public class ServerMessage {
+    
 }

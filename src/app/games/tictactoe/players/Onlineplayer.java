@@ -1,5 +1,7 @@
 package app.games.tictactoe.players;
 
+import java.util.Random;
+
 import app.games.framework.Player;
 import app.games.framework.PlayerState;
 import app.games.tictactoe.players.moveStrategies.Move;
@@ -32,7 +34,26 @@ public class OnlinePlayer implements Player {
         throw new UnsupportedOperationException("Unimplemented method 'getState'");
     }
 
+    /**
+     * TODO: this
+     * 
+     * @return a unique name
+     */
+    private String generateUniqueName() {
+        // get player list
+        boolean uniqueName = false;
+        while (!uniqueName) {
+            // generate name
+            Random nameGenerator = new Random();
+            String name = "" + nameGenerator.nextInt();
+
+        }
+        return "";
+    }
+
     public void login() {
+
+        // gen name based on
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'login'");
     }

@@ -1,4 +1,4 @@
-package app.games.tictactoe;
+package app.games.tictactoe.model;
 
 /**
  * <pre>
