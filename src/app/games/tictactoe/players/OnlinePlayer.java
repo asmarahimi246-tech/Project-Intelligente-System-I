@@ -1,7 +1,6 @@
 package app.games.tictactoe.players;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import app.games.framework.Player;
 import app.games.framework.PlayerState;
