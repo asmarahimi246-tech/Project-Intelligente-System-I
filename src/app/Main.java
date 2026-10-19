@@ -6,6 +6,7 @@ import app.pages.context.Page;
 import app.util.ScannerSingleton;
 
 import java.io.IOException;
+import app.pages.SwingTestPage;
 
 /**
  * <pre>
@@ -28,7 +29,7 @@ public class Main {
         // new code v
         // set a start page
         PageManager manager = PageManager.getInstance();
-        Page page = new MainPage();
+        Page page = new SwingTestPage();
         manager.setCurrentPage(page);
 
         // make an app and run it

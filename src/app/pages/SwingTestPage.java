@@ -10,6 +10,10 @@ import app.pages.context.PageManager;
 import app.util.Config;
 import app.util.ScannerSingleton;
 
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import java.awt.CardLayout;
+
 /**
  * SwingTestPage
  */
@@ -29,23 +33,99 @@ public class SwingTestPage extends Page {
         super();
     }
 
+
     @Override
     protected void createSwingUi() {
-        setLayout(new GridLayout(3, 3));
-        for (int i = 0; i < 9; i++) {
-            JButton button = new JButton();
-            button.setBackground(Config.BACKGROUND_COLOR);
-            button.setForeground(Config.FOREGROUND_COLOR);
-            button.setFont(new Font("Arial", Font.BOLD, 120));
+        CardLayout cardLayout = new CardLayout();
+        setLayout(new GridLayout(1, 1));
 
-            button.addActionListener(event -> {
-                button.setText("X");
-                button.setEnabled(false);
-            });
+        JPanel menuPanel = new JPanel(cardLayout);
+        add(menuPanel);
 
-            add(button);
-        }
+        // Main menu
+        JPanel mainMenu = new JPanel(new GridLayout(3, 1, 10, 10));
+
+        JLabel title = new JLabel("Main Menu", JLabel.CENTER);
+        title.setForeground(Config.FOREGROUND_COLOR);
+        title.setFont(new Font("Arial", Font.BOLD, 30));
+        mainMenu.add(title);
+
+        JButton localButton = new JButton("Local");
+        JButton onlineButton = new JButton("Online");
+
+        mainMenu.add(localButton);
+        mainMenu.add(onlineButton);
+
+        // Local menu
+        JPanel localMenu = new JPanel(new GridLayout(4, 1, 10, 10));
+
+        JLabel localTitle = new JLabel("Local Game", JLabel.CENTER);
+        localTitle.setFont(new Font("Arial", Font.BOLD, 26));
+
+        JButton localAiButton = new JButton("Play vs AI");
+        JButton localPlayerButton = new JButton("Play vs Local Player");
+        JButton localBackButton = new JButton("Back");
+
+        localMenu.add(localTitle);
+        localMenu.add(localAiButton);
+        localMenu.add(localPlayerButton);
+        localMenu.add(localBackButton);
+
+        // Online menu
+        JPanel onlineMenu = new JPanel(new GridLayout(4, 1, 10, 10));
+
+        JLabel onlineTitle = new JLabel("Online Game", JLabel.CENTER);
+        onlineTitle.setFont(new Font("Arial", Font.BOLD, 26));
+
+        JButton onlineAiButton = new JButton("Play vs AI");
+        JButton onlinePlayerButton = new JButton("Play vs Online Player");
+        JButton onlineBackButton = new JButton("Back");
+
+        onlineMenu.add(onlineTitle);
+        onlineMenu.add(onlineAiButton);
+        onlineMenu.add(onlinePlayerButton);
+        onlineMenu.add(onlineBackButton);
+
+        // Add menus to CardLayout
+        menuPanel.add(mainMenu, "MAIN");
+        menuPanel.add(localMenu, "LOCAL");
+        menuPanel.add(onlineMenu, "ONLINE");
+
+        // Navigation
+        localButton.addActionListener(event ->
+                cardLayout.show(menuPanel, "LOCAL")
+        );
+
+        onlineButton.addActionListener(event ->
+                cardLayout.show(menuPanel, "ONLINE")
+        );
+
+        localBackButton.addActionListener(event ->
+                cardLayout.show(menuPanel, "MAIN")
+        );
+
+        onlineBackButton.addActionListener(event ->
+                cardLayout.show(menuPanel, "MAIN")
+        );
+
+        // Temporary actions until the game is connected
+        localAiButton.addActionListener(event ->
+                System.out.println("Local: Play vs AI")
+        );
+
+        localPlayerButton.addActionListener(event ->
+                System.out.println("Local: Play vs Local Player")
+        );
+
+        onlineAiButton.addActionListener(event ->
+                System.out.println("Online: Play vs AI")
+        );
+
+        onlinePlayerButton.addActionListener(event ->
+                System.out.println("Online: Play vs Online Player")
+        );
     }
+
 
     /**    (non-Javadoc)
      * @author code andy
@@ -56,13 +136,8 @@ public class SwingTestPage extends Page {
      */
     @Override
     public void open() {
-        System.out.println("press enter to exit");
-        Scanner scanner = ScannerSingleton.getInstance();
-        scanner.nextLine();
-
-        Page page = new MainPage();
-        PageManager manager = PageManager.getInstance();
-        manager.setCurrentPage(page);
+        // The Swing menu is already displayed.
+        // No terminal input is needed.
     }
 
 }
