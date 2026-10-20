@@ -3,14 +3,20 @@ package app.games.framework;
 /**
  * Player
  */
-public interface Player {
+public abstract class Player {
+    protected String name;
+    protected PlayerState state;
+    // maybe move strategie in here
+
     /**
      * Does a move
      */
-    abstract void doMove();
+    public abstract void doMove();
 
     /**
      * Gets the player state
      */
-    abstract PlayerState getState();
+    public PlayerState getState() {
+        return state;
+    }
 } 

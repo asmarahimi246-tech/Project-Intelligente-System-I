@@ -3,7 +3,8 @@ import java.util.ArrayList;
 
 import app.games.framework.Game;
 import app.games.framework.Player;
-import app.network.ServerListener;
+import app.games.tictactoe.model.TicTacToeModel;
+import app.network.old.ServerListener;
 import app.pages.context.Page;
 
 /**

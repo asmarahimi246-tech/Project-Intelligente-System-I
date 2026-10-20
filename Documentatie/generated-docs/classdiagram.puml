@@ -134,7 +134,7 @@ class app.games.tictactoe.players.OnlinePlayer {
 }
 
 
-class app.games.tictactoe.players.RemotePlayer {
+class app.games.tictactoe.players.OnlineOpponent {
 	{method} +doMove () : void
 	{method} +getState () : PlayerState
 }
@@ -325,7 +325,7 @@ app.games.tictactoe.players.LocalPlayer -->  app.games.tictactoe.players.moveStr
 app.games.tictactoe.players.LocalPlayer ..|>  app.games.framework.Player
 app.games.tictactoe.players.OnlinePlayer -->  app.games.tictactoe.players.moveStrategies.MoveSrategy : strategy
 app.games.tictactoe.players.OnlinePlayer ..|>  app.games.framework.Player
-app.games.tictactoe.players.RemotePlayer ..|>  app.games.framework.Player
+app.games.tictactoe.players.OnlineOpponent ..|>  app.games.framework.Player
 app.games.tictactoe.players.moveStrategies.AIStrategy ..|>  app.games.tictactoe.players.moveStrategies.MoveSrategy
 app.games.tictactoe.players.moveStrategies.UserStrategy -->  app.games.tictactoe.TicTacToePage : page
 app.games.tictactoe.players.moveStrategies.UserStrategy ..|>  app.games.tictactoe.players.moveStrategies.MoveSrategy

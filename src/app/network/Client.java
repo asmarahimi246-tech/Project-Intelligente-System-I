@@ -1,63 +1,122 @@
 package app.network;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * <pre>
- * &gt; Handles the connection to the server.
- * &gt; Sends and receives network data.
- * &gt; Could be hard-coded, but a finite-state-machine approach is preferable.
- *
- * Example:
- * &gt; connect()    --> opens a socket
- * &gt; send()       --> sends a message
- * &gt; disconnect() --> closes the connection
- * &gt; receive()    --> receives data through a ServerListener
- * </pre>
+ * Client
+ * 
+ * AI usage:
+ * Made with help from a lot of youtube videos and explanations from deepai
  */
 public class Client {
+    private final AtomicBoolean closing = new AtomicBoolean(false);
     private Socket socket;
     private BufferedReader reader;
     private PrintWriter writer;
+    private ServerListener listener;
 
-        /**
-     * TODO: dit moet je op een andere thread doen 
-     * om te voorkomen dat de applicatie vast loopt
-     * 
+
+    /**
      * Constructor
-     * @throws IOException it does
+     * 
+     * Makes a new client
+     * 
+     * @param socket the socket
+     * @throws IOException 
      */
-    public Client() throws IOException {
-        socket = new Socket("localhost", 7789);
-        reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        writer = new PrintWriter(socket.getOutputStream(), true);
+    public Client(Socket socket) throws IOException {
+        this.socket = socket;
+        connectToServer();
     }
 
     /**
-     * TODO:
-     * @param command the command to send
+     * connects to a server
+     */
+    private void connectToServer() throws IOException{
+        // make writers
+        writer = new PrintWriter(this.socket.getOutputStream(), true);
+        reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+
+        // still dont exactly know how concurent linked queue works i do know that its a thread save queue
+        // make server listen with a lambda function
+        ConcurrentLinkedQueue<String> okQueue = new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<String> svrQueue = new ConcurrentLinkedQueue<>();
+        this.listener = new ServerListener(reader, okQueue, svrQueue, () -> closing.get());
+
+        //place it on a thread and start it
+        Thread thread = new Thread(listener);
+        thread.start();
+    }
+
+    /**
+     * writes a command to the server
+     * 
+     * @param command the command
      */
     public void sendCommand(String command) {
+        //write to server
         writer.println(command);
     }
 
     /**
-     * TODO:
-     * @return a BufferedReader
+     * checks if the client is ok or if theres an error
+     * 
+     * @return true if its ok
      */
-    public BufferedReader getReader() {
-        return reader;
+    public boolean isOk(){
+        // wait for ok
+        // by checking queue
+        boolean ok = false;
+        while (!ok) {
+            if (this.listener.isError()) {
+                System.err.println("Error received from server");
+            } else if (this.listener.getNextOkMessage() != null) {
+                ok = true;
+            }
+        }
+
+        return true;
     }
 
     /**
-     * sluit de socket
-     * @throws IOException the exception
+     * gets the next svr message
+     * 
+     * @return the message
      */
-    public void close() throws IOException {
-        this.socket.close();
+    public ServerMessage getNextSvrMessage() {
+        //TODO: add the message parser to the server listener
+        listener.getNextSvrMessage();
+        throw new UnsupportedOperationException("Unimplemented method 'getNextSvrMessage'");
+    }
+
+    /**
+     * Returns a svr message back to the queue
+     */
+    public void returnSvrMessage(ServerMessage message) {
+        //TODO: add the message parser to the server listener
+        listener.returnSvrMessage(null);
+        throw new UnsupportedOperationException("Unimplemented method 'returnSvrMessage'");
+    }
+
+    /**
+     * closes the socket
+     * 
+     * TODO: error handling
+     */
+    public void close() {
+        try {
+            // this should also automaticly closes the listener
+            closing.set(true);
+            socket.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

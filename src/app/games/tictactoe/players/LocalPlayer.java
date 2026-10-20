@@ -8,7 +8,7 @@ import app.games.tictactoe.players.moveStrategies.MoveSrategy;
 /**
  * LocalPlayer
  */
-public class LocalPlayer implements Player {
+public class LocalPlayer extends Player {
     private MoveSrategy strategy;
 
     /**
@@ -22,13 +22,9 @@ public class LocalPlayer implements Player {
 
     @Override
     public void doMove() {
+        super.state = PlayerState.CAN_MOVE;
         Move move = strategy.getMove(null, null);
-
+        super.state = PlayerState.EXECUTED_TURN;
     }
 
-    @Override
-    public PlayerState getState() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getState'");
-    }
 }
