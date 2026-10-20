@@ -153,7 +153,6 @@ public class AIStrategy implements MoveSrategy {
 
     @Override
     public Move getMove(ArrayList<String> board, Predicate<Move> validateMove) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getMove'");
+        return numberAI(board, 'X');
     }
 }
