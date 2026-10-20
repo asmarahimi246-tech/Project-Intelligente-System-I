@@ -26,7 +26,7 @@ public class AIStrategy implements MoveSrategy {
         if (player == 'X') {
             simulatedOpponent = 'O';
         } else {
-            simulatedopponent = 'X';
+            simulatedOpponent = 'X';
         }
 
         if (max) {
