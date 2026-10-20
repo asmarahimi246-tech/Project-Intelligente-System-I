@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 import app.games.framework.GameBuilder;
 import app.games.framework.Player;
-import app.games.tictactoe.players.RemotePlayer;
+import app.games.tictactoe.players.OnlineOpponent;
 import app.games.tictactoe.players.moveStrategies.AIStrategy;
 import app.games.tictactoe.players.moveStrategies.UserStrategy;
 import app.network.Client;
@@ -87,17 +87,17 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         // Online
         if (super.mode.equals("online")) {
             // setup online player
-            if (one instanceof RemotePlayer remotePlayer && two instanceof OnlinePlayer onlinePlayer) {
+            if (one instanceof OnlineOpponent onlineOpponent && two instanceof OnlinePlayer onlinePlayer) {
 
                 // server based order
                 // by waiting for Match message
-                boolean remotePlayerFirst = remotePlayer.isFirst();
+                boolean remotePlayerFirst = onlineOpponent.isFirst();
                 if(remotePlayerFirst) {
-                    players.add(remotePlayer);
+                    players.add(onlineOpponent);
                     players.add(onlinePlayer);
                 } else {
                     players.add(onlinePlayer);
-                    players.add(remotePlayer);
+                    players.add(onlineOpponent);
                 }
             }
 
@@ -125,7 +125,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         // add remote player if online
         if (super.mode.equals("online")) {
 
-            PlayerOption<RemotePlayer> remote = new PlayerOption<RemotePlayer>("remote", () -> new RemotePlayer(shared));
+            PlayerOption<OnlineOpponent> remote = new PlayerOption<OnlineOpponent>("remote", () -> new OnlineOpponent(shared));
             super.addPlayer(remote);
         }
         // do nothing for local

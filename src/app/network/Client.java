@@ -96,7 +96,7 @@ public class Client {
     }
 
     /**
-     * Returns an svr message back to the queue
+     * Returns a svr message back to the queue
      */
     public void returnSvrMessage(ServerMessage message) {
         //TODO: add the message parser to the server listener

@@ -43,7 +43,7 @@ public class ServerMessageParser {
         private HashMap<String, String> params = new HashMap<String, String>();
 
     /**
-     * The WHYson decoder alows you to get the values of each param
+     * The WHYson decoder allows you to get the values of each param
      * 
      * @param whyson the WHYson to decode format of a WHYson:
      * COMMAND {PARAM: "value"}

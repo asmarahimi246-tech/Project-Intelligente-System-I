@@ -5,13 +5,13 @@ import app.games.framework.PlayerState;
 import app.network.Client;
 
 /**
- * RemotePlayer
+ * OnlineOpponent
  * 
- * This player waits for the remote
+ * This player represents the opponent in an online game
  * 
  * Its here to read what the opponent does from the server
  */
-public class RemotePlayer extends Player {
+public class OnlineOpponent extends Player {
     private Client client; // the client is shared with players
     private boolean isFirst;
 
@@ -19,7 +19,7 @@ public class RemotePlayer extends Player {
      * Makes a remote player
      * @return 
      */
-    public RemotePlayer(Client client) {
+    public OnlineOpponent(Client client) {
         this.client = client;
 
         // TODO: get the name from the parameter OPPONENT of the below server command
