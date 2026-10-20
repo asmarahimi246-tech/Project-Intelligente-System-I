@@ -36,7 +36,7 @@ public class AIStrategy implements MoveSrategy {
                     char a = board[i];
                     board[i] = player;
 
-                    int score = minimax(board, !max, simulatedopponent);
+                    int score = minimax(board, !max, simulatedOpponent);
                     board[i] = a;
                     bestscore = Math.max(bestscore, score);
                 }
