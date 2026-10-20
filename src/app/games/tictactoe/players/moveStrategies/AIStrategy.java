@@ -24,7 +24,7 @@ public class AIStrategy implements MoveSrategy {
         char simulatedOpponent;
 
         if (player == 'X') {
-            simulatedopponent = 'O';
+            simulatedOpponent = 'O';
         } else {
             simulatedopponent = 'X';
         }
