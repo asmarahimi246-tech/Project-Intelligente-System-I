@@ -67,22 +67,22 @@ public class ServerListener {
             turn = true;
 
             // de eerste speler die aan de beurt is krijgt X
-            if (!symbol) {
-                game.symbol('X');
-                symbol = true;
-            }
+            //if (!symbol) {
+            //    game.symbol('X');
+            //    symbol = true;
+            //}
 
             // laat de AI of speler een zet doen
-            if (aiMode) {
-                game.aiMove();
-            } else {
-                game.turn();
-            }
+            //if (aiMode) {
+            //    game.aiMove();
+            //} else {
+            //    game.turn();
+            //}
         }
 
-        if (message.startsWith("SVR GAME MATCH")) {
-            game.printBoard();
-        }
+        //if (message.startsWith("SVR GAME MATCH")) {
+        //    game.printBoard();
+        //}
 
         if (message.startsWith("SVR GAME MOVE")) {
             if (message.contains("MOVE:")) {
@@ -91,19 +91,19 @@ public class ServerListener {
                 int number = Character.getNumericValue(caracter);
 
                 // als de client nog geen symbool heeft is dit de tweede speler
-                if (!symbol) {
-                    game.symbol('O');
-                    symbol = true;
-                }
+                //if (!symbol) {
+                //    game.symbol('O');
+                //    symbol = true;
+                //}
 
                 // controlleert of de move van jezelf (eigen client) komt
-                if (turn) {
-                    game.move(number, true);
-                    turn = false;
-                } else {
-                    // de ontvangen move komt van de andere speler
-                    game.move(number, false);
-                }
+                //if (turn) {
+                //    game.move(number, true);
+                //    turn = false;
+                //} else {
+                //    // de ontvangen move komt van de andere speler
+                //    game.move(number, false);
+                //}
             }
         }
 

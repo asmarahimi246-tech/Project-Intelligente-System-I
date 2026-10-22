@@ -2,6 +2,8 @@ package app.games.tictactoe;
 
 import java.util.Scanner;
 
+import javax.swing.JLabel;
+
 import app.pages.context.Page;
 
 /**
@@ -53,7 +55,14 @@ public class TicTacToePage extends Page {
 
     @Override
     public void open() {
+        
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'open'");
+    }
+
+    @Override
+    public void createSwingUi() {
+        // TODO: add ui
+        add(new JLabel("Ui not implemented"));
     }
 }

@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import app.games.framework.Game;
 import app.games.framework.GameBuilder;
 import app.games.framework.Player;
-import app.pages.MainPage;
+import app.pages.GamePage;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.util.ScannerSingleton;
@@ -50,9 +50,7 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
      * @param builder the builder
      */
     public PlayerPage(B builder) {
-        super();
         this.builder = builder;
-        add(new JLabel(toString()));
     }
 
     @Override
@@ -86,12 +84,13 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
 
         // game page
         PageManager manager = PageManager.getInstance();
-        Page game = builder.build().getPage();
-        if (game != null) {
-            manager.setCurrentPage(game);
-        } else {
-            Page main = new MainPage();
-            manager.setCurrentPage(main);
-        }
+        Page page = new GamePage<G,B>(builder);
+        manager.setCurrentPage(page);
+    }
+
+    @Override
+    public void createSwingUi() {
+        // TODO: add ui
+        add(new JLabel("Ui not implemented"));
     }
 }

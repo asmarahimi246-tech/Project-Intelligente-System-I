@@ -1,7 +1,8 @@
 package app.pages.gameBuilder;
 
-import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.swing.JLabel;
 
 import app.games.tictactoe.TicTacToeBuilder;
 import app.games.tictactoe.TicTacToeGame;
@@ -12,34 +13,26 @@ import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
 
 /**
- * GameBuilderPage
+ * GameSelectionPage
  * 
- * Contains the ui for building a game
+ * An entry point for the game builder
  * 
- * Everything in seperate file
+ * Contains the ui for selecting a game
+ * 
+ * Everything from the game builder in seperate page
  * 
  * start
  * 1. game select
  * 2. game modes (local, online, tournament)
- * 
- * local
- * 3. splayer (against ai or speler)
- * 
- * online
- * 3. player (against server)
- * 
- * tournament
- * 3. player or ai (against server)
- * 
- * 4. build game
- * 5. run game
+ * 3. player (options received from game)
+ * 4. build and run game
  */
-public class GameBuilderPage extends Page {
+public class GameSelectionPage extends Page {
 
     @Override
     public void open() {
         // print
-        System.out.println("=== Game Builder ===");
+        System.out.println("=== Game Selection ===");
         System.out.println("1. Tic Tac Toe");
         System.out.print("Enter your choice: ");
 
@@ -73,5 +66,11 @@ public class GameBuilderPage extends Page {
 
         PageManager manager = PageManager.getInstance();
         manager.setCurrentPage(page);
+    }
+
+    @Override
+    public void createSwingUi() {
+        // TODO: add ui
+        add(new JLabel("Ui not implemented"));
     }
 }

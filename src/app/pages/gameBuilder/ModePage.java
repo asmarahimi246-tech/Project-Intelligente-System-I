@@ -46,9 +46,7 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
      * @param builder the builder
      */
     public ModePage(B builder) {
-        super();
         this.builder = builder;
-        add(new JLabel(toString()));
     }
 
     @Override
@@ -89,5 +87,11 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
         Page page = new PlayerPage<G,B>(builder);
         PageManager manager = PageManager.getInstance();
         manager.setCurrentPage(page);
+    }
+
+    @Override
+    public void createSwingUi() {
+        // TODO: add ui
+        add(new JLabel("Ui not implemented"));
     }
 }

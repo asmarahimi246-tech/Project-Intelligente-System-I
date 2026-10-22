@@ -8,6 +8,14 @@ import java.util.function.Predicate;
  * AI
  */
 public class AIStrategy implements MoveSrategy {
+    /**
+     * Temp
+     * 
+     * @param board board
+     * @param max max
+     * @param player player
+     * @return iets
+     */
     private int minimax(char[] board, boolean max, char player) {
         if (checkWin(board, player) == 1) {
             return 1;
@@ -60,13 +68,20 @@ public class AIStrategy implements MoveSrategy {
         }
     }
 
-    public Move numberAI(char[] board, char player) {
+    /**
+     * Temp
+     * 
+     * @param board board
+     * @param player player
+     * @return iets
+     */
+    public Move numberAI(ArrayList<String> board, char player) {
 
         // zoekt eerst naar een winnende zet voor de AI
         for (int i = 0; i < 9; i++) {
-            if (checkMove(board, player, i)) {
-                return i + 1;
-            }
+            //if (checkMove(board, player, i)) {
+            //    return i + 1;
+            //}
         }
 
         char opponent;
@@ -79,9 +94,9 @@ public class AIStrategy implements MoveSrategy {
 
         // probeert een winnende zet van de tegenstander te blokkeren
         for (int i = 0; i < 9; i++) {
-            if (checkMove(board, opponent, i)) {
-                return i + 1;
-            }
+            //if (checkMove(board, opponent, i)) {
+            //    return i + 1;
+            //}
         }
 
         // als er geen directe winnende zet of block is kiest de AI een random positie
@@ -91,32 +106,44 @@ public class AIStrategy implements MoveSrategy {
             int randomMove = random.nextInt(9);
 
             // controlleert of een pos vrij is
-            if (board[randomMove] != 'X' && board[randomMove] != 'O') {
-                return randomMove + 1;
-            }
+            //if (board[randomMove] != 'X' && board[randomMove] != 'O') {
+            //    return randomMove + 1;
+            //}
         }
     }
 
-    private boolean checkMove(char[] board, char player, int pos) {
+    /**
+     * Temp
+     * @param board board
+     * @param player player
+     * @param pos pos 
+     * @return iets
+     */
+    private boolean checkMove(ArrayList<String> board, char player, int pos) {
 
         // een bezette pos mag niet
-        if (board[pos] == 'X' || board[pos] == 'O') {
-            return false;
-        }
+        //if (board[pos] == 'X' || board[pos] == 'O') {
+        //    return false;
+        //}
 
-        char a = board[pos];
-        board[pos] = player;
+        //char a = board[pos];
+        //board[pos] = player;
 
         // checkt of deze zet een winning move is
-        if (minimax(board, player)) {
-            board[pos] = a;
-            return true;
-        }
-        board[pos] = a;
+        //if (minimax(board, player)) {
+        //    board[pos] = a;
+        //    return true;
+        //}
+        //board[pos] = a;
 
         return false;
     }
 
+    /**
+     * Temp
+     * @param board board
+     * @return iets
+     */
     private boolean isBoardFull(char[] board) {
         for (char vak : board) {
             if (vak != 'X' && vak != 'O') {
@@ -126,13 +153,25 @@ public class AIStrategy implements MoveSrategy {
         return true;
     }
 
+    /**
+     * Temp
+     * @param board board
+     * @param player player
+     * @return iets
+     */
     private int checkWin(char[] board, char player) {
-        if (minimax(board, player)) {
-            return 1;
-        }
+        //if (minimax(board, player)) {
+        //    return 1;
+        //}
         return 0;
     }
 
+    /**
+     * Temp
+     * @param board board
+     * @param player player
+     * @return iets
+     */
     private int checkLoss(char[] board, char player) {
         char opponent;
 
@@ -142,12 +181,18 @@ public class AIStrategy implements MoveSrategy {
             opponent = 'X';
         }
 
-        if (minimax(board, opponent)) {
-            return -1;
-        }
+        //if (minimax(board, opponent)) {
+        //    return -1;
+        //}
         return 0;
     }
 
+    /**
+     * Temp
+     * @param board board
+     * @param player player
+     * @return iets
+     */
     private boolean checkDraw(char[] board, char player) {
         return isBoardFull(board);
     }

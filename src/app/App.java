@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import app.pages.BasePage;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
 
@@ -56,10 +57,25 @@ public class App {
                     // get the page
                     Page page = manager.getCurrentPage();
 
+                    // initialize base page
+                    // base page works like base html
+                    // but then for swing
+                    //
+                    // made to prevent some duplicate code (Yuna)
+                    //
+                    // TODO LATER:
+                    // not the best implementation
+                    // for expendability
+                    // but also not a must have
+                    // maybe a thing to reimplement
+                    // in ISY 2
+                    Page base = new BasePage(page);
+                    base.createSwingUi();
+
                     // set the page for swing 
                     // this works because page extends JPanel
                     // shows a white page if empty
-                    setContentPane(page);
+                    setContentPane(base);
 
                     // open the page 
                     page.open();

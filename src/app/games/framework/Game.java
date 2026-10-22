@@ -40,4 +40,9 @@ public abstract class Game {
     public Page getPage() {
         return page;
     }
+
+    /**
+     * Runs the game
+     */
+    public abstract void run();
 }
