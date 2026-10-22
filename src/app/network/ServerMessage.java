@@ -1,41 +1,87 @@
 package app.network;
 
-/**
- * <pre>
- * &gt; Creates objects from parsed server messages.
- *
- * Example:
- * &gt; enum MessageType
- *     &gt; OK
- *     &gt; ERR
- *     &gt; SRV
- * &gt; enum MessageSubtype
- *     &gt; GAMELIST
- *     &gt; PLAYERLIST
- *     &gt; HELP
- *     &gt; MATCH
- *     &gt; YOURTURN
- *     &gt; MOVE
- *     &gt; WIN_LOSS_DRAW
- *     &gt; CHALLENGE
- * &gt; Map&lt;String, String&gt; fields // Remaining message data
- * &gt; Getters
- *
- * Example message:
- * SVR GAME MATCH {PLAYERTOMOVE: "player1", GAMETYPE: "tic-tac-toe",
- *                 OPPONENT: "opponent"}
- *
- *     &gt; MessageType = SRV
- *     &gt; MessageSubtype = MATCH
- *     &gt; fields =
- *         PLAYERTOMOVE: "player1"
- *         GAMETYPE: "tic-tac-toe"
- *         OPPONENT: "opponent"
- *
- * To simplify field access, provide getters that look up the relevant key:
- *     &gt; getOpponent() --> returns fields.get("OPPONENT") // "opponent"
- * </pre>
- */
+import java.util.Map;
+
 public class ServerMessage {
-    
+    private final MessageType type;
+    private final MessageSubtype subtype;
+    private final MessageAddon addon;
+    private final Map<String, String> details;
+
+    /**
+     * Constructor for "OK" server messages
+     * @param type type of server message
+     */
+    public ServerMessage(MessageType type) {
+        this.type = type;
+        this.subtype = null;
+        this.addon = null;
+        this.details = null;
+    }
+
+    /**
+     * Constructor for "ERR" server messages
+     * @param type type of server message
+     * @param details further details of server message
+     */
+    public ServerMessage(MessageType type,
+                         Map<String, String> details) {
+        this.type = type;
+        this.subtype = null;
+        this.addon = null;
+        this.details = details;
+    }
+
+    /**
+     * Constructor for "HELP" server messages
+     * @param type type of server message
+     * @param subtype subtype of server message
+     * @param details further details of server message
+     */
+    public ServerMessage(MessageType type,
+                         MessageSubtype subtype,
+                         Map<String, String> details) {
+        this.type = type;
+        this.subtype = subtype;
+        this.addon = null;
+        this.details = details;
+    }
+
+    /**
+     * Constructor for "SVR" server messages
+     * @param type type of server message
+     * @param subtype subtype of server message
+     * @param addon addon to subtype of server message
+     * @param details further details of server message
+     */
+    public ServerMessage(
+            MessageType type,
+            MessageSubtype subtype,
+            MessageAddon addon,
+            Map<String, String> details) {
+        this.type = type;
+        this.subtype = subtype;
+        this.addon = addon;
+        this.details = Map.copyOf(details);
+    }
+
+    public MessageType getType() {
+        return type;
+    }
+
+    public MessageSubtype getSubtype() {
+        return subtype;
+    }
+
+    public MessageAddon getAddon() {
+        return addon;
+    }
+
+    public String getValue(String key) {
+        return details.get(key);
+    }
+
+    public Map<String, String> getDetails() {
+        return details;
+    }
 }
