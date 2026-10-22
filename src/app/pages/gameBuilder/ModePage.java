@@ -84,7 +84,7 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
         // example for tic tac toe
         // G = TicTacToeGame
         // B = TicTacToeBuilder
-        Page page = new PlayerPage<G,B>(builder);
+        Page page = new BuilderBasePage(new PlayerPage<G,B>(builder), this);
         PageManager manager = PageManager.getInstance();
         manager.setCurrentPage(page);
     }

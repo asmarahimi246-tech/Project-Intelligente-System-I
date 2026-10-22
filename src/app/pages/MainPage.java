@@ -44,12 +44,12 @@ public class MainPage extends Page {
         PageManager manager = PageManager.getInstance();
         switch (choice) {
             case 1:
-                Page gameBuilder = new GameSelectionPage();
+                Page gameBuilder = new BasePage(new GameSelectionPage());
                 manager.setCurrentPage(gameBuilder);
                 break;
 
             case 2:
-                Page swingTest = new SwingTestPage();
+                Page swingTest = new BasePage(new SwingTestPage());
                 manager.setCurrentPage(swingTest);
                 break;
 

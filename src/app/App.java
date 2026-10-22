@@ -54,28 +54,18 @@ public class App {
                 // only update when needed
                 // prevents flickering in swing
                 if (manager.changed()) {
+                    // we cant have swing and cli at the same time
+                    // because some open() functions dont close
+                    // unless there cli input
+
                     // get the page
                     Page page = manager.getCurrentPage();
 
-                    // initialize base page
-                    // base page works like base html
-                    // but then for swing
-                    //
-                    // made to prevent some duplicate code (Yuna)
-                    //
-                    // TODO LATER:
-                    // not the best implementation
-                    // for expendability
-                    // but also not a must have
-                    // maybe a thing to reimplement
-                    // in ISY 2
-                    Page base = new BasePage(page);
-                    base.createSwingUi();
-
-                    // set the page for swing 
+                    // create and set the page for swing 
                     // this works because page extends JPanel
                     // shows a white page if empty
-                    setContentPane(base);
+                    page.createSwingUi();
+                    setContentPane(page);
 
                     // open the page 
                     page.open();

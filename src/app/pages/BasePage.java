@@ -27,6 +27,27 @@ public class BasePage extends Page {
         this.content = content;
     }
 
+    /**
+     * The left button
+     * 
+     * @return the button
+     */
+    protected JButton leftButton() {
+        // create main menu button
+        JButton button = new JButton();
+        button.setBackground(Config.BACKGROUND_COLOR);
+        button.setForeground(Config.FOREGROUND_COLOR);
+        button.setFont(new Font("Arial", Font.BOLD, 10));
+        button.setText("return to main menu");
+        button.addActionListener(event -> {
+            PageManager manager = PageManager.getInstance();
+            Page main = new MainPage();
+            manager.setCurrentPage(main);
+        });
+        return button;
+    }
+        
+
     @Override
     public void createSwingUi() {
         // example: base ui
@@ -53,18 +74,8 @@ public class BasePage extends Page {
         FlowLayout headerLayout = new FlowLayout();
         JPanel header = new JPanel(headerLayout);
 
-        // create main menu button
-        JButton button = new JButton();
-        button.setBackground(Config.BACKGROUND_COLOR);
-        button.setForeground(Config.FOREGROUND_COLOR);
-        button.setFont(new Font("Arial", Font.BOLD, 10));
-        button.setText("return to main menu");
-        button.addActionListener(event -> {
-            PageManager manager = PageManager.getInstance();
-            Page page = new MainPage();
-            manager.setCurrentPage(page);
-        });
-        header.add(button);
+        // add the button
+        header.add(leftButton());
 
         // get the current page name
         JLabel pageName = new JLabel(content.toString());
@@ -75,7 +86,6 @@ public class BasePage extends Page {
 
     @Override
     public void open() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'open'");
-    }    
+        content.open();
+    }
 }

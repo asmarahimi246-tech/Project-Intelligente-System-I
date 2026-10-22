@@ -50,7 +50,7 @@ public class GameSelectionPage extends Page {
             case 1:
                 // start building a tic tac toe game
                 TicTacToeBuilder builder = new TicTacToeBuilder();
-                page = new ModePage<TicTacToeGame,TicTacToeBuilder>(builder);
+                page = new BuilderBasePage(new ModePage<TicTacToeGame,TicTacToeBuilder>(builder), this);
                 break;
         
             default:

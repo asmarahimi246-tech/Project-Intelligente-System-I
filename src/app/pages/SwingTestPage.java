@@ -47,13 +47,13 @@ public class SwingTestPage extends Page {
      */
     @Override
     public void open() {
-        System.out.println("press enter to exit");
-        Scanner scanner = ScannerSingleton.getInstance();
-        scanner.nextLine();
+        //System.out.println("press enter to exit");
+        //Scanner scanner = ScannerSingleton.getInstance();
+        //scanner.nextLine();
 
-        Page page = new MainPage();
-        PageManager manager = PageManager.getInstance();
-        manager.setCurrentPage(page);
+        //Page page = new MainPage();
+        //PageManager manager = PageManager.getInstance();
+        //manager.setCurrentPage(page);
     }
 
 }

@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import app.games.framework.Game;
 import app.games.framework.GameBuilder;
 import app.games.framework.Player;
+import app.pages.BasePage;
 import app.pages.GamePage;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
@@ -84,7 +85,7 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
 
         // game page
         PageManager manager = PageManager.getInstance();
-        Page page = new GamePage<G,B>(builder);
+        Page page = new BasePage(new GamePage<G,B>(builder));
         manager.setCurrentPage(page);
     }
 
