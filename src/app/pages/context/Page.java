@@ -2,6 +2,8 @@ package app.pages.context;
 
 import javax.swing.JPanel;
 
+import app.util.Config;
+
 /**
  * Page
  * 
@@ -16,8 +18,27 @@ public abstract class Page extends JPanel {
      */
     public abstract void createSwingUi();
 
+    /**
+     * Creates the swing ui
+     */
+    public abstract void createCLI();
+
     /** 
      * opens the page 
      * */
-    public abstract void open();
+    public void open() {
+        if (Config.SWING_SUPPORTED) {
+            try {
+                System.out.println("swing ui being made");
+                createSwingUi();
+                revalidate();
+                repaint();
+            } catch(UnsupportedOperationException e) {
+                System.out.println("cli being made");
+                createCLI();
+            }
+        } else {
+            createCLI();
+        }
+    }
 }

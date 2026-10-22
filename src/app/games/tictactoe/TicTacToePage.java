@@ -65,4 +65,10 @@ public class TicTacToePage extends Page {
         // TODO: add ui
         add(new JLabel("Ui not implemented"));
     }
+
+    @Override
+    public void createCLI() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createCLI'");
+    }
 }

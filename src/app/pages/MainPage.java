@@ -24,7 +24,13 @@ public class MainPage extends Page {
     }
 
     @Override
-    public void open() {
+    public void createSwingUi() {
+        // TODO: add ui
+        throw new UnsupportedOperationException("UI not implemented");
+    }
+
+    @Override
+    public void createCLI() {
         // print
         System.out.println("=== Main Menu ===");
         System.out.println("1. Play Game");
@@ -60,11 +66,5 @@ public class MainPage extends Page {
             default:
                 break;
         }
-    }
-
-    @Override
-    public void createSwingUi() {
-        // TODO: add ui
-        add(new JLabel("Ui not implemented"));
     }
 }

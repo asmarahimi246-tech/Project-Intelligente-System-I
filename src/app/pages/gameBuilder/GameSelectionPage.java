@@ -30,7 +30,13 @@ import app.util.cliInputFields.CLIIntegerField;
 public class GameSelectionPage extends Page {
 
     @Override
-    public void open() {
+    public void createSwingUi() {
+        // TODO: add ui
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public void createCLI() {
         // print
         System.out.println("=== Game Selection ===");
         System.out.println("1. Tic Tac Toe");
@@ -66,11 +72,5 @@ public class GameSelectionPage extends Page {
 
         PageManager manager = PageManager.getInstance();
         manager.setCurrentPage(page);
-    }
-
-    @Override
-    public void createSwingUi() {
-        // TODO: add ui
-        add(new JLabel("Ui not implemented"));
     }
 }

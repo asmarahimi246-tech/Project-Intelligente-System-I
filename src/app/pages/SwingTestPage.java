@@ -38,22 +38,15 @@ public class SwingTestPage extends Page {
         }
     }
 
-    /**    (non-Javadoc)
-     * @author code andy
-     * 
-     * Asks if the player wants to exit the test page
-     * 
-     * @see app.pages.context.Page#open()
-     */
     @Override
-    public void open() {
-        //System.out.println("press enter to exit");
-        //Scanner scanner = ScannerSingleton.getInstance();
-        //scanner.nextLine();
+    public void createCLI() {
+        System.out.println("press enter to return to main menu");
+        Scanner scanner = ScannerSingleton.getInstance();
+        scanner.nextLine();
 
-        //Page page = new MainPage();
-        //PageManager manager = PageManager.getInstance();
-        //manager.setCurrentPage(page);
+        Page page = new MainPage();
+        PageManager manager = PageManager.getInstance();
+        manager.setCurrentPage(page);
     }
 
 }

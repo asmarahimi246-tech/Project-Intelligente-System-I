@@ -85,7 +85,7 @@ public class BasePage extends Page {
     }
 
     @Override
-    public void open() {
-        content.open();
+    public void createCLI() {
+        content.createCLI();
     }
 }

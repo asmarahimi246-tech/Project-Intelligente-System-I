@@ -58,16 +58,18 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
 
     @Override
     public void open() {
-        // get the game
+        super.open();
+        game.run();
 
-        // load the page
+        // return to main menu when the game ends
         PageManager manager = PageManager.getInstance();
-        Page game = builder.build().getPage();
-        if (game != null) {
-            add(game);
-        } else {
-            Page main = new MainPage();
-            manager.setCurrentPage(main);
-        }
+        Page main = new MainPage();
+        manager.setCurrentPage(main);
+    }
+
+    @Override
+    public void createCLI() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createCLI'");
     }
 }

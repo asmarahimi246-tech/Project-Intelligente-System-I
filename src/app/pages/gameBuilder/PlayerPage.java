@@ -58,6 +58,22 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
     public void open() {
         // add the default players for the selected game mode
         builder.addDefaultPlayers();
+        super.open();
+        
+        // game page
+        PageManager manager = PageManager.getInstance();
+        Page page = new BasePage(new GamePage<G,B>(builder));
+        manager.setCurrentPage(page);
+    }
+
+    @Override
+    public void createSwingUi() {
+        // TODO: add ui
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public void createCLI() {
         int playersLeft = builder.getPlayersToAdd() + 1;
 
         // loop until all nessacary players are added
@@ -82,16 +98,5 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
             // proccess input
             builder.addPlayer(options.get(choice - 1));
         }
-
-        // game page
-        PageManager manager = PageManager.getInstance();
-        Page page = new BasePage(new GamePage<G,B>(builder));
-        manager.setCurrentPage(page);
-    }
-
-    @Override
-    public void createSwingUi() {
-        // TODO: add ui
-        add(new JLabel("Ui not implemented"));
     }
 }
