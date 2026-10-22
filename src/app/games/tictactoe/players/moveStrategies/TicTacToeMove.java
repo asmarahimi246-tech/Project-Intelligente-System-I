@@ -1,7 +1,11 @@
 package app.games.tictactoe.players.moveStrategies;
 
+import app.games.framework.Move;
+
 /**
  * Move record for tic tac toe
+ * 
+ * Having a record implement a interface feels wrong
  * 
  * Tells where a tile is going to be placed
  * Easy way to transport data
@@ -9,4 +13,4 @@ package app.games.tictactoe.players.moveStrategies;
  * @param row of the tile
  * @param column of the tile
  */
-public record Move(int row, int column) {}
+public record TicTacToeMove(int row, int column) implements Move {}

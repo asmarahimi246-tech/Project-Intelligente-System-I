@@ -15,9 +15,10 @@ import app.pages.context.Page;
  * &gt; bool isGameOver()
  * </pre>
  */
-public abstract class Game {
+public abstract class Game<M extends Move> {
     protected Page page;
     protected ArrayList<Player> players = new ArrayList<Player>();
+    protected boolean running;
 
     /**
      * Creates a game
@@ -45,4 +46,18 @@ public abstract class Game {
      * Runs the game
      */
     public abstract void run();
+
+    /**
+     * Closes the game
+     */
+    public void close() {
+        this.running = false;
+    }
+
+    /**
+     * Used to proces a move
+     * 
+     * @param move the move to process
+     */
+    public abstract void procesMove(M move);
 }

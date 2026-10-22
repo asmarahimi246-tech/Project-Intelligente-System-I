@@ -72,7 +72,6 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
 
     @Override
     public void createCLI() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createCLI'");
+        // im very usefull
     }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import app.games.framework.Player;
 import app.games.framework.PlayerState;
-import app.games.tictactoe.players.moveStrategies.Move;
+import app.games.tictactoe.players.moveStrategies.TicTacToeMove;
 import app.games.tictactoe.players.moveStrategies.MoveSrategy;
 import app.network.Client;
 import app.util.NameGenerator;
@@ -49,7 +49,7 @@ public class OnlinePlayer extends Player {
         while (super.state != PlayerState.CAN_MOVE) {
             waitForTurn();
         }
-        Move move = strategy.getMove(null, null);
+        TicTacToeMove move = strategy.getMove(null, null);
         super.state = PlayerState.EXECUTED_TURN;
     }
 

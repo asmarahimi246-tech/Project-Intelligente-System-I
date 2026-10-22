@@ -27,10 +27,8 @@ public abstract class Page extends JPanel {
      * opens the page 
      * */
     public void open() {
-        System.out.println("hello");
         if (Config.SWING_SUPPORTED) {
             try {
-                System.out.println("hello");
                 createSwingUi();
                 revalidate();
                 repaint();
@@ -39,7 +37,6 @@ public abstract class Page extends JPanel {
                 createCLI();
             }
         } else {
-            System.out.println("hello2");
             createCLI();
         }
     }

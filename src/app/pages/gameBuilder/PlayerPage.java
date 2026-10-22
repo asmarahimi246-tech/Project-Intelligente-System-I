@@ -59,6 +59,8 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
 
     @Override
     public void open() {        
+        super.open();
+        
         // game page
         PageManager manager = PageManager.getInstance();
         Page page = new BasePage(new GamePage<G,B>(builder));

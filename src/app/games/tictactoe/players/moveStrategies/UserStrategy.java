@@ -1,13 +1,9 @@
 package app.games.tictactoe.players.moveStrategies;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.function.Predicate;
 
 import app.games.tictactoe.TicTacToePage;
-import app.util.ScannerSingleton;
-import app.util.cliInputFields.CLIIntegerField;
-
 /**
  * UserStrategy
  * 
@@ -29,33 +25,12 @@ public class UserStrategy implements MoveSrategy {
     }
 
     @Override
-    public Move getMove(ArrayList<String> board, Predicate<Move> validateMove) {
-        Move toReturn = null;
+    public TicTacToeMove getMove(ArrayList<String> board, Predicate<TicTacToeMove> validateMove) {
+        TicTacToeMove toReturn = null;
 
-        // print
-        System.out.println(board);
-
-        // get input
         while (!validateMove.test(toReturn)){
-
-            System.out.println("give row");
-            Scanner scanner = ScannerSingleton.getInstance();
-            CLIIntegerField xfield = new CLIIntegerField.Builder(scanner, "Something went wrong.")
-                .max(3)
-                .min(1)
-                .build();
-            int row = xfield.getInput();
-
-            System.out.println("now collom");
-            CLIIntegerField yfield = new CLIIntegerField.Builder(scanner, "Something went wrong.")
-                .max(3)
-                .min(1)
-                .build();
-            int collomn = yfield.getInput();
-
-            toReturn = new Move(row, collomn);
+            toReturn = page.requestMove();
         }
-
         return toReturn;
     }
 }

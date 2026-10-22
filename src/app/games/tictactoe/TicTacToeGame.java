@@ -3,9 +3,7 @@ import java.util.ArrayList;
 
 import app.games.framework.Game;
 import app.games.framework.Player;
-import app.games.tictactoe.model.TicTacToeModel;
-import app.network.old.ServerListener;
-import app.pages.context.Page;
+import app.games.tictactoe.players.moveStrategies.TicTacToeMove;
 
 /**
  * <pre>
@@ -18,10 +16,18 @@ import app.pages.context.Page;
  *   --&gt; if true, make view update with the move added
  * </pre>
  */
-public class TicTacToeGame extends Game {
+public class TicTacToeGame extends Game<TicTacToeMove> {
 
-    public TicTacToeGame(Page page, ArrayList<Player> players) {
+    /**
+     * Makes a game
+     * 
+     * @param page the view
+     * @param players the players
+     */
+    public TicTacToeGame(TicTacToePage page, ArrayList<Player> players) {
         super(page, players);
+        
+        super.running = true;
         //TODO Auto-generated constructor stub
     }
 
@@ -33,8 +39,20 @@ public class TicTacToeGame extends Game {
 
     @Override
     public void run() {
+        // game loop
+        while (running) {
+
+            // each player does a move
+            for (Player player : players) {
+                player.doMove();
+            }
+        }
+    }
+
+    @Override
+    public void procesMove(TicTacToeMove move) {
         // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'run'");
+        throw new UnsupportedOperationException("Unimplemented method 'procesMove'");
     }
 
 }

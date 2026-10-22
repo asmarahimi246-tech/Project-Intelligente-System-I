@@ -75,7 +75,7 @@ public class AIStrategy implements MoveSrategy {
      * @param player player
      * @return iets
      */
-    public Move numberAI(ArrayList<String> board, char player) {
+    public TicTacToeMove numberAI(ArrayList<String> board, char player) {
 
         // zoekt eerst naar een winnende zet voor de AI
         for (int i = 0; i < 9; i++) {
@@ -198,7 +198,7 @@ public class AIStrategy implements MoveSrategy {
     }
 
     @Override
-    public Move getMove(ArrayList<String> board, Predicate<Move> validateMove) {
+    public TicTacToeMove getMove(ArrayList<String> board, Predicate<TicTacToeMove> validateMove) {
         return numberAI(board, 'X');
     }
 }
