@@ -1,7 +1,6 @@
 package app.games.tictactoe.players;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import app.games.framework.Player;
 import app.games.framework.PlayerState;
@@ -18,7 +17,7 @@ public class OnlinePlayer extends Player {
     private Client client; // the client is always shared with the remote
 
     /**
-     * Makes a online player
+     * Makes an online player
      * 
      * @param strategy the strategy to use for making a move
      */

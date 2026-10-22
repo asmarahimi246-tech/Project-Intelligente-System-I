@@ -64,7 +64,7 @@ public class ServerListener implements Runnable {
             }
         } catch (IOException e) {
             if (!clientClosing.getAsBoolean()) {
-                System.err.println("Connection with server lost");
+                System.err.println("Server connection lost");
                 e.printStackTrace();
             }
         }
@@ -98,7 +98,7 @@ public class ServerListener implements Runnable {
     }
 
     /**
-     * Returns an svr message back to the queue
+     * Returns a svr message back to the queue
      */
     public void returnSvrMessage(String message) {
         throw new UnsupportedOperationException("Unimplemented method 'returnSvrMessage'");
