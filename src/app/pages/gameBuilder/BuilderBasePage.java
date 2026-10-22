@@ -1,19 +1,21 @@
 package app.pages.gameBuilder;
 
-import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 
-import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-import app.pages.BasePage;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
-import app.util.Config;
+import app.pages.context.widgets.Button;
 
 /**
  * BasePage works like a base html
  */
-public class BuilderBasePage extends BasePage {
+public class BuilderBasePage extends Page {
     private Page previous;
+    private Page content;
 
     /**
      * Makes a base page surounding the content
@@ -21,22 +23,58 @@ public class BuilderBasePage extends BasePage {
      * @param content the content
      */
     public BuilderBasePage (Page content, Page previous) {
-        super(content);
+        this.content = content;
         this.previous = previous;
     }
 
     @Override
-    protected JButton leftButton() {
-        // create prev menu button
-        JButton button = new JButton();
-        button.setBackground(Config.BACKGROUND_COLOR);
-        button.setForeground(Config.FOREGROUND_COLOR);
-        button.setFont(new Font("Arial", Font.BOLD, 10));
-        button.setText("back");
-        button.addActionListener(event -> {
+    public void createSwingUi() {
+        // example: base ui
+
+        // create the base page
+        BorderLayout layout = new BorderLayout();
+        setLayout(layout);
+
+        // add header
+        add(header(), BorderLayout.PAGE_START);
+
+        // add content
+        content.createSwingUi();
+        add(content, BorderLayout.CENTER);
+    }
+
+    /**
+     * Creates a header for the page
+     * 
+     * @return the header
+     */
+    private JPanel header() {
+        // create header
+        FlowLayout headerLayout = new FlowLayout();
+        JPanel header = new JPanel(headerLayout);
+
+        // add the button
+        Button button = new Button(event -> {
             PageManager manager = PageManager.getInstance();
             manager.setCurrentPage(previous);
-        });
-        return button;
+            });
+        header.add(button);
+
+        // get the current page name
+        JLabel pageName = new JLabel(content.toString());
+        header.add(pageName);
+
+        return header;
+    }
+
+    @Override
+    public void createCLI() {
+        content.createCLI();
+    }
+
+    @Override
+    public void open() {
+        super.open();
+        content.open();
     }
 }

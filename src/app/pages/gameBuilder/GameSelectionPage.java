@@ -2,8 +2,6 @@ package app.pages.gameBuilder;
 
 import java.util.Scanner;
 
-import javax.swing.JLabel;
-
 import app.games.tictactoe.TicTacToeBuilder;
 import app.games.tictactoe.TicTacToeGame;
 import app.pages.MainPage;

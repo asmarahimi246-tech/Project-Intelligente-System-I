@@ -52,14 +52,13 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
      */
     public PlayerPage(B builder) {
         this.builder = builder;
+
+        // add the default players for the selected game mode
+        this.builder.addDefaultPlayers();
     }
 
     @Override
-    public void open() {
-        // add the default players for the selected game mode
-        builder.addDefaultPlayers();
-        super.open();
-        
+    public void open() {        
         // game page
         PageManager manager = PageManager.getInstance();
         Page page = new BasePage(new GamePage<G,B>(builder));

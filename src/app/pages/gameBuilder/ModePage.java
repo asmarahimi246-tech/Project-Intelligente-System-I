@@ -51,8 +51,6 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
 
     @Override
     public void open() {
-        super.open();
-        
         // G is the game class, B is the builder class
         // example for tic tac toe
         // G = TicTacToeGame
@@ -61,7 +59,7 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
         PageManager manager = PageManager.getInstance();
         manager.setCurrentPage(page);
     }
-    
+
     @Override
     public void createSwingUi() {
         // TODO: add ui

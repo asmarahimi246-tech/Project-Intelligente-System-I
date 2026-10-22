@@ -27,17 +27,17 @@ public abstract class Page extends JPanel {
      * opens the page 
      * */
     public void open() {
+        System.out.println("hello");
         if (Config.SWING_SUPPORTED) {
             try {
-                System.out.println("swing ui being made");
                 createSwingUi();
                 revalidate();
                 repaint();
             } catch(UnsupportedOperationException e) {
-                System.out.println("cli being made");
                 createCLI();
             }
         } else {
+            System.out.println("hello2");
             createCLI();
         }
     }
