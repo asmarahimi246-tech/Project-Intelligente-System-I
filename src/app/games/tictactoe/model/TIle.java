@@ -2,6 +2,9 @@ package app.games.tictactoe.model;
 
 import app.games.framework.Player;
 
-public class TIle {
+/**
+ * TIle
+ */
+public class Tile {
     public Player owner = null;
 }

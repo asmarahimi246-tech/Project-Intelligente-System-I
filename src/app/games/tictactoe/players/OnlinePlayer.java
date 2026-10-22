@@ -90,6 +90,9 @@ public class OnlinePlayer extends Player {
         throw new UnsupportedOperationException("Unimplemented method 'subscribe'");
     }
 
+    /**
+     * Waits for a turn
+     */
     public void waitForTurn() {
         // CODE SMELL ):
         //
