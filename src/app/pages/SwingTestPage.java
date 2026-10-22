@@ -22,6 +22,7 @@ public class SwingTestPage extends Page {
 
     @Override
     public void createSwingUi() {
+        System.out.println("swing");
         setLayout(new GridLayout(3, 3));
         for (int i = 0; i < 9; i++) {
             JButton button = new JButton();
@@ -40,6 +41,7 @@ public class SwingTestPage extends Page {
 
     @Override
     public void createCLI() {
+        
         System.out.println("press enter to return to main menu");
         Scanner scanner = ScannerSingleton.getInstance();
         scanner.nextLine();
@@ -48,5 +50,4 @@ public class SwingTestPage extends Page {
         PageManager manager = PageManager.getInstance();
         manager.setCurrentPage(page);
     }
-
 }

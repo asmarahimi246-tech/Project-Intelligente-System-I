@@ -30,9 +30,11 @@ public abstract class Page extends JPanel {
         System.out.println("hello");
         if (Config.SWING_SUPPORTED) {
             try {
+                System.out.println("hello");
                 createSwingUi();
                 revalidate();
                 repaint();
+                setVisible(true);
             } catch(UnsupportedOperationException e) {
                 createCLI();
             }

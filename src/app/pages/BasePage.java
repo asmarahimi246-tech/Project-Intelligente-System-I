@@ -37,7 +37,6 @@ public class BasePage extends Page {
         add(header(), BorderLayout.PAGE_START);
 
         // add content
-        content.createSwingUi();
         add(content, BorderLayout.CENTER);
     }
 
@@ -68,11 +67,15 @@ public class BasePage extends Page {
 
     @Override
     public void createCLI() {
-        content.createCLI();
+        // i am very usefull
     }
 
     @Override
     public void open() {
+        // build this view first
+        super.open();
+
+        // then build the content view
         content.open();
     }
 }
