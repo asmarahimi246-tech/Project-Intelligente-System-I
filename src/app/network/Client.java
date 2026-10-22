@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 
  * AI usage:
  * Made with help from a lot of youtube videos and explanations from deepai
+ * 
+ * TODO: better sources
  */
 public class Client {
     private final AtomicBoolean closing = new AtomicBoolean(false);
