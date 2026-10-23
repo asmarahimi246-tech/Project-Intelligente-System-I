@@ -6,115 +6,155 @@ import java.util.function.Predicate;
  * AI
  */
 public class AIStrategy implements MoveSrategy {
-    private int minimax(char[] board, boolean max, char player) {
-        if (checkWin(board, player) == 1) {
-            return 1;
+
+    /**
+     *
+     * @param board
+     * @param isMax
+     * @param AiPlayer
+     * @return
+     */
+    private int minimax(char[] board, boolean isMax, char AiPlayer) {
+        int score = evaluateBoard(board);
+
+        if (score == 1) {
+            if (AiPlayer == 'X') {
+                return 1;
+            } else {
+                return -1;
+            }
         }
 
-        if (checkLoss(board, player) == -1) {
-            return -1;
+        if (score == -1) {
+            if (AiPlayer == 'O') {
+                return 1;
+            } else {
+                return -1;
+            }
         }
 
-        if (checkDraw(board, player)) {
+        if (isBoardFull(board)) {
             return 0;
         }
 
         char simulatedOpponent;
 
-        if (player == 'X') {
+        if (AiPlayer == 'X') {
             simulatedOpponent = 'O';
         } else {
             simulatedOpponent = 'X';
         }
 
-        if (max) {
-            int bestscore = Integer.MIN_VALUE;
+        if (isMax) {
+            int maxscore = Integer.MIN_VALUE;
             for (int i = 0; i < 9; i++) {
                 if (board[i] != 'X' && board[i] != 'O') {
-                    char a = board[i];
-                    board[i] = player;
-
-                    int score = minimax(board, !max, simulatedOpponent);
-                    board[i] = a;
-                    bestscore = Math.max(bestscore, score);
+                    char original = board[i];
+                    board[i] = AiPlayer;
+                    int result = minimax(board, false, AiPlayer);
+                    board[i] = original;
+                    maxscore = Math.max(maxscore, result);
                 }
-
             }
-            return bestscore;
+            return maxscore;
 
         } else {
             int minscore = Integer.MAX_VALUE;
             for (int i = 0; i < 9; i++) {
                 if (board[i] != 'X' && board[i] != 'O') {
-                    char a = board[i];
-                    board[i] = player;
-
-                    int score = minimax(board, !max, simulatedOpponent);
-                    board[i] = a;
-                    minscore = Math.min(minscore, score);
+                    char original = board[i];
+                    board[i] = simulatedOpponent;
+                    int result = minimax(board, true, AiPlayer);
+                    board[i] = original;
+                    minscore = Math.min(minscore, result);
                 }
             }
             return minscore;
         }
     }
 
-    public Move numberAI(char[] board, char player) {
+    /**
+     *
+     * @param board
+     * @param AiPlayer
+     * @return
+     */
+    public Move calculateBestMove(char[] board, char AiPlayer) {
+        int bestScore = Integer.MIN_VALUE;
+        int bestMove = 0;
 
-        // zoekt eerst naar een winnende zet voor de AI
         for (int i = 0; i < 9; i++) {
-            if (checkMove(board, player, i)) {
-                return i + 1;
+            if (board[i] != 'X' && board[i] != 'O') {
+                char original = board[i];
+                board[i] = AiPlayer;
+                int score = minimax(board, false, AiPlayer);
+                board[i] = original;
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMove = i;
+                }
             }
         }
+        int calcRow = bestMove / 3;
+        int calcCol = bestMove % 3;
 
-        char opponent;
-
-        if (player == 'X') {
-            opponent = 'O';
-        } else {
-            opponent = 'X';
-        }
-
-        // probeert een winnende zet van de tegenstander te blokkeren
-        for (int i = 0; i < 9; i++) {
-            if (checkMove(board, opponent, i)) {
-                return i + 1;
-            }
-        }
-
-        // als er geen directe winnende zet of block is kiest de AI een random positie
-        Random random = new Random();
-
-        while (true) {
-            int randomMove = random.nextInt(9);
-
-            // controlleert of een pos vrij is
-            if (board[randomMove] != 'X' && board[randomMove] != 'O') {
-                return randomMove + 1;
-            }
-        }
+        return new Move(calcRow, calcCol);
     }
 
-    private boolean checkMove(char[] board, char player, int pos) {
-
-        // een bezette pos mag niet
-        if (board[pos] == 'X' || board[pos] == 'O') {
-            return false;
+    /**
+     *
+     * @param board
+     * @return
+     */
+    private int evaluateBoard(char[] board) {
+        // checks rows
+        for (int row = 0; row <  9; row+=3) {
+            if (board[row] == board[row + 1] && board[row] == board[row + 2]) {
+                if (board[row] == 'X') {
+                    return 1;
+                }
+                if (board[row] == 'O') {
+                    return -1;
+                }
+            }
         }
-
-        char a = board[pos];
-        board[pos] = player;
-
-        // checkt of deze zet een winning move is
-        if (minimax(board, player)) {
-            board[pos] = a;
-            return true;
+        // checks columns
+        for (int col = 0; col < 3; col++) {
+            if (board[col] == board[col + 3] && board[col] == board[col + 6]) {
+                if (board[col] == 'X') {
+                    return 1;
+                }
+                if (board[col] == 'O') {
+                    return -1;
+                }
+            }
         }
-        board[pos] = a;
-
-        return false;
+        // checks diagonal top left to bottom right
+        if (board[0] == board[4] && board[0] == board[8]) {
+            if (board[0] == 'X') {
+                return 1;
+            }
+            if (board[0] == 'O') {
+                return -1;
+            }
+        }
+        // checks diagonal top right to bottom left
+        if (board[2] == board[4] && board[2] == board[6]) {
+            if (board[2] == 'X') {
+                return 1;
+            }
+            if (board[2] == 'O') {
+                return -1;
+            }
+        }
+        return 0;
     }
 
+    /**
+     *
+     * @param board
+     * @return
+     */
     private boolean isBoardFull(char[] board) {
         for (char vak : board) {
             if (vak != 'X' && vak != 'O') {
@@ -124,34 +164,30 @@ public class AIStrategy implements MoveSrategy {
         return true;
     }
 
-    private int checkWin(char[] board, char player) {
-        if (minimax(board, player)) {
-            return 1;
-        }
-        return 0;
-    }
-
-    private int checkLoss(char[] board, char player) {
-        char opponent;
-
-        if (player == 'X') {
-            opponent = 'O';
-        } else {
-            opponent = 'X';
-        }
-
-        if (minimax(board, opponent)) {
-            return -1;
-        }
-        return 0;
-    }
-
-    private boolean checkDraw(char[] board, char player) {
-        return isBoardFull(board);
-    }
-
+    /**
+     *
+     * @param board the board
+     * @param validateMove a predacite that true when the move is valid
+     * @return
+     */
     @Override
     public Move getMove(ArrayList<String> board, Predicate<Move> validateMove) {
-        return numberAI(board, 'X');
+        char[] charBoard = new char[9];
+        int playedTurns = 0;
+
+        for (int i = 0; i < 9; i++) {
+            charBoard[i] = board.get(i).charAt(0);
+            if (charBoard[i] == 'X' || charBoard[i] == 'O') {
+                playedTurns++;
+            }
+        }
+
+        char aiPlayer;
+        if (playedTurns % 2 == 0) {
+            aiPlayer = 'X';
+        } else {
+            aiPlayer = 'O';
+        }
+        return calculateBestMove(charBoard, aiPlayer);
     }
 }
