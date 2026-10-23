@@ -1,12 +1,10 @@
 package app.games.tictactoe.players.moveStrategies;
 import java.util.ArrayList;
 import java.util.function.Predicate;
-
 /**
  * AI
  */
 public class AIStrategy implements MoveSrategy {
-
     /**
      *
      * @param board
@@ -57,7 +55,6 @@ public class AIStrategy implements MoveSrategy {
                 }
             }
             return maxscore;
-
         } else {
             int minscore = Integer.MAX_VALUE;
             for (int i = 0; i < 9; i++) {
@@ -72,7 +69,6 @@ public class AIStrategy implements MoveSrategy {
             return minscore;
         }
     }
-
     /**
      *
      * @param board
@@ -97,10 +93,8 @@ public class AIStrategy implements MoveSrategy {
         }
         int calcRow = bestMove / 3;
         int calcCol = bestMove % 3;
-
         return new Move(calcRow, calcCol);
     }
-
     /**
      *
      * @param board
@@ -149,7 +143,6 @@ public class AIStrategy implements MoveSrategy {
         }
         return 0;
     }
-
     /**
      *
      * @param board
@@ -163,7 +156,6 @@ public class AIStrategy implements MoveSrategy {
         }
         return true;
     }
-
     /**
      *
      * @param board the board
@@ -182,12 +174,12 @@ public class AIStrategy implements MoveSrategy {
             }
         }
 
-        char aiPlayer;
+        char AiPlayer;
         if (playedTurns % 2 == 0) {
-            aiPlayer = 'X';
+            AiPlayer = 'X';
         } else {
-            aiPlayer = 'O';
+            AiPlayer = 'O';
         }
-        return calculateBestMove(charBoard, aiPlayer);
+        return calculateBestMove(charBoard, AiPlayer);
     }
 }
