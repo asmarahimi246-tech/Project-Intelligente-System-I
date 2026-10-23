@@ -60,7 +60,7 @@ public class TicTacToeGame extends Game {
             input -= 1;
 
             if (model.placeMove(input, player1)) {
-                view.printTussenstand();
+                view.printBoardScore();
                 printBoard();
 
                 // als het een online game is stuurt die de zet naar de server
@@ -92,7 +92,7 @@ public class TicTacToeGame extends Game {
         }
 
         if (model.placeMove(number, symbol)) {
-            view.printTussenstand();
+            view.printBoardScore();
             printBoard();
         }
     }
@@ -104,7 +104,7 @@ public class TicTacToeGame extends Game {
      * een speler is een speler of het nou AI is of niet
      */
     public void aiMove() {
-            view.printTussenstand();
+            view.printBoardScore();
             printBoard();
 
             // stuurt de AI move naar de server bij een online game
