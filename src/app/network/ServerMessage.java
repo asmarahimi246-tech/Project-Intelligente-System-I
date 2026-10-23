@@ -1,68 +1,78 @@
 package app.network;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ServerMessage {
     private final MessageType type;
-    private final MessageSubtype subtype;
-    private final MessageAddon addon;
-    private final Map<String, String> details;
+    private MessageSubtype subtype = null;
+    private MessageAddon addon = null;
+    private Map<String, String> gameDetails = null;
+    private String errorDetails = null;
+    private ArrayList<String> listDetails = null;
+    private String helpDetails = null;
 
     /**
      * Constructor for "OK" server messages
-     * @param type type of server message
+     * @param type type of server message --> OK
      */
     public ServerMessage(MessageType type) {
         this.type = type;
-        this.subtype = null;
-        this.addon = null;
-        this.details = null;
     }
 
     /**
      * Constructor for "ERR" server messages
-     * @param type type of server message
-     * @param details further details of server message
+     * @param type type of server message --> ERR
+     * @param errorDetails further details of server message
      */
-    public ServerMessage(MessageType type,
-                         Map<String, String> details) {
+    public ServerMessage(MessageType type, String errorDetails) {
         this.type = type;
-        this.subtype = null;
-        this.addon = null;
-        this.details = details;
+        this.errorDetails = errorDetails;
     }
 
     /**
-     * Constructor for "HELP" server messages
-     * @param type type of server message
-     * @param subtype subtype of server message
-     * @param details further details of server message
+     * Constructor for "SVR HELP" server messages
+     * @param type type of server message --> SVR
+     * @param subtype subtype of server message --> HELP
+     * @param helpDetails further details of server message
      */
     public ServerMessage(MessageType type,
                          MessageSubtype subtype,
-                         Map<String, String> details) {
+                         String helpDetails) {
         this.type = type;
         this.subtype = subtype;
-        this.addon = null;
-        this.details = details;
+        this.helpDetails = helpDetails;
     }
 
     /**
-     * Constructor for "SVR" server messages
-     * @param type type of server message
-     * @param subtype subtype of server message
+     * Constructor for "SVR GAME" server messages
+     * @param type type of server message --> SVR
+     * @param subtype subtype of server message --> GAME
      * @param addon addon to subtype of server message
+     *              --> WIN/LOSS/DRAW/MATCH
+     *              --> YOURTURN/MOVE
+     *              --> CHALLENGE/CHALLENGE_CANCELLED
      * @param details further details of server message
      */
-    public ServerMessage(
-            MessageType type,
-            MessageSubtype subtype,
-            MessageAddon addon,
-            Map<String, String> details) {
+    public ServerMessage(MessageType type, MessageSubtype subtype,
+                         MessageAddon addon, Map<String, String> details) {
         this.type = type;
         this.subtype = subtype;
         this.addon = addon;
-        this.details = Map.copyOf(details);
+        this.gameDetails = Map.copyOf(details);
+    }
+
+    /**
+     * Constructor for "SVR GAMELIST/PLAYERLIST"
+     * @param type type of server message --> SVR
+     * @param subtype subtype of server message --> GAMELIST/PLAYERLIST
+     */
+    public ServerMessage(MessageType type,
+                         MessageSubtype subtype,
+                         ArrayList<String> listDetails) {
+        this.type = type;
+        this.subtype = subtype;
+        this.listDetails = listDetails;
     }
 
     public MessageType getType() {
@@ -78,10 +88,22 @@ public class ServerMessage {
     }
 
     public String getValue(String key) {
-        return details.get(key);
+        return gameDetails.get(key);
     }
 
-    public Map<String, String> getDetails() {
-        return details;
+    public Map<String, String> getGameDetails() {
+        return gameDetails;
+    }
+
+    public String getErrorDetails() {
+        return errorDetails;
+    }
+
+    public ArrayList<String> getListDetails() {
+        return listDetails;
+    }
+
+    public String getHelpDetails() {
+        return helpDetails;
     }
 }

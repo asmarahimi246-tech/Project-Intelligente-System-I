@@ -1,5 +1,10 @@
 package app.network;
 
+import app.network.MessageAddon;
+import app.network.MessageSubtype;
+import app.network.MessageType;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -15,36 +20,49 @@ import java.util.HashMap;
  */
 public class ServerMessageParser {
     private HashMap<String, String> gameDetails = new HashMap<String, String>();
-    private String[] listDetails;
+    private ArrayList<String> listDetails = new ArrayList<>();
     private MessageType msgType;
     private MessageSubtype msgSubtype;
     private MessageAddon msgAddon;
     private String svrMessage;
-    private final String target = "[(){}<>\\[\\]]";
+    private String errorDetails;
+    private String helpDetails;
+
+    public ServerMessageParser() {}
+
+//    /**
+//     * Calls setMessage() with the given svrMessage as param.
+//     * @param svrMessage raw server message to parse
+//     */
+//    public ServerMessageParser(String svrMessage) {
+//        setMessage(svrMessage);
+//    }
 
     /**
-     * Constructor calls setMessage() with the given svrMessage as param
-     * @param svrMessage server message to parse
+     * Clear all parsed data.
      */
-    public ServerMessageParser(String svrMessage) {
-        setMessage(svrMessage);
+    private void reset() {
+        gameDetails.clear();
+        listDetails.clear();
+
+        msgType = null;
+        msgSubtype = null;
+        msgAddon = null;
+        errorDetails = null;
+        helpDetails = null;
     }
 
     /**
      * Sets the message to be parsed and clears the results from
-     * previously parsed messages
-     * @param svrMessage the new server message String
+     * previously parsed messages.
+     * @param svrMessage the new raw server message
      */
     public void setMessage(String svrMessage) {
         this.svrMessage = svrMessage;
-        this.details = "";
-        this.msgType = null;
-        this.msgAddon = null;
-        this.msgSubtype = null;
     }
 
     /**
-     * Class to set the MessageType of a server message
+     * Sets the MessageType of a server message
      */
     public void setMessageType () {
         String type = svrMessage.split(" ")[0];
@@ -58,7 +76,7 @@ public class ServerMessageParser {
     }
 
     /**
-     * Class to set the MessageSubtype of a server message
+     * Sets the MessageSubtype of a server message
      */
     public void setMessageSubtype () {
         String subtype = svrMessage.split(" ")[1];
@@ -73,7 +91,7 @@ public class ServerMessageParser {
     }
 
     /**
-     * Class to set the MessageAddon of a server message
+     * Sets the MessageAddon of a server message
      */
     public void setMessageAddon () {
         String addon = svrMessage.split(" ")[2];
@@ -85,71 +103,80 @@ public class ServerMessageParser {
             case "MATCH" -> msgAddon = MessageAddon.MATCH;
             case "YOURTURN" -> msgAddon = MessageAddon.YOURTURN;
             case "MOVE" -> msgAddon = MessageAddon.MOVE;
-            case "CHALLENGE" -> msgAddon = MessageAddon.CHALLENGE;
-            case "CANCELLED" -> msgAddon = MessageAddon.CANCELLED;
+            case "CHALLENGE" -> {
+                if (svrMessage.split(" ")[3].equals("CANCELLED")) {
+                    msgAddon = MessageAddon.CANCELLED;
+                } else {
+                    msgAddon = MessageAddon.CHALLENGE;
+                }
+            }
             default -> throw new IllegalStateException("Unexpected value: " + addon);
         }
     }
 
     /**
-     * Class to map the information given after the MessageType, MessageSubtype
-     * and MessageAddon of a server message into a string HashMap
+     * Set server message detail information
      */
     public void setDetails() {
-        String subtype = svrMessage.split(" ")[1];
-
-        switch (subtype) {
-            case "GAMELIST", "PLAYERLIST" -> setListDetails();
-            case "GAME" -> setGameDetails();
-        }
-    }
-
-    private void setup (String whyson) {
-        whyson = whyson.substring(whyson.indexOf("{") + 1);
-        String whysonParamsString = whyson.substring(0, whyson.indexOf("}"));
-
-        String[] whysonParams = whysonParamsString.split(",");
-
-        for (String param : whysonParams) {
-            String[] paramTuple = param.split(":");
-
-            String value = paramTuple[1].substring(paramTuple[1].indexOf("\"") + 1);
-            String cleanValue = value.substring(0, value.indexOf("\"")).trim();
-
-            params.put(paramTuple[0].trim(), cleanValue);
+        switch (msgSubtype) {
+            case GAMELIST, PLAYERLIST -> setListDetails();
+            case GAME -> setGameDetails();
+            case HELP -> setHelpDetails();
         }
     }
 
     private void setListDetails() {
-        String details = svrMessage.split(" ")[2];
-        listDetails = details.replaceAll(target, "").split(",");
+        String listItem;
+        String[] rawDetails = svrMessage.substring(svrMessage.indexOf("[") + 1, svrMessage.indexOf("]")).split(",");
+
+        for (String item : rawDetails) {
+            listItem = item.replace("\"", "").trim();
+
+            listDetails.add(listItem);
+        }
     }
 
     private void setGameDetails() {
-        String[] details = svrMessage.replaceAll(target, "").split(",");
+        String key;
+        String value;
+        String[] rawDetails = svrMessage.substring(svrMessage.indexOf("{") + 1, svrMessage.indexOf("}")).split(", ");
+
+        for (String param : rawDetails) {
+            key = param.split(":")[0];
+            value = param.split(":")[1].replace("\"", "").trim();
+
+            gameDetails.put(key, value);
+        }
     }
 
+    private void setHelpDetails() {
+        helpDetails = svrMessage.substring(svrMessage.indexOf(" " + 2));
+    }
 
-    private ServerMessage parseOk(MessageType msgType) {
-        return new ServerMessage(msgType);
+    private void setErrDetails() {
+        errorDetails = svrMessage.substring(svrMessage.indexOf(" ") + 1);
     }
 
     private ServerMessage parseErr(MessageType msgType) {
-        getDetails();
-        return new ServerMessage(msgType, gameDetails);
+        setErrDetails();
+        return new ServerMessage(msgType, errorDetails);
     }
 
     private ServerMessage parseSvr(MessageType msgType) {
         setMessageSubtype();
         return switch (msgSubtype) {
-            case GAMELIST, PLAYERLIST, HELP -> {
-                getDetails();
-                yield new ServerMessage(msgType, gameDetails);
+            case GAMELIST, PLAYERLIST -> {
+                setDetails();
+                yield new ServerMessage(msgType, msgSubtype, listDetails);
             }
             case GAME ->{
                 setMessageAddon();
                 setGameDetails();
                 yield new ServerMessage(msgType, msgSubtype, msgAddon, gameDetails);
+            }
+            case HELP -> {
+                setHelpDetails();
+                yield new ServerMessage(msgType, msgSubtype, helpDetails);
             }
             default -> throw new IllegalStateException("Unexpected value: " + msgSubtype);
         };
@@ -161,11 +188,12 @@ public class ServerMessageParser {
      * and details
      */
     public ServerMessage parse(String message) {
+        reset();
         setMessage(message);
         setMessageType();
 
         return switch (msgType) {
-            case OK -> parseOk(msgType);
+            case OK -> new ServerMessage(msgType);
             case ERR -> parseErr(msgType);
             case SVR -> parseSvr(msgType);
         };
@@ -173,7 +201,7 @@ public class ServerMessageParser {
 
     /**
      * Returns the value of the specified key in the parsed message details
-     * 
+     *
      * @param key the key whose value is requested
      * @return the value of the key
      */
@@ -185,10 +213,10 @@ public class ServerMessageParser {
         return msgType;
     }
 
-    public MessageSubtype getMessageSubtype() {
-        return msgSubtype;
-    }
+    public MessageSubtype getMessageSubtype() { return msgSubtype; }
 
     public MessageAddon getMessageAddon() { return  msgAddon; }
+
+    public String getErrDetails() { return errorDetails; }
 
 }

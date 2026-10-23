@@ -1,0 +1,13 @@
+example how the parser etc would work
+
+>> incoming server messages <<
+String m1 = "SVR GAME DRAW {PLAYERONESCORE: \"3\", PLAYERTWOSCORE: \"1\", COMMENT: \"It's a draw!\"}";
+String m2 = "SVR GAME LOSS {PLAYERONESCORE: \"-1\", PLAYERTWOSCORE: \"2\", COMMENT: \"Player forfeited\"}";
+String err = "ERR already logged in";
+
+MessageHandler handler = new MessageHandler();
+
+ServerMessage parsedMessage = handler.getServerMessage(err);
+AppController appController = new AppController();
+
+appController.handleMessage(parsedMessage);
