@@ -20,17 +20,9 @@ public class SwingTestPage extends Page {
         return toReturn;
     }
 
-    /**
-     * Constructor
-     * 
-     * Makes the page using swing
-     */
-    public SwingTestPage() {
-        super();
-    }
-
     @Override
-    protected void createSwingUi() {
+    public void createSwingUi() {
+        System.out.println("swing");
         setLayout(new GridLayout(3, 3));
         for (int i = 0; i < 9; i++) {
             JButton button = new JButton();
@@ -47,16 +39,10 @@ public class SwingTestPage extends Page {
         }
     }
 
-    /**    (non-Javadoc)
-     * @author code andy
-     * 
-     * Asks if the player wants to exit the test page
-     * 
-     * @see app.pages.context.Page#open()
-     */
     @Override
-    public void open() {
-        System.out.println("press enter to exit");
+    public void createCLI() {
+        
+        System.out.println("press enter to return to main menu");
         Scanner scanner = ScannerSingleton.getInstance();
         scanner.nextLine();
 
@@ -64,5 +50,4 @@ public class SwingTestPage extends Page {
         PageManager manager = PageManager.getInstance();
         manager.setCurrentPage(page);
     }
-
 }

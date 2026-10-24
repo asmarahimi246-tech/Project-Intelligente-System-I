@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import app.App;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
-import app.pages.gameBuilder.GameBuilderPage;
+import app.pages.gameBuilder.GameSelectionPage;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
 
@@ -23,16 +23,14 @@ public class MainPage extends Page {
         return toReturn;
     }
 
-    /**
-     * Constructor
-     */
-    public MainPage () {
-        super();
-        add(new JLabel(toString()));
+    @Override
+    public void createSwingUi() {
+        // TODO: add ui
+        throw new UnsupportedOperationException("UI not implemented");
     }
 
     @Override
-    public void open() {
+    public void createCLI() {
         // print
         System.out.println("=== Main Menu ===");
         System.out.println("1. Play Game");
@@ -52,12 +50,12 @@ public class MainPage extends Page {
         PageManager manager = PageManager.getInstance();
         switch (choice) {
             case 1:
-                Page gameBuilder = new GameBuilderPage();
+                Page gameBuilder = new BasePage(new GameSelectionPage());
                 manager.setCurrentPage(gameBuilder);
                 break;
 
             case 2:
-                Page swingTest = new SwingTestPage();
+                Page swingTest = new BasePage(new SwingTestPage());
                 manager.setCurrentPage(swingTest);
                 break;
 

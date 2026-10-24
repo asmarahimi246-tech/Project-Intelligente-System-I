@@ -32,7 +32,7 @@ public class ScannerSingleton {
      * closes the scanner
      */
     public static void closeInstance() {
-        if (INSTANCE == null) {
+        if (INSTANCE != null) {
             INSTANCE.close();
         }
     }

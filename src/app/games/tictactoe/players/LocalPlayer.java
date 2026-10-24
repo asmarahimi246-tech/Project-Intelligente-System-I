@@ -2,7 +2,7 @@ package app.games.tictactoe.players;
 
 import app.games.framework.Player;
 import app.games.framework.PlayerState;
-import app.games.tictactoe.players.moveStrategies.Move;
+import app.games.tictactoe.players.moveStrategies.TicTacToeMove;
 import app.games.tictactoe.players.moveStrategies.MoveSrategy;
 
 /**
@@ -23,7 +23,9 @@ public class LocalPlayer extends Player {
     @Override
     public void doMove() {
         super.state = PlayerState.CAN_MOVE;
-        Move move = strategy.getMove(null, null);
+        TicTacToeMove move = strategy.getMove(null, null);
+        
+
         super.state = PlayerState.EXECUTED_TURN;
     }
 

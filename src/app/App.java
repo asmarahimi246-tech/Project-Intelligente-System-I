@@ -5,8 +5,10 @@ import java.util.NoSuchElementException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import app.pages.BasePage;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
+import app.util.Config;
 
 /**
  * <pre>
@@ -24,7 +26,7 @@ public class App {
     // just wants to close the application
     // for example the server listener
     private static volatile boolean RUNNING;
-    private final JFrame applicationFrame = new JFrame("applicationFrame");
+    private final JFrame applicationFrame;
 
 
     /**
@@ -32,11 +34,15 @@ public class App {
      */
     public App () {
         // swing setup
-        
-        applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        applicationFrame.setResizable(false);
-        applicationFrame.setSize(500, 500);
-        applicationFrame.setLocationRelativeTo(null);
+        if (Config.SWING_SUPPORTED) {
+            applicationFrame = new JFrame("applicationFrame");
+            applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            applicationFrame.setResizable(false);
+            applicationFrame.setSize(500, 500);
+            applicationFrame.setLocationRelativeTo(null);
+        } else {
+            applicationFrame = null;
+        }
     }
 
     /**
@@ -53,13 +59,19 @@ public class App {
                 // only update when needed
                 // prevents flickering in swing
                 if (manager.changed()) {
+                    // we cant have swing and cli at the same time
+                    // because some open() functions dont close
+                    // unless there cli input
+
                     // get the page
                     Page page = manager.getCurrentPage();
 
                     // set the page for swing 
                     // this works because page extends JPanel
                     // shows a white page if empty
-                    setContentPane(page);
+                    if (Config.SWING_SUPPORTED) {
+                        setContentPane(page);
+                    }
 
                     // open the page 
                     page.open();
@@ -71,7 +83,9 @@ public class App {
         }
 
         System.out.println("Closing application.");
-        applicationFrame.dispose();
+        if (Config.SWING_SUPPORTED) {
+            applicationFrame.dispose();
+        }
     }
 
     /**

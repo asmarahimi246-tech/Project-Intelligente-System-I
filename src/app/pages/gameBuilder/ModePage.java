@@ -46,13 +46,30 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
      * @param builder the builder
      */
     public ModePage(B builder) {
-        super();
         this.builder = builder;
-        add(new JLabel(toString()));
     }
 
     @Override
     public void open() {
+        super.open();
+
+        // G is the game class, B is the builder class
+        // example for tic tac toe
+        // G = TicTacToeGame
+        // B = TicTacToeBuilder
+        Page page = new BuilderBasePage(new PlayerPage<G,B>(builder), this);
+        PageManager manager = PageManager.getInstance();
+        manager.setCurrentPage(page);
+    }
+
+    @Override
+    public void createSwingUi() {
+        // TODO: add ui
+        throw new UnsupportedOperationException("UI not implemented");
+    }
+
+    @Override
+    public void createCLI() {
         // print
         System.out.println("=== " + builder.toString() + ": Mode Selection ===");
         System.out.println("1. Local game");
@@ -81,13 +98,5 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
                 break;
         }
         builder.setMode(gameMode);
-
-        // G is the game class, B is the builder class
-        // example for tic tac toe
-        // G = TicTacToeGame
-        // B = TicTacToeBuilder
-        Page page = new PlayerPage<G,B>(builder);
-        PageManager manager = PageManager.getInstance();
-        manager.setCurrentPage(page);
     }
 }

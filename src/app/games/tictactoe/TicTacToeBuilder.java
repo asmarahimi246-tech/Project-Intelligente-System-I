@@ -114,10 +114,11 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
             }
         }
 
-        //TicTacToeGame game = new TicTacToeGame(page, this);
+        // make and set the game
+        TicTacToeGame game = new TicTacToeGame(page, players);
+        page.setGame(game);
 
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'build'");
+        return game;
     }
 
     @Override 

@@ -44,6 +44,9 @@ public class OnlineOpponent extends Player {
         return isFirst;
     }
 
+    /**
+     * Waits for a turn
+     */
     public void waitForTurn() {
         // CODE SMELL ):
         //

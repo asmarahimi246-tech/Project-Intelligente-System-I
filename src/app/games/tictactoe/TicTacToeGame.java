@@ -3,9 +3,7 @@ import java.util.ArrayList;
 
 import app.games.framework.Game;
 import app.games.framework.Player;
-import app.games.tictactoe.model.TicTacToeModel;
-import app.network.old.ServerListener;
-import app.pages.context.Page;
+import app.games.tictactoe.players.moveStrategies.TicTacToeMove;
 
 /**
  * <pre>
@@ -18,123 +16,43 @@ import app.pages.context.Page;
  *   --&gt; if true, make view update with the move added
  * </pre>
  */
-public class TicTacToeGame extends Game {
-    private ServerListener listener;
-    private TicTacToeModel model;
-    private TicTacToePage view;
-    private char player1 = 'X';
+public class TicTacToeGame extends Game<TicTacToeMove> {
 
     /**
-     * Creates a TicTacToe game
-     *
-     * @param page the page used to display the game
-     * @param players the players participating in the game
+     * Makes a game
+     * 
+     * @param page the view
+     * @param players the players
      */
-    public TicTacToeGame(Page page, ArrayList<Player> players) {
+    public TicTacToeGame(TicTacToePage page, ArrayList<Player> players) {
         super(page, players);
-        this.model = new TicTacToeModel();
-        this.view = new TicTacToePage();
+        
+        super.running = true;
+        //TODO Auto-generated constructor stub
     }
-
-
-    /**
-     * TODO: 
-     * ik snap dit niet
-     * 
-     * @param symbol
-     */
-    public void symbol(char symbol) {
-        this.player1 = symbol;
-    }
-
-
-    /**
-     * TODO:
-     * de input hoort bij de speler
-     * 
-     * dit moet de gameloop zijn
-     */
-    public void turn() {
-        while (true) {
-            int input = view.readMove();
-            input -= 1;
-
-            if (model.placeMove(input, player1)) {
-                view.printBoardScore();
-                printBoard();
-
-                // als het een online game is stuurt die de zet naar de server
-                if (listener != null) {
-                    listener.sendMoveToServer(input);
-                }
-                return;
-            }
-            view.printInvalidMove();
-        }
-    }
-
-    /**
-     * TODO:
-     * deze code is speler specifiek
-     * een game kan geen zet doen
-     * een speler wel
-     * 
-     * @param number
-     */
-    public void move(int number, boolean ownMove) {
-        char symbol;
-        if (ownMove) {
-            symbol = player1;
-        } else {
-            if (player1 == 'X') { symbol = 'O';
-            } else { symbol = 'X';
-            }
-        }
-
-        if (model.placeMove(number, symbol)) {
-            view.printBoardScore();
-            printBoard();
-        }
-    }
-
-    /**
-     * TODO:
-     * 
-     * waarom staat dit appart
-     * een speler is een speler of het nou AI is of niet
-     */
-    public void aiMove() {
-            view.printBoardScore();
-            printBoard();
-
-            // stuurt de AI move naar de server bij een online game
-            if (listener != null) {
-            }
-        }
-
-
-    /**
-     * TODO:
-     * 
-     * dit hoort in view
-     */
-    public void printBoard() {
-        view.printBoard(model.getBoard());
-    }
-
-    public boolean checkWinner() {
-        return model.checkWinner();
-    }
-
-    public boolean isBoardFull() {
-        return model.isBoardFull();
-    }
-
 
     @Override
     public String toString() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
+    }
+
+    @Override
+    public void run() {
+        // game loop
+        while (running) {
+
+            // each player does a move
+            for (Player player : players) {
+                player.doMove();
+            }
+        }
+    }
+
+    @Override
+    public void procesMove(TicTacToeMove move) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'procesMove'");
     }
 
 }

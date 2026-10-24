@@ -2,11 +2,14 @@ app
 app.games
 app.games.framework
 app.games.tictactoe
+app.games.tictactoe.model
 app.games.tictactoe.players
 app.games.tictactoe.players.moveStrategies
 app.network
+app.network.old
 app.pages
 app.pages.context
+app.pages.context.widgets
 app.pages.gameBuilder
 app.util
 app.util.cliInputFields

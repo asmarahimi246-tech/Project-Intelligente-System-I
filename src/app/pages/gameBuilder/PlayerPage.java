@@ -8,7 +8,8 @@ import javax.swing.JLabel;
 import app.games.framework.Game;
 import app.games.framework.GameBuilder;
 import app.games.framework.Player;
-import app.pages.MainPage;
+import app.pages.BasePage;
+import app.pages.GamePage;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.util.ScannerSingleton;
@@ -50,15 +51,30 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
      * @param builder the builder
      */
     public PlayerPage(B builder) {
-        super();
         this.builder = builder;
-        add(new JLabel(toString()));
+
+        // add the default players for the selected game mode
+        this.builder.addDefaultPlayers();
     }
 
     @Override
-    public void open() {
-        // add the default players for the selected game mode
-        builder.addDefaultPlayers();
+    public void open() {        
+        super.open();
+        
+        // game page
+        PageManager manager = PageManager.getInstance();
+        Page page = new BasePage(new GamePage<G,B>(builder));
+        manager.setCurrentPage(page);
+    }
+
+    @Override
+    public void createSwingUi() {
+        // TODO: add ui
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public void createCLI() {
         int playersLeft = builder.getPlayersToAdd() + 1;
 
         // loop until all nessacary players are added
@@ -82,16 +98,6 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
 
             // proccess input
             builder.addPlayer(options.get(choice - 1));
-        }
-
-        // game page
-        PageManager manager = PageManager.getInstance();
-        Page game = builder.build().getPage();
-        if (game != null) {
-            manager.setCurrentPage(game);
-        } else {
-            Page main = new MainPage();
-            manager.setCurrentPage(main);
         }
     }
 }

@@ -15,6 +15,6 @@ public interface MoveSrategy {
      * @param validateMove a predacite that true when the move is valid
      * @return the move
      */
-    public Move getMove(ArrayList<String> board, Predicate<Move> validateMove);
+    public TicTacToeMove getMove(ArrayList<String> board, Predicate<TicTacToeMove> validateMove);
 }
 

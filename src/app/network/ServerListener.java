@@ -12,6 +12,9 @@ import java.util.function.BooleanSupplier;
  * 
  * AI usage:
  * Made with help from a lot of youtube videos and explenations from deepai
+ * 
+ * 
+ * TODO: better sources
  */
 public class ServerListener implements Runnable {
     private volatile boolean errorFlag = false;

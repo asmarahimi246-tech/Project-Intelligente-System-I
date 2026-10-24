@@ -2,7 +2,13 @@ package app.games.tictactoe;
 
 import java.util.Scanner;
 
+import javax.swing.JLabel;
+
+import app.games.tictactoe.players.moveStrategies.TicTacToeMove;
 import app.pages.context.Page;
+import app.util.Config;
+import app.util.ScannerSingleton;
+import app.util.cliInputFields.CLIIntegerField;
 
 /**
  * <pre>
@@ -14,16 +20,7 @@ import app.pages.context.Page;
  * </pre>
  */
 public class TicTacToePage extends Page {
-    private Scanner scanner = new Scanner(System.in);
-
-    /**
-     * TODO:
-     * @return
-     */
-    public int readMove() {
-        System.out.print("Choose a number [1-9]: ");
-        return scanner.nextInt();
-    }
+    private TicTacToeGame game;
 
     /**
      * TODO:
@@ -52,8 +49,64 @@ public class TicTacToePage extends Page {
     }
 
     @Override
-    public void open() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'open'");
+    public void createSwingUi() {
+        // TODO: add ui
+        throw new UnsupportedOperationException("UI not implemented");
+    }
+
+    @Override
+    public void createCLI() {
+        printBoard(null);
+    }
+
+    /**
+     * Sets the game
+     * @param game the game
+     */
+    public void setGame(TicTacToeGame game) {
+        this.game = game;
+    }
+
+    /**
+     * Requests a move
+     * 
+     * @return the move
+     */
+    public TicTacToeMove requestMove() {
+        TicTacToeMove toReturn = null;
+
+        if (Config.SWING_SUPPORTED) {
+
+        } else {
+            toReturn = cliInput();
+        }
+
+        return toReturn;
+    }
+
+    /**
+     * Gets input from the cli
+     * 
+     * @return a move
+     */
+    private TicTacToeMove cliInput() {
+
+        // get input
+        System.out.println("give row");
+        Scanner scanner = ScannerSingleton.getInstance();
+        CLIIntegerField xfield = new CLIIntegerField.Builder(scanner, "Something went wrong.")
+            .max(3)
+            .min(1)
+            .build();
+        int row = xfield.getInput();
+
+        System.out.println("now collom");
+        CLIIntegerField yfield = new CLIIntegerField.Builder(scanner, "Something went wrong.")
+            .max(3)
+            .min(1)
+            .build();
+        int collomn = yfield.getInput();
+
+        return new TicTacToeMove(row, collomn);
     }
 }
