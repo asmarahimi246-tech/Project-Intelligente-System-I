@@ -75,7 +75,7 @@ public class AIStrategy implements MoveSrategy {
      * @param AiPlayer
      * @return
      */
-    public Move calculateBestMove(char[] board, char AiPlayer) {
+    public TicTacToeMove calculateBestMove(char[] board, char AiPlayer) {
         int bestScore = Integer.MIN_VALUE;
         int bestMove = 0;
 
@@ -93,7 +93,7 @@ public class AIStrategy implements MoveSrategy {
         }
         int calcRow = bestMove / 3;
         int calcCol = bestMove % 3;
-        return new Move(calcRow, calcCol);
+        return new TicTacToeMove(calcRow, calcCol);
     }
     /**
      *
@@ -163,7 +163,7 @@ public class AIStrategy implements MoveSrategy {
      * @return
      */
     @Override
-    public Move getMove(ArrayList<String> board, Predicate<Move> validateMove) {
+    public TicTacToeMove getMove(ArrayList<String> board, Predicate<TicTacToeMove> validateMove) {
         char[] charBoard = new char[9];
         int playedTurns = 0;
 
