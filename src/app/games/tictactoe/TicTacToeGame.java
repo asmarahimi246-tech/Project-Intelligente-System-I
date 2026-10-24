@@ -38,12 +38,12 @@ public class TicTacToeGame extends Game {
             Player x = super.players.get(0);
             String oldX = x.getName();
             String newX = "x" + oldX;
-            x.setName(newX);
+            super.players.get(0).setName(newX);
         
             Player o = super.players.get(1);
             String oldO = o.getName();
             String newO = "o" + oldO;
-            x.setName(newO);
+            super.players.get(1).setName(newO);
         }
         
         super.running = true;
@@ -64,12 +64,20 @@ public class TicTacToeGame extends Game {
         return "O";
     }
 
+    /**    (non-Javadoc)
+     * TODO: put print statements in page
+     * @see app.games.framework.game.Game#run()
+     */
     @Override
     public void run() {
+        int moves = 0;
+
         // game loop
         while (running) {
+
             // each player does a move
             for (Player player : players) {
+                // set the current player
                 model.setCurrentPlayer(player);
                 
                 if (Config.SWING_SUPPORTED) {
@@ -80,14 +88,30 @@ public class TicTacToeGame extends Game {
 
                 player.doMove(this);
 
+
                 if (Config.DEBUG) {
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
+
+                // check for win
+                if (model.checkForWin()) {
+                    running = false;
+                    System.out.println(player.getName() + " wins");
+                    break;
+                }
+
+                // check for draw
+                moves++;
+                if (moves == 9) {
+                    running = false;
+                    System.out.println("draw ):");
+                    break;
+                };
             }
         }
     }

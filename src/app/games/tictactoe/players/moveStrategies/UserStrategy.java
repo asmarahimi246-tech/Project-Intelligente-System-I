@@ -4,6 +4,7 @@ import app.games.framework.game.Game;
 import app.games.framework.move.MoveSrategy;
 import app.games.tictactoe.TicTacToeGame;
 import app.games.tictactoe.TicTacToePage;
+import app.games.tictactoe.model.Board;
 import app.games.tictactoe.model.TicTacToeMove;
 /**
  * UserStrategy
@@ -35,9 +36,12 @@ public class UserStrategy implements MoveSrategy {
             ticTacToe = (TicTacToeGame) game;
         }
 
+        // get the board
+        Board board = ticTacToe.model.getBoard();
+
         // request input from the page
         // and check if its valid
-        while (!ticTacToe.model.validateMove(toReturn)){
+        while (toReturn == null || !board.isEmpty(toReturn.row(), toReturn.column())){
             toReturn = page.requestMove();
         }
         // return the move if its valid

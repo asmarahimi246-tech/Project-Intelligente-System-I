@@ -107,10 +107,19 @@ public class TicTacToePage extends Page {
 
     @Override
     public void createCLI() {
-        System.out.println(game.model.getCurrentPlayer().getName());
-
+        System.out.println();
+        System.out.println("=== Tic Tac Toe ===");
+        System.out.println("the board looks like this");
         Board board = game.model.getBoard();
         System.out.println(board.toString());
+
+        String name = game.model.getCurrentPlayer().getName();
+
+        if (Config.X_AND_O) {
+            name = name.substring(1);
+        }
+
+        System.out.println("its your turn " + name);
     }
 
     /**
@@ -152,20 +161,22 @@ public class TicTacToePage extends Page {
     private TicTacToeMove cliInput() {
 
         // get input
-        System.out.println("give row");
+        System.out.println("give row v (1-3)");
         Scanner scanner = ScannerSingleton.getInstance();
         CLIIntegerField xfield = new CLIIntegerField.Builder(scanner, "Something went wrong.")
             .max(3)
             .min(1)
+            .defaultInput(2)
             .build();
-        int row = xfield.getInput();
+        int row = xfield.getInput() - 1;
 
-        System.out.println("now collom");
+        System.out.println("now collom > (1-3)");
         CLIIntegerField yfield = new CLIIntegerField.Builder(scanner, "Something went wrong.")
             .max(3)
             .min(1)
+            .defaultInput(2)
             .build();
-        int collomn = yfield.getInput();
+        int collomn = yfield.getInput() - 1;
 
         return new TicTacToeMove(row, collomn);
     }
