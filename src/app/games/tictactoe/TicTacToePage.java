@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import app.games.tictactoe.model.Board;
@@ -103,6 +104,19 @@ public class TicTacToePage extends Page {
                 );
             }
         }
+    }
+
+    public void showResult(String message) {
+        if (!Config.SWING_SUPPORTED) {
+            System.out.println(message);
+            return;
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            acceptingMoves = false;
+            refreshBoard();
+            JOptionPane.showMessageDialog(this, message);
+        });
     }
 
     @Override

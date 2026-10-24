@@ -71,6 +71,7 @@ public class TicTacToeGame extends Game {
     @Override
     public void run() {
         int moves = 0;
+        TicTacToePage view = (TicTacToePage) page;
 
         // game loop
         while (running) {
@@ -101,7 +102,7 @@ public class TicTacToeGame extends Game {
                 // check for win
                 if (model.checkForWin()) {
                     running = false;
-                    System.out.println(player.getName() + " wins");
+                    view.showResult(getSymbol(player) + " wins!");
                     break;
                 }
 
@@ -109,7 +110,7 @@ public class TicTacToeGame extends Game {
                 moves++;
                 if (moves == 9) {
                     running = false;
-                    System.out.println("draw ):");
+                    view.showResult("Draw!");
                     break;
                 };
             }

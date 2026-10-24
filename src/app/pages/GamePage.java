@@ -10,6 +10,8 @@ import app.games.framework.game.GameBuilder;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
 
+import app.util.Config;
+
 /**
  * GamePage
  * 
@@ -66,6 +68,10 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
 
         // then build the content view
         game.run();
+
+        if (Config.SWING_SUPPORTED) {
+            return;
+        }
 
         // return to main menu when the game ends
         PageManager manager = PageManager.getInstance();
