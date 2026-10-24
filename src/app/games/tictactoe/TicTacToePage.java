@@ -25,8 +25,8 @@ public class TicTacToePage extends Page {
     /**
      * TODO:
      */
-    public void printTussenstand() {
-        System.out.println("Tussenstand:");
+    public void printBoardScore() {
+        System.out.println("Board:");
     }
 
     /**

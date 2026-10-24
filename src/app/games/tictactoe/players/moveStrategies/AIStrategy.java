@@ -1,148 +1,152 @@
 package app.games.tictactoe.players.moveStrategies;
-
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.function.Predicate;
-
 /**
  * AI
  */
 public class AIStrategy implements MoveSrategy {
     /**
-     * Temp
-     * 
-     * @param board board
-     * @param max max
-     * @param player player
-     * @return iets
+     *
+     * @param board
+     * @param isAiMode
+     * @param AiPlayer
+     * @return
      */
-    private int minimax(char[] board, boolean max, char player) {
-        if (checkWin(board, player) == 1) {
-            return 1;
+    private int minimax(char[] board, char AiPlayer, boolean isAiMode) {
+        int score = evaluateBoard(board);
+
+        if (score == 1) {
+            if (AiPlayer == 'X') {
+                return 1;
+            } else {
+                return -1;
+            }
         }
 
-        if (checkLoss(board, player) == -1) {
-            return -1;
+        if (score == -1) {
+            if (AiPlayer == 'O') {
+                return 1;
+            } else {
+                return -1;
+            }
         }
 
-        if (checkDraw(board, player)) {
+        if (isBoardFull(board)) {
             return 0;
         }
 
-        char simulatedopponent;
+        char simulatedOpponent;
 
-        if (player == 'X') {
-            simulatedopponent = 'O';
+        if (AiPlayer == 'X') {
+            simulatedOpponent = 'O';
         } else {
-            simulatedopponent = 'X';
+            simulatedOpponent = 'X';
         }
 
-        if (max) {
-            int bestscore = Integer.MIN_VALUE;
+        if (isAiMode) {
+            int maxscore = Integer.MIN_VALUE;
             for (int i = 0; i < 9; i++) {
                 if (board[i] != 'X' && board[i] != 'O') {
-                    char a = board[i];
-                    board[i] = player;
-
-                    int score = minimax(board, !max, simulatedopponent);
-                    board[i] = a;
-                    bestscore = Math.max(bestscore, score);
+                    char original = board[i];
+                    board[i] = AiPlayer;
+                    int result = minimax(board, AiPlayer, false);
+                    board[i] = original;
+                    maxscore = Math.max(maxscore, result);
                 }
-
             }
-            return bestscore;
-
+            return maxscore;
         } else {
             int minscore = Integer.MAX_VALUE;
             for (int i = 0; i < 9; i++) {
                 if (board[i] != 'X' && board[i] != 'O') {
-                    char a = board[i];
-                    board[i] = player;
-
-                    int score = minimax(board, !max, simulatedopponent);
-                    board[i] = a;
-                    minscore = Math.min(minscore, score);
+                    char original = board[i];
+                    board[i] = simulatedOpponent;
+                    int result = minimax(board, AiPlayer, true);
+                    board[i] = original;
+                    minscore = Math.min(minscore, result);
                 }
             }
             return minscore;
         }
     }
-
     /**
-     * Temp
-     * 
-     * @param board board
-     * @param player player
-     * @return iets
+     *
+     * @param board
+     * @param AiPlayer
+     * @return
      */
-    public TicTacToeMove numberAI(ArrayList<String> board, char player) {
+    public TicTacToeMove calculateBestMove(char[] board, char AiPlayer) {
+        int bestScore = Integer.MIN_VALUE;
+        int bestMove = 0;
 
-        // zoekt eerst naar een winnende zet voor de AI
         for (int i = 0; i < 9; i++) {
-            //if (checkMove(board, player, i)) {
-            //    return i + 1;
-            //}
+            if (board[i] != 'X' && board[i] != 'O') {
+                char original = board[i];
+                board[i] = AiPlayer;
+                int score = minimax(board, AiPlayer, false);
+                board[i] = original;
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMove = i;
+                }
+            }
         }
-
-        char opponent;
-
-        if (player == 'X') {
-            opponent = 'O';
-        } else {
-            opponent = 'X';
-        }
-
-        // probeert een winnende zet van de tegenstander te blokkeren
-        for (int i = 0; i < 9; i++) {
-            //if (checkMove(board, opponent, i)) {
-            //    return i + 1;
-            //}
-        }
-
-        // als er geen directe winnende zet of block is kiest de AI een random positie
-        Random random = new Random();
-
-        while (true) {
-            int randomMove = random.nextInt(9);
-
-            // controlleert of een pos vrij is
-            //if (board[randomMove] != 'X' && board[randomMove] != 'O') {
-            //    return randomMove + 1;
-            //}
-        }
+        int calcRow = bestMove / 3;
+        int calcCol = bestMove % 3;
+        return new TicTacToeMove(calcRow, calcCol);
     }
-
     /**
-     * Temp
-     * @param board board
-     * @param player player
-     * @param pos pos 
-     * @return iets
+     *
+     * @param board
+     * @return
      */
-    private boolean checkMove(ArrayList<String> board, char player, int pos) {
-
-        // een bezette pos mag niet
-        //if (board[pos] == 'X' || board[pos] == 'O') {
-        //    return false;
-        //}
-
-        //char a = board[pos];
-        //board[pos] = player;
-
-        // checkt of deze zet een winning move is
-        //if (minimax(board, player)) {
-        //    board[pos] = a;
-        //    return true;
-        //}
-        //board[pos] = a;
-
-        return false;
+    private int evaluateBoard(char[] board) {
+        // checks rows
+        for (int row = 0; row <  9; row+=3) {
+            if (board[row] == board[row + 1] && board[row] == board[row + 2]) {
+                if (board[row] == 'X') {
+                    return 1;
+                }
+                if (board[row] == 'O') {
+                    return -1;
+                }
+            }
+        }
+        // checks columns
+        for (int col = 0; col < 3; col++) {
+            if (board[col] == board[col + 3] && board[col] == board[col + 6]) {
+                if (board[col] == 'X') {
+                    return 1;
+                }
+                if (board[col] == 'O') {
+                    return -1;
+                }
+            }
+        }
+        // checks diagonal top left to bottom right
+        if (board[0] == board[4] && board[0] == board[8]) {
+            if (board[0] == 'X') {
+                return 1;
+            }
+            if (board[0] == 'O') {
+                return -1;
+            }
+        }
+        // checks diagonal top right to bottom left
+        if (board[2] == board[4] && board[2] == board[6]) {
+            if (board[2] == 'X') {
+                return 1;
+            }
+            if (board[2] == 'O') {
+                return -1;
+            }
+        }
+        return 0;
     }
-
     /**
-     * Temp
-     * @param board board
-     * @return iets
+     *
+     * @param board
+     * @return
      */
     private boolean isBoardFull(char[] board) {
         for (char vak : board) {
@@ -152,53 +156,30 @@ public class AIStrategy implements MoveSrategy {
         }
         return true;
     }
-
     /**
-     * Temp
-     * @param board board
-     * @param player player
-     * @return iets
+     *
+     * @param board the board
+     * @param validateMove a predacite that true when the move is valid
+     * @return
      */
-    private int checkWin(char[] board, char player) {
-        //if (minimax(board, player)) {
-        //    return 1;
-        //}
-        return 0;
-    }
-
-    /**
-     * Temp
-     * @param board board
-     * @param player player
-     * @return iets
-     */
-    private int checkLoss(char[] board, char player) {
-        char opponent;
-
-        if (player == 'X') {
-            opponent = 'O';
-        } else {
-            opponent = 'X';
-        }
-
-        //if (minimax(board, opponent)) {
-        //    return -1;
-        //}
-        return 0;
-    }
-
-    /**
-     * Temp
-     * @param board board
-     * @param player player
-     * @return iets
-     */
-    private boolean checkDraw(char[] board, char player) {
-        return isBoardFull(board);
-    }
-
     @Override
     public TicTacToeMove getMove(ArrayList<String> board, Predicate<TicTacToeMove> validateMove) {
-        return numberAI(board, 'X');
+        char[] charBoard = new char[9];
+        int playedTurns = 0;
+
+        for (int i = 0; i < 9; i++) {
+            charBoard[i] = board.get(i).charAt(0);
+            if (charBoard[i] == 'X' || charBoard[i] == 'O') {
+                playedTurns++;
+            }
+        }
+
+        char AiPlayer;
+        if (playedTurns % 2 == 0) {
+            AiPlayer = 'X';
+        } else {
+            AiPlayer = 'O';
+        }
+        return calculateBestMove(charBoard, AiPlayer);
     }
 }
