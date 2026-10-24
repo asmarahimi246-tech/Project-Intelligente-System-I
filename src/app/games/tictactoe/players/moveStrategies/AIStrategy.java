@@ -1,16 +1,13 @@
 package app.games.tictactoe.players.moveStrategies;
 
-import java.util.function.Predicate;
-
 import app.games.framework.game.Game;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
 import app.games.tictactoe.TicTacToeGame;
 import app.games.tictactoe.model.Board;
 import app.games.tictactoe.model.TicTacToeMove;
-import app.games.tictactoe.model.Tile;
 import app.games.tictactoe.players.LocalPlayer;
-import app.games.tictactoe.players.moveStrategies.AIStrategy.TriPredicate;
+import app.util.Logger;
 /**
  * AI
  */
@@ -125,7 +122,8 @@ public class AIStrategy implements MoveSrategy {
 
                     // calculate score in new branch
                     int score = minimax(copy, false);
-                    System.out.println("TILE CHECKED: (" + row + "," + col + ")" + score);
+
+                    Logger.logDebug("TILE CHECKED: (" + row + "," + col + ")" + score);
 
                     // check if its the best
                     if (score > bestScore) {
@@ -196,7 +194,7 @@ public class AIStrategy implements MoveSrategy {
             return -1;
         }
 
-        
+
         // no one can win
         return 0;
     }

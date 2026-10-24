@@ -29,6 +29,12 @@ import app.games.framework.player.Player;
 public class TicTacToeModel {
     private Player currentPlayer;
     private Board board = new Board();
+    private TriPredicate<Board, Integer, Integer> isAi = (board, row, col) -> (!board.isEmpty(row, col) && (board.getOwner(row, col) == currentPlayer));
+
+    @FunctionalInterface
+    interface TriPredicate<A, B, C> {
+        boolean test(A a, B b, C c);
+    }
 
     /**
      * Gets the board
@@ -62,8 +68,41 @@ public class TicTacToeModel {
         this.currentPlayer = currentPlayer;
     }
 
-    public boolean validateMove(TicTacToeMove toReturn) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'validateMove'");
+    /**
+     * Checks if the current player wins
+     * 
+     * @return true if the player wins
+     */
+    public boolean checkForWin() {
+        // checks cols
+        for (int row = 0; row < 3; row++) {
+            // check for player
+            if (isAi.test(board, row, 0) && isAi.test(board, row, 1) && isAi.test(board, row, 2)) {
+                return true;
+            }
+        }
+
+        // checks rows
+        for (int col = 0; col < 3; col++) {
+            // check for player
+            if (isAi.test(board, 0, col) && isAi.test(board, 1, col) && isAi.test(board, 2, col)) {
+                return true;
+            }
+        }
+
+        // checks diagonal top left to bottom right
+        // check for player
+        if (isAi.test(board, 0, 0) && isAi.test(board, 1, 1) && isAi.test(board, 2, 2)) {
+            return true;
+        }
+
+        // checks diagonal top right to bottom left
+        // check for player
+        if (isAi.test(board, 2, 0) && isAi.test(board, 1, 1) && isAi.test(board, 0, 2)) {
+            return true;
+        }
+
+        // no one can win
+        return false;
     }
 }
