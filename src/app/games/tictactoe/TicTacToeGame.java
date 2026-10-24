@@ -1,6 +1,8 @@
 package app.games.tictactoe;
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
 import app.games.framework.game.Game;
 import app.games.framework.move.Move;
 import app.games.framework.player.Player;
@@ -54,6 +56,14 @@ public class TicTacToeGame extends Game {
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 
+    public String getSymbol(Player player) {
+        if (player == players.get(0)) {
+            return "X";
+        }
+
+        return "O";
+    }
+
     @Override
     public void run() {
         // game loop
@@ -61,7 +71,13 @@ public class TicTacToeGame extends Game {
             // each player does a move
             for (Player player : players) {
                 model.setCurrentPlayer(player);
-                page.open();
+                
+                if (Config.SWING_SUPPORTED) {
+                    SwingUtilities.invokeLater(() -> page.open());
+                } else {
+                    page.open();
+                }
+
                 player.doMove(this);
 
                 if (Config.DEBUG) {

@@ -1,5 +1,7 @@
 package app.pages;
 
+import java.awt.GridLayout;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -39,6 +41,7 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
 
     @Override
     public void createSwingUi() {
+        setLayout(new GridLayout(1, 1));
         // TODO: ui surounding the page
         // the game page is only a widget and contain only the minimal needed for a game
         // exampe:

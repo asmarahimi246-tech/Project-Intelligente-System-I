@@ -1,8 +1,16 @@
 package app.games.tictactoe;
 
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.SwingUtilities;
 
 import app.games.tictactoe.model.Board;
 import app.games.tictactoe.model.TicTacToeMove;
@@ -10,6 +18,7 @@ import app.pages.context.Page;
 import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
+import app.games.framework.player.Player;
 
 /**
  * <pre>
@@ -22,6 +31,11 @@ import app.util.cliInputFields.CLIIntegerField;
  */
 public class TicTacToePage extends Page {
     private TicTacToeGame game;
+    private final JButton[][] buttons = new JButton[3][3];
+    private final BlockingQueue<TicTacToeMove> moves =
+            new ArrayBlockingQueue<>(1);
+
+    private boolean acceptingMoves = false;
 
     /**
      * TODO:
@@ -39,8 +53,56 @@ public class TicTacToePage extends Page {
 
     @Override
     public void createSwingUi() {
-        // TODO: add ui
-        throw new UnsupportedOperationException("UI not implemented");
+        removeAll();
+        setLayout(new GridLayout(3, 3));
+
+        for (int i = 0; i < 9; i++) {
+            JButton button = new JButton();
+            button.setBackground(Color.DARK_GRAY);
+            button.setForeground(Color.WHITE);
+            button.setFont(new Font("Arial", Font.BOLD, 120));
+
+            final int row = i / 3;
+            final int col = i % 3;
+
+            buttons[row][col] = button;
+
+            button.addActionListener(event -> {
+                if (!acceptingMoves) {
+                    return;
+                }
+
+                acceptingMoves = false;
+                refreshBoard();
+
+                TicTacToeMove move = new TicTacToeMove(row, col);
+                moves.offer(move);
+            });
+
+            add(button);
+        }
+
+        refreshBoard();
+    }
+
+    public void refreshBoard() {
+        Board board = game.model.getBoard();
+
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                Player owner = board.getOwner(row, col);
+
+                if (owner == null) {
+                    buttons[row][col].setText("");
+                } else {
+                    buttons[row][col].setText(game.getSymbol(owner));
+                }
+
+                buttons[row][col].setEnabled(
+                    acceptingMoves && owner == null
+                );
+            }
+        }
     }
 
     @Override
@@ -65,15 +127,21 @@ public class TicTacToePage extends Page {
      * @return the move
      */
     public TicTacToeMove requestMove() {
-        TicTacToeMove toReturn = null;
+        if (!Config.SWING_SUPPORTED) {
+            return cliInput();
+        } 
 
-        if (Config.SWING_SUPPORTED) {
+        SwingUtilities.invokeLater(() -> {
+            acceptingMoves = true;
+            refreshBoard();
+        });
 
-        } else {
-            toReturn = cliInput();
+        try {
+            return moves.take();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Waiting for a move was interrupted", e);
         }
-
-        return toReturn;
     }
 
     /**
