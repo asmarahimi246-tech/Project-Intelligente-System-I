@@ -1,5 +1,5 @@
 package app.games.tictactoe.players.moveStrategies;
-import java.util.ArrayList;
+
 import java.util.function.Predicate;
 
 import app.games.framework.game.Game;
@@ -8,12 +8,22 @@ import app.games.framework.player.Player;
 import app.games.tictactoe.TicTacToeGame;
 import app.games.tictactoe.model.Board;
 import app.games.tictactoe.model.TicTacToeMove;
+import app.games.tictactoe.model.Tile;
+import app.games.tictactoe.players.LocalPlayer;
+import app.games.tictactoe.players.moveStrategies.AIStrategy.TriPredicate;
 /**
  * AI
  */
 public class AIStrategy implements MoveSrategy {
     private Player aIToMove;
     private Player simulatedOpponent;
+    private TriPredicate<Board, Integer, Integer> isOpponent = (board, row, col) -> (!board.isEmpty(row, col) && !(board.getOwner(row, col) == aIToMove));
+    private TriPredicate<Board, Integer, Integer> isAi = (board, row, col) -> (!board.isEmpty(row, col) && (board.getOwner(row, col) == aIToMove));
+
+    @FunctionalInterface
+    interface TriPredicate<A, B, C> {
+        boolean test(A a, B b, C c);
+    }
 
     /**
      *
@@ -24,40 +34,17 @@ public class AIStrategy implements MoveSrategy {
      */
     private int minimax(Board board, boolean ownMove) {
         // evaluate the board
-        // returns 1 (X) if 3 in a row
-        // returns -1 (O) if 3 in a row
-        //int score = evaluateBoard(board);
-
-        // evaluate the board
         // returns 1 (AI) if 3 in a row
         // returns -1 (Opponent) if 3 in a row
         int score = evaluateBoard(board);
 
-        // base case
-        // ai loses or wins
-        //if (score == 1) {
-        //    // win for X
-        //    if (aiPlayer == 'X') {
-        //        return 1;
-        //    // loss for X
-        //    } else {
-        //        return -1;
-        //    }
-        //}
-
-        //if (score == -1) {
-        //    // win for O
-        //    if (aiPlayer == 'O') {
-        //        return 1;
-        //    // loss for )
-        //    } else {
-        //        return -1;
-        //    }
-        //}
-
         // check if someone has won
-        if (score != 0) {
-            return score;
+        if (score == 1) {
+            // ai won
+            return 1;
+        } else if (score == -1) {
+            // opponent won
+            return -1;
         }
 
         // checks if the board is full
@@ -66,49 +53,46 @@ public class AIStrategy implements MoveSrategy {
             return 0;
         }
 
-        // makes opponent
-        //char simulatedOpponent;
-
-        // opponent char is opposite from self
-        //if (aiPlayer == 'X') {
-        //    simulatedOpponent = 'O';
-        //} else {
-        //    simulatedOpponent = 'X';
-        //}
-
-        // copy board
-        Board copy = board.copy();
-
         // aiMode
         if (ownMove) {
+
+            // calculate the best ai move
             int maxscore = Integer.MIN_VALUE;
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
                     if (board.isEmpty(row, col)) {
+                        // copy board
+                        Board copy = board.copy();
+
                         // place tile in the copy
                         copy.place(row, col, aIToMove);
 
-                        int result = minimax(board, false);
-                        //board[i] = original;
+                        // calculate score in new branch
+                        int result = minimax(copy, false);
+
+                        // check if its the best
                         maxscore = Math.max(maxscore, result);
                     }
                 }
             }
             return maxscore;
         } else {
+
+            // calculate the best opponent move
             int minscore = Integer.MAX_VALUE;
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
                     if (board.isEmpty(row, col)) {
+                        // copy board
+                        Board copy = board.copy();
+
                         // place tile in the copy
                         copy.place(row, col, simulatedOpponent);
 
-                        //get original
-                        //char original = board[i];
-                        //board[i] = simulatedOpponent;
+                        // calculate score in new branch
+                        int result = minimax(copy, true);
 
-                        int result = minimax(board, true);
-                        //board[i] = original;
+                        // check if its the best (for the opponent)
                         minscore = Math.min(minscore, result);
                     }
                 }
@@ -128,19 +112,20 @@ public class AIStrategy implements MoveSrategy {
         int bestScore = Integer.MIN_VALUE;
         TicTacToeMove bestMove = null;
 
-        // copy board
-        Board copy = board.copy();
-
         // start a tree of moves at every tile
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 if (board.isEmpty(row, col)) {
 
+                    // copy board
+                    Board copy = board.copy();
+
                     // place tile in the copy
                     copy.place(row, col, aIToMove);
 
-                    // calculate score
+                    // calculate score in new branch
                     int score = minimax(copy, false);
+                    System.out.println("TILE CHECKED: (" + row + "," + col + ")" + score);
 
                     // check if its the best
                     if (score > bestScore) {
@@ -160,50 +145,59 @@ public class AIStrategy implements MoveSrategy {
      */
     private int evaluateBoard(Board board) {
 
-        // checks rows
+        // checks cols
         for (int row = 0; row < 3; row++) {
-            if (board.getOwner(row, 0) == board.getOwner(row, 1) && board.getOwner(row, 0) == board.getOwner(row, 2)) {
-                if (board.getOwner(row, 0) == aIToMove) {
-                    return 1;
-                }
-                if (board.getOwner(row, 0) == simulatedOpponent) {
-                    return -1;
-                }
+            // check for ai
+            if (isAi.test(board, row, 0) && isAi.test(board, row, 1) && isAi.test(board, row, 2)) {
+                return 1;
+            }
+
+            // check for opponent
+            if (isOpponent.test(board, row, 0) && isOpponent.test(board, row, 1) && isOpponent.test(board, row, 2)) {
+                return -1;
             }
         }
 
-        // checks columns
+
+        // checks rows
         for (int col = 0; col < 3; col++) {
-            if (board.getOwner(0, col) == board.getOwner(1, col) && board.getOwner(0, col) == board.getOwner(2, col)) {
-                if (board.getOwner(0, col) == aIToMove) {
-                    return 1;
-                }
-                if (board.getOwner(0, col) == simulatedOpponent) {
-                    return -1;
-                }
+            // check for ai
+            if (isAi.test(board, 0, col) && isAi.test(board, 1, col) && isAi.test(board, 2, col)) {
+                return 1;
+            }
+
+            // check for opponent
+            if (isOpponent.test(board, 0, col) && isOpponent.test(board, 1, col) && isOpponent.test(board, 2, col)) {
+                return -1;
             }
         }
 
 
         // checks diagonal top left to bottom right
-        if (board.getOwner(0, 0) == board.getOwner(1, 1) && board.getOwner(0, 0) == board.getOwner(2, 2)) {
-            if (board.getOwner(0, 0) == aIToMove) {
-                return 1;
-            }
-            if (board.getOwner(0, 0) == simulatedOpponent) {
-                return -1;
-            }
+        // check for ai
+        if (isAi.test(board, 0, 0) && isAi.test(board, 1, 1) && isAi.test(board, 2, 2)) {
+            return 1;
         }
 
-        // checks diagonal top right to bottom left
-        if (board.getOwner(2, 0) == board.getOwner(1, 1) && board.getOwner(0, 2) == board.getOwner(2, 2)) {
-            if (board.getOwner(0, 0) == aIToMove) {
-                return 1;
-            }
-            if (board.getOwner(0, 0) == simulatedOpponent) {
-                return -1;
-            }
+        // check for opponent
+        if (isOpponent.test(board, 0, 0) && isOpponent.test(board, 1, 1) && isOpponent.test(board, 2, 2)) {
+            return -1;
         }
+
+
+        // checks diagonal top right to bottom left
+        // check for ai
+        if (isAi.test(board, 2, 0) && isAi.test(board, 1, 1) && isAi.test(board, 0, 2)) {
+            return 1;
+        }
+
+        // check for opponent
+        if (isOpponent.test(board, 2, 0) && isOpponent.test(board, 1, 1) && isOpponent.test(board, 0, 2)) {
+            return -1;
+        }
+
+        
+        // no one can win
         return 0;
     }
 
@@ -215,6 +209,9 @@ public class AIStrategy implements MoveSrategy {
      */
     @Override
     public TicTacToeMove getMove(Game game) {
+        simulatedOpponent = new LocalPlayer(this);
+        simulatedOpponent.setName("S");
+
         // get the game
         TicTacToeGame ticTacToe = null;
         if (game instanceof TicTacToeGame) {
@@ -227,26 +224,6 @@ public class AIStrategy implements MoveSrategy {
         // checks who self is
         aIToMove = ticTacToe.model.getCurrentPlayer();
 
-        //char[] charBoard = new char[9];
-        //int playedTurns = 0;
-
-        // count round
-        //for (int i = 0; i < 9; i++) {
-        //    charBoard[i] = board.get(i).charAt(0);
-        //    if (charBoard[i] == 'X' || charBoard[i] == 'O') {
-        //        playedTurns++;
-        //    }
-        //}
-
-        // first player = O
-        //char aiPlayer;
-        //if (playedTurns % 2 == 0) {
-        //    aiPlayer = 'X';
-        //} else {
-        //    aiPlayer = 'O';
-        //}
-
-        // pass the char
         return calculateBestMove(board);
     }
 }
