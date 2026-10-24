@@ -1,6 +1,6 @@
-package app.games.tictactoe.players.moveStrategies;
+package app.games.tictactoe.model;
 
-import app.games.framework.Move;
+import app.games.framework.move.Move;
 
 /**
  * Move record for tic tac toe

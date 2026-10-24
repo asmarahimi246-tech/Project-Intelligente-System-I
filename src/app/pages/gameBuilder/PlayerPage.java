@@ -5,16 +5,16 @@ import java.util.Scanner;
 
 import javax.swing.JLabel;
 
-import app.games.framework.Game;
-import app.games.framework.GameBuilder;
-import app.games.framework.Player;
 import app.pages.BasePage;
 import app.pages.GamePage;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
-import app.games.framework.PlayerOption;
+import app.games.framework.game.Game;
+import app.games.framework.game.GameBuilder;
+import app.games.framework.player.Player;
+import app.games.framework.player.PlayerOption;
 
 /**
  * PlayerPage

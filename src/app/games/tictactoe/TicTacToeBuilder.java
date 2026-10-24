@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import app.games.framework.GameBuilder;
-import app.games.framework.Player;
 import app.games.tictactoe.players.OnlineOpponent;
 import app.games.tictactoe.players.moveStrategies.AIStrategy;
 import app.games.tictactoe.players.moveStrategies.UserStrategy;
@@ -16,7 +14,9 @@ import app.util.Config;
 import app.util.ScannerSingleton;
 import app.games.tictactoe.players.OnlinePlayer;
 import app.games.tictactoe.players.LocalPlayer;
-import app.games.framework.PlayerOption;
+import app.games.framework.game.GameBuilder;
+import app.games.framework.player.Player;
+import app.games.framework.player.PlayerOption;
 
 /**
  * builder

@@ -1,7 +1,9 @@
 package app.games.tictactoe.players;
 
-import app.games.framework.Player;
-import app.games.framework.PlayerState;
+import app.games.framework.game.Game;
+import app.games.framework.player.Player;
+import app.games.framework.player.PlayerState;
+import app.games.tictactoe.TicTacToeGame;
 import app.network.Client;
 
 /**
@@ -34,7 +36,7 @@ public class OnlineOpponent extends Player {
     }
 
     @Override
-    public void doMove() {
+    public void doMove(Game game) {
         super.state = PlayerState.CAN_MOVE;
 
         super.state = PlayerState.EXECUTED_TURN;

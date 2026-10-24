@@ -1,4 +1,4 @@
-package app.games.framework;
+package app.games.framework.player;
 
 /**
  * PlayerState

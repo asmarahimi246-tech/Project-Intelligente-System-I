@@ -1,15 +1,16 @@
 package app.games.tictactoe.players;
 
-import app.games.framework.Player;
-import app.games.framework.PlayerState;
-import app.games.tictactoe.players.moveStrategies.TicTacToeMove;
-import app.games.tictactoe.players.moveStrategies.MoveSrategy;
+import app.games.framework.game.Game;
+import app.games.framework.move.MoveSrategy;
+import app.games.framework.player.Player;
+import app.games.framework.player.PlayerState;
+import app.games.tictactoe.model.TicTacToeMove;
 
 /**
  * LocalPlayer
  */
 public class LocalPlayer extends Player {
-    private MoveSrategy strategy;
+
 
     /**
      * Makes a local player
@@ -21,11 +22,10 @@ public class LocalPlayer extends Player {
     }
 
     @Override
-    public void doMove() {
+    public void doMove(Game game) {
         super.state = PlayerState.CAN_MOVE;
-        TicTacToeMove move = strategy.getMove(null, null);
-        
-
+        TicTacToeMove move = strategy.getMove(game);
+        game.procesMove(move);
         super.state = PlayerState.EXECUTED_TURN;
     }
 

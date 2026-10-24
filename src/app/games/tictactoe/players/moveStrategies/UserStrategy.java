@@ -1,9 +1,10 @@
 package app.games.tictactoe.players.moveStrategies;
 
-import java.util.ArrayList;
-import java.util.function.Predicate;
-
+import app.games.framework.game.Game;
+import app.games.framework.move.MoveSrategy;
+import app.games.tictactoe.TicTacToeGame;
 import app.games.tictactoe.TicTacToePage;
+import app.games.tictactoe.model.TicTacToeMove;
 /**
  * UserStrategy
  * 
@@ -25,12 +26,21 @@ public class UserStrategy implements MoveSrategy {
     }
 
     @Override
-    public TicTacToeMove getMove(ArrayList<String> board, Predicate<TicTacToeMove> validateMove) {
+    public TicTacToeMove getMove(Game game) {
         TicTacToeMove toReturn = null;
 
-        while (!validateMove.test(toReturn)){
+        // get the game
+        TicTacToeGame ticTacToe = null;
+        if (game instanceof TicTacToeGame) {
+            ticTacToe = (TicTacToeGame) game;
+        }
+
+        // request input from the page
+        // and check if its valid
+        while (!ticTacToe.model.validateMove(toReturn)){
             toReturn = page.requestMove();
         }
+        // return the move if its valid
         return toReturn;
     }
 }

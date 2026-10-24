@@ -2,10 +2,11 @@ package app.games.tictactoe.players;
 
 import java.util.ArrayList;
 
-import app.games.framework.Player;
-import app.games.framework.PlayerState;
-import app.games.tictactoe.players.moveStrategies.TicTacToeMove;
-import app.games.tictactoe.players.moveStrategies.MoveSrategy;
+import app.games.tictactoe.model.TicTacToeMove;
+import app.games.framework.game.Game;
+import app.games.framework.move.MoveSrategy;
+import app.games.framework.player.Player;
+import app.games.framework.player.PlayerState;
 import app.network.Client;
 import app.util.NameGenerator;
 
@@ -45,11 +46,12 @@ public class OnlinePlayer extends Player {
     }
 
     @Override
-    public void doMove() {
+    public void doMove(Game game) {
         while (super.state != PlayerState.CAN_MOVE) {
             waitForTurn();
         }
-        TicTacToeMove move = strategy.getMove(null, null);
+        TicTacToeMove move = strategy.getMove(game);
+        game.procesMove(move);
         super.state = PlayerState.EXECUTED_TURN;
     }
 
@@ -59,9 +61,10 @@ public class OnlinePlayer extends Player {
      */
     private void generateUniqueName() {
         // get player list with the below command:
-        // 
-        // obtained by sending the below command:
         // get playerlist
+        //
+        // Note: first check if the player
+        // already has a valid name
         boolean uniqueName = false;
         while (!uniqueName) {
             // generate name

@@ -4,7 +4,8 @@ import java.util.Scanner;
 
 import javax.swing.JLabel;
 
-import app.games.tictactoe.players.moveStrategies.TicTacToeMove;
+import app.games.tictactoe.model.Board;
+import app.games.tictactoe.model.TicTacToeMove;
 import app.pages.context.Page;
 import app.util.Config;
 import app.util.ScannerSingleton;
@@ -31,18 +32,6 @@ public class TicTacToePage extends Page {
 
     /**
      * TODO:
-     * @param board
-     */
-    public void printBoard(char[] board) {
-        System.out.println(" " + board[0] + " | " + board[1] + " | " + board[2] + " ");
-        System.out.println("-----------");
-        System.out.println(" " + board[3] + " | " + board[4] + " | " + board[5] + " ");
-        System.out.println("-----------");
-        System.out.println(" " + board[6] + " | " + board[7] + " | " + board[8] + " ");
-    }
-
-    /**
-     * TODO:
      */
     public void printInvalidMove() {
         System.out.println("Die plek is al bezet doe een andere move!");
@@ -56,7 +45,8 @@ public class TicTacToePage extends Page {
 
     @Override
     public void createCLI() {
-        printBoard(null);
+        Board board = game.model.getBoard();
+        System.out.println(board.toString());
     }
 
     /**

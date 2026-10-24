@@ -1,5 +1,9 @@
 package app.games.tictactoe.model;
 
+import java.util.ArrayList;
+
+import app.games.framework.player.Player;
+
 /**
  * <pre>
  * &gt; tictactoe rules &amp; game state
@@ -16,7 +20,6 @@ package app.games.tictactoe.model;
  *     &gt; what type of player made the move (ai/human)
  *
  * EX:
- * &gt; doMove() --&gt; send move to Controller so it can tell View to update with the move made
  * &gt; bool: isValidMove()
  * &gt; SwitchTurn() --&gt; change per move whose turn it is
  * &gt; bool: isGameOVer()
@@ -24,5 +27,43 @@ package app.games.tictactoe.model;
  * </pre>
  */
 public class TicTacToeModel {
+    private Player currentPlayer;
+    private Board board = new Board();
+
+    /**
+     * Gets the board
+     * 
+     * @return the board
+     */
+    public Board getBoard() {
+        return board;
+    }
+
+    /**
+     * Places a move
+     */
+    public void placeMove(TicTacToeMove move) {
+        board.place(move.row(), move.column(), currentPlayer);
+    }
+
+    /**
+     * Gets the player whos turn it is
+     * 
+     * @return the player
+     */
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
     
+    /**
+     * Sets the player whos turn it is
+     */
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public boolean validateMove(TicTacToeMove toReturn) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validateMove'");
+    }
 }

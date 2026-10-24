@@ -1,7 +1,9 @@
-package app.games.framework;
+package app.games.framework.game;
 
 import java.util.ArrayList;
 
+import app.games.framework.move.Move;
+import app.games.framework.player.Player;
 import app.pages.context.Page;
 
 /**
@@ -15,7 +17,7 @@ import app.pages.context.Page;
  * &gt; bool isGameOver()
  * </pre>
  */
-public abstract class Game<M extends Move> {
+public abstract class Game {
     protected Page page;
     protected ArrayList<Player> players = new ArrayList<Player>();
     protected boolean running;
@@ -59,5 +61,5 @@ public abstract class Game<M extends Move> {
      * 
      * @param move the move to process
      */
-    public abstract void procesMove(M move);
+    public abstract void procesMove(Move move);
 }

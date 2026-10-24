@@ -4,8 +4,8 @@ import java.util.Scanner;
 
 import javax.swing.JLabel;
 
-import app.games.framework.Game;
-import app.games.framework.GameBuilder;
+import app.games.framework.game.Game;
+import app.games.framework.game.GameBuilder;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.util.ScannerSingleton;

@@ -1,9 +1,12 @@
 package app.games.tictactoe;
 import java.util.ArrayList;
 
-import app.games.framework.Game;
-import app.games.framework.Player;
-import app.games.tictactoe.players.moveStrategies.TicTacToeMove;
+import app.games.framework.game.Game;
+import app.games.framework.move.Move;
+import app.games.framework.player.Player;
+import app.games.tictactoe.model.TicTacToeModel;
+import app.games.tictactoe.model.TicTacToeMove;
+import app.util.Config;
 
 /**
  * <pre>
@@ -16,7 +19,8 @@ import app.games.tictactoe.players.moveStrategies.TicTacToeMove;
  *   --&gt; if true, make view update with the move added
  * </pre>
  */
-public class TicTacToeGame extends Game<TicTacToeMove> {
+public class TicTacToeGame extends Game {
+    public TicTacToeModel model = new TicTacToeModel();
 
     /**
      * Makes a game
@@ -26,6 +30,19 @@ public class TicTacToeGame extends Game<TicTacToeMove> {
      */
     public TicTacToeGame(TicTacToePage page, ArrayList<Player> players) {
         super(page, players);
+
+        if (Config.X_AND_O) {
+            // add x and o to the player names
+            Player x = super.players.get(0);
+            String oldX = x.getName();
+            String newX = "x" + oldX;
+            x.setName(newX);
+        
+            Player o = super.players.get(1);
+            String oldO = o.getName();
+            String newO = "o" + oldO;
+            x.setName(newO);
+        }
         
         super.running = true;
         //TODO Auto-generated constructor stub
@@ -41,18 +58,22 @@ public class TicTacToeGame extends Game<TicTacToeMove> {
     public void run() {
         // game loop
         while (running) {
+            page.open();
 
             // each player does a move
             for (Player player : players) {
-                player.doMove();
+                model.setCurrentPlayer(player);
+                player.doMove(this);
             }
         }
     }
 
     @Override
-    public void procesMove(TicTacToeMove move) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'procesMove'");
+    public void procesMove(Move move) {
+        if (move instanceof TicTacToeMove) {
+            model.placeMove((TicTacToeMove) move);
+
+        }
     }
 
 }
