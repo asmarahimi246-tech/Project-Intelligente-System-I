@@ -45,6 +45,8 @@ public class TicTacToePage extends Page {
 
     @Override
     public void createCLI() {
+        System.out.println(game.model.getCurrentPlayer().getName());
+
         Board board = game.model.getBoard();
         System.out.println(board.toString());
     }

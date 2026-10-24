@@ -58,12 +58,20 @@ public class TicTacToeGame extends Game {
     public void run() {
         // game loop
         while (running) {
-            page.open();
-
             // each player does a move
             for (Player player : players) {
                 model.setCurrentPlayer(player);
+                page.open();
                 player.doMove(this);
+
+                if (Config.DEBUG) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }

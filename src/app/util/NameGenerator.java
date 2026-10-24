@@ -15,7 +15,7 @@ public class NameGenerator {
 
     private static final String[] PREFIXES = {
         "pixel", "arcade", "puzzle",
-        "game", "mini", "quick", "clever", "lucky", " speedy",
+        "game", "mini", "quick", "clever", "lucky", "speedy",
         "bouncy", "cosmic", "turbo", "sneaky", "happy", "mighty"
     };
 
