@@ -8,11 +8,11 @@ public class AIStrategy implements MoveSrategy {
     /**
      *
      * @param board
-     * @param isMax
+     * @param isAiMode
      * @param AiPlayer
      * @return
      */
-    private int minimax(char[] board, boolean isMax, char AiPlayer) {
+    private int minimax(char[] board, char AiPlayer, boolean isAiMode) {
         int score = evaluateBoard(board);
 
         if (score == 1) {
@@ -43,13 +43,13 @@ public class AIStrategy implements MoveSrategy {
             simulatedOpponent = 'X';
         }
 
-        if (isMax) {
+        if (isAiMode) {
             int maxscore = Integer.MIN_VALUE;
             for (int i = 0; i < 9; i++) {
                 if (board[i] != 'X' && board[i] != 'O') {
                     char original = board[i];
                     board[i] = AiPlayer;
-                    int result = minimax(board, false, AiPlayer);
+                    int result = minimax(board, AiPlayer, false);
                     board[i] = original;
                     maxscore = Math.max(maxscore, result);
                 }
@@ -61,7 +61,7 @@ public class AIStrategy implements MoveSrategy {
                 if (board[i] != 'X' && board[i] != 'O') {
                     char original = board[i];
                     board[i] = simulatedOpponent;
-                    int result = minimax(board, true, AiPlayer);
+                    int result = minimax(board, AiPlayer, true);
                     board[i] = original;
                     minscore = Math.min(minscore, result);
                 }
@@ -83,7 +83,7 @@ public class AIStrategy implements MoveSrategy {
             if (board[i] != 'X' && board[i] != 'O') {
                 char original = board[i];
                 board[i] = AiPlayer;
-                int score = minimax(board, false, AiPlayer);
+                int score = minimax(board, AiPlayer, false);
                 board[i] = original;
                 if (score > bestScore) {
                     bestScore = score;
