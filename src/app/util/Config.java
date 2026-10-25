@@ -16,7 +16,7 @@ public class Config {
     public static final boolean DEBUG = false;
 
     // swing ui
-    public static final boolean SWING_SUPPORTED = true;
+    public static final boolean SWING_SUPPORTED = false;
     public static final Color BACKGROUND_COLOR = Color.DARK_GRAY;
     public static final Color FOREGROUND_COLOR = Color.WHITE;
 

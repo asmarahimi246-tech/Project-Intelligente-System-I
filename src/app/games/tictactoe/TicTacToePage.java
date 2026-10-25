@@ -98,6 +98,9 @@ public class TicTacToePage extends Page {
         refreshBoard();
     }
 
+    /**
+     * refresh board
+     */
     public void refreshBoard() {
         Board board = game.model.getBoard();
 
@@ -116,6 +119,9 @@ public class TicTacToePage extends Page {
         }
     }
 
+    /**
+     * show result
+     */
     public void showResult(String message) {
         if (!Config.SWING_SUPPORTED) {
             System.out.println(message);

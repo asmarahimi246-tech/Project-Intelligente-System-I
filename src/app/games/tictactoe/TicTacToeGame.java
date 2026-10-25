@@ -56,6 +56,9 @@ public class TicTacToeGame extends Game {
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 
+    /**
+     * Symbol
+     */
     public String getSymbol(Player player) {
         if (player == players.get(0)) {
             return "X";
@@ -102,6 +105,7 @@ public class TicTacToeGame extends Game {
                 // check for win
                 if (model.checkForWin()) {
                     running = false;
+                    page.open();
                     view.showResult(getSymbol(player) + " wins!");
                     break;
                 }
