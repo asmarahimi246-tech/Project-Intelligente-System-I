@@ -127,7 +127,6 @@ public class AIStrategy implements MoveSrategy {
                 }
             }
         }
-        
         return bestMove;
     }
     /**
