@@ -1,5 +1,6 @@
 package app.pages.gameBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -7,10 +8,14 @@ import app.pages.BasePage;
 import app.pages.GamePage;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
+import app.pages.context.widgets.Button;
+import app.pages.context.widgets.OptionMenu;
+import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
 import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
+import app.games.framework.game.GameMode;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerOption;
 
@@ -58,17 +63,47 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
     @Override
     public void open() {        
         super.open();
-        
-        // game page
-        PageManager manager = PageManager.getInstance();
-        Page page = new BasePage(new GamePage<G,B>(builder));
-        manager.setCurrentPage(page);
+
+        if (!Config.SWING_SUPPORTED) {
+            continueToGamePage();
+        }
+    }
+
+    /**
+     * Continues to the game page
+     */
+    private void continueToGamePage() {
+        if (builder.getPlayersToAdd() == 0) {
+            PageManager manager = PageManager.getInstance();
+            Page page = new BasePage(new GamePage<G,B>(builder));
+            manager.setCurrentPage(page);
+        }
     }
 
     @Override
     public void createSwingUi() {
-        // TODO: add ui
-        throw new UnsupportedOperationException("Not implemented");
+        int playersLeft = builder.getPlayersToAdd() + 1;
+        
+
+        // make buttons
+        ArrayList<Button> options = new ArrayList<Button>();
+
+        // get players
+        List<PlayerOption<? extends Player>> playerOptions = builder.getPlayerOptions();
+
+        // add player buttons
+        for (int index = 0; index < playerOptions.size(); index ++) {
+            PlayerOption<? extends Player> player = playerOptions.get(index);
+            Button playerButton = new Button(event -> {
+                builder.addPlayer(player);
+                continueToGamePage();}, 
+                player.label());
+            options.add(playerButton);
+        }
+
+        // make menu
+        OptionMenu menu = new OptionMenu(options, "=== " + builder.toString() + ": Player " + (playersLeft - builder.getPlayersToAdd()) + " Selection ===");
+        add(menu);
     }
 
     @Override

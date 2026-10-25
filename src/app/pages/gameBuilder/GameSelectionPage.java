@@ -1,5 +1,6 @@
 package app.pages.gameBuilder;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import app.games.tictactoe.TicTacToeBuilder;
@@ -7,6 +8,8 @@ import app.games.tictactoe.TicTacToeGame;
 import app.pages.MainPage;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
+import app.pages.context.widgets.Button;
+import app.pages.context.widgets.OptionMenu;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
 
@@ -26,11 +29,29 @@ import app.util.cliInputFields.CLIIntegerField;
  * 4. build and run game
  */
 public class GameSelectionPage extends Page {
+    @Override
+    public String toString() {
+        String toReturn = "game selection page";
+        return toReturn;
+    }
 
     @Override
     public void createSwingUi() {
-        // TODO: add ui
-        throw new UnsupportedOperationException("Not implemented");
+        // make buttons
+        ArrayList<Button> options = new ArrayList<Button>();
+
+        // manager
+        PageManager manager = PageManager.getInstance();
+
+        // game builder button
+        TicTacToeBuilder builder = new TicTacToeBuilder();
+        Page modePage = new BuilderBasePage(new ModePage<TicTacToeGame,TicTacToeBuilder>(builder), this);
+        Button modeButton = new Button(event -> {manager.setCurrentPage(modePage);}, "Tic Tac Toe");
+        options.add(modeButton);
+
+        // make menu
+        OptionMenu menu = new OptionMenu(options, "=== Game Selection ===");
+        add(menu);
     }
 
     @Override
@@ -54,6 +75,8 @@ public class GameSelectionPage extends Page {
             case 1:
                 // start building a tic tac toe game
                 TicTacToeBuilder builder = new TicTacToeBuilder();
+
+                //TODO: need the builder base page not this
                 page = new BuilderBasePage(new ModePage<TicTacToeGame,TicTacToeBuilder>(builder), this);
                 break;
         
