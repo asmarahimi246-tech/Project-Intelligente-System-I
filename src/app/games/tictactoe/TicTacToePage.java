@@ -125,6 +125,8 @@ public class TicTacToePage extends Page {
     public void showResult(String message) {
         if (!Config.SWING_SUPPORTED) {
             System.out.println(message);
+            Board board = game.model.getBoard();
+            printBoard(board);
             return;
         }
 
@@ -141,15 +143,43 @@ public class TicTacToePage extends Page {
         System.out.println("=== Tic Tac Toe ===");
         System.out.println("the board looks like this");
         Board board = game.model.getBoard();
-        System.out.println(board.toString());
+        printBoard(board);
 
         String name = game.model.getCurrentPlayer().getName();
-
-        if (Config.X_AND_O) {
-            name = name.substring(1);
-        }
-
         System.out.println("its your turn " + name);
+    }
+
+    /**
+     * Prints the board
+     * 
+     * @param board the board to print
+     */
+    public void printBoard(Board board) {
+        String toPrint = "";
+
+        // loop trough all tiles
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                // get the owner of a tile
+                Player owner = board.getOwner(row, col);
+
+                // add spacer
+                if (col != 0) {
+                    toPrint += "|";
+                }
+
+                // check if its null
+                if (owner == null) {
+                    toPrint += "_";
+                } else {
+                    // Place first char of name if or x
+                    Player player = board.getOwner(row, col);
+                    toPrint += game.getSymbol(player);
+                }
+            }
+            toPrint += "\n";
+        }
+        System.out.println(toPrint);
     }
 
     /**

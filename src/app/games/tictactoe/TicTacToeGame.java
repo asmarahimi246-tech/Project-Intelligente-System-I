@@ -32,19 +32,6 @@ public class TicTacToeGame extends Game {
      */
     public TicTacToeGame(TicTacToePage page, ArrayList<Player> players) {
         super(page, players);
-
-        if (Config.X_AND_O) {
-            // add x and o to the player names
-            Player x = super.players.get(0);
-            String oldX = x.getName();
-            String newX = "x" + oldX;
-            super.players.get(0).setName(newX);
-        
-            Player o = super.players.get(1);
-            String oldO = o.getName();
-            String newO = "o" + oldO;
-            super.players.get(1).setName(newO);
-        }
         
         super.running = true;
         //TODO Auto-generated constructor stub
@@ -60,11 +47,15 @@ public class TicTacToeGame extends Game {
      * Symbol
      */
     public String getSymbol(Player player) {
-        if (player == players.get(0)) {
-            return "X";
+        if (Config.X_AND_O) {
+            if (player == players.get(0)) {
+                return "X";
+            }
+            return "O";
+        } else {
+            String toReturn = "" + player.getName().toUpperCase().charAt(0);
+            return toReturn;
         }
-
-        return "O";
     }
 
     /**    (non-Javadoc)
@@ -105,8 +96,8 @@ public class TicTacToeGame extends Game {
                 // check for win
                 if (model.checkForWin()) {
                     running = false;
-                    page.open();
-                    view.showResult(getSymbol(player) + " wins!");
+                    System.out.println("hello");
+                    view.showResult(player.getName() + " wins!");
                     break;
                 }
 

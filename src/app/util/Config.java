@@ -22,5 +22,5 @@ public class Config {
 
     // TODO: move settings to settings
     // ticTacToe
-    public static final boolean X_AND_O = true;
+    public static final boolean X_AND_O = false;
 }

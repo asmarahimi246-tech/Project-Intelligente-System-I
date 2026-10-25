@@ -1,6 +1,7 @@
 package app.games.tictactoe.players.moveStrategies;
 
 import app.games.framework.game.Game;
+import app.games.framework.move.Move;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
 import app.games.tictactoe.TicTacToeGame;
@@ -23,13 +24,19 @@ public class AIStrategy implements MoveSrategy {
     }
 
     /**
+     * A move score
+     */
+    private record MoveScore (int endResult, int possibleWins) {}
+
+    /**
      *
      * @param board
      * @param isAiModew
      * @param aiPlayer
      * @return
      */
-    private int minimax(Board board, boolean ownMove) {
+    private MoveScore minimax(Board board, boolean ownMove) {
+
         // evaluate the board
         // returns 1 (AI) if 3 in a row
         // returns -1 (Opponent) if 3 in a row
@@ -38,23 +45,27 @@ public class AIStrategy implements MoveSrategy {
         // check if someone has won
         if (score == 1) {
             // ai won
-            return 1;
+            MoveScore winScore = new MoveScore(1, 1); 
+            return winScore;
         } else if (score == -1) {
             // opponent won
-            return -1;
+            MoveScore lossScore = new MoveScore(-1, 0); 
+            return lossScore;
         }
 
         // checks if the board is full
         if (board.isFull()) {
             // draw
-            return 0;
+            MoveScore drawScore = new MoveScore(0, 0); 
+            return drawScore;
         }
 
         // aiMode
         if (ownMove) {
 
             // calculate the best ai move
-            int maxscore = Integer.MIN_VALUE;
+            int maxPossibleWins = 0;
+            int endScore = Integer.MIN_VALUE;
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
                     if (board.isEmpty(row, col)) {
@@ -65,18 +76,27 @@ public class AIStrategy implements MoveSrategy {
                         copy.place(row, col, aIToMove);
 
                         // calculate score in new branch
-                        int result = minimax(copy, false);
+                        MoveScore result = minimax(copy, false);
 
-                        // check if its the best
-                        maxscore = Math.max(maxscore, result);
+                        // check if its the best endscore
+                        endScore = Math.max(result.endResult, endScore);
+
+                        // check if its the best with most possible wins
+                        if (result.endResult == 1) { 
+                            if (result.possibleWins > maxPossibleWins) {
+                                maxPossibleWins = result.possibleWins;
+                            }
+                        }
                     }
                 }
             }
-            return maxscore;
+            MoveScore toReturn = new MoveScore(endScore, maxPossibleWins + endScore);
+            return toReturn;
         } else {
 
-            // calculate the best opponent move
-            int minscore = Integer.MAX_VALUE;
+            // calculate the best oppoment move
+            int maxPossibleWins = 0;
+            int endScore = Integer.MAX_VALUE;
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
                     if (board.isEmpty(row, col)) {
@@ -87,14 +107,22 @@ public class AIStrategy implements MoveSrategy {
                         copy.place(row, col, simulatedOpponent);
 
                         // calculate score in new branch
-                        int result = minimax(copy, true);
+                        MoveScore result = minimax(copy, true);
 
-                        // check if its the best (for the opponent)
-                        minscore = Math.min(minscore, result);
+                        // check if its the best endscore (for the opponent)
+                        endScore = Math.min(result.endResult, endScore);
+
+                        // check if its the best with most possible wins
+                        if (result.endResult == 1) { 
+                            if (result.possibleWins > maxPossibleWins) {
+                                maxPossibleWins = result.possibleWins;
+                            }
+                        }
                     }
                 }
             }
-            return minscore;
+            MoveScore toReturn = new MoveScore(endScore, maxPossibleWins + 0);
+            return toReturn;
         }
     }
 
@@ -106,7 +134,8 @@ public class AIStrategy implements MoveSrategy {
      * @return the move
      */
     public TicTacToeMove calculateBestMove(Board board) {
-        int bestScore = Integer.MIN_VALUE;
+        int bestScore = 0;
+        int endScore = Integer.MIN_VALUE;
         TicTacToeMove bestMove = null;
 
         // start a tree of moves at every tile
@@ -121,15 +150,26 @@ public class AIStrategy implements MoveSrategy {
                     copy.place(row, col, aIToMove);
 
                     // calculate score in new branch
-                    int score = minimax(copy, false);
+                    MoveScore score = minimax(copy, false);
 
-                    Logger.logDebug("TILE CHECKED: (" + row + "," + col + ")" + score);
+                    Logger.logDebug("TILE CHECKED: (" + row + "," + col + ") end:" + score.endResult + " possible wins:" + score.possibleWins);
 
-                    // check if its the best
-                    if (score > bestScore) {
-                        bestScore = score;
-                        bestMove = new TicTacToeMove(row, col);
+                    // check if the end result is good
+                    if (score.endResult >= endScore) {
+                        endScore = score.endResult;
+
+                        // check if a winning move allows the most possible wins
+                        if (score.possibleWins > bestScore && endScore == 1) {
+                            // get the best move
+                            bestScore = score.possibleWins;
+                            bestMove = new TicTacToeMove(row, col);
+                        } else {
+                            bestMove = new TicTacToeMove(row, col);
+                        }
                     }
+
+                    // check for a dirrect win
+                    //int directWinScore = evaluateBoard(board);
                 }
             }
         }
