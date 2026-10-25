@@ -49,7 +49,12 @@ public class TicTacToePage extends Page {
      * TODO:
      */
     public void printInvalidMove() {
-        System.out.println("Die plek is al bezet doe een andere move!");
+        if (Config.SWING_SUPPORTED) {
+            JOptionPane.showMessageDialog(this, "That square is occupied. Choose an empty square."
+            );
+        } else {
+            System.out.println("That square is occupied. Choose an empty square.");
+        }
     }
 
     @Override
@@ -70,6 +75,13 @@ public class TicTacToePage extends Page {
 
             button.addActionListener(event -> {
                 if (!acceptingMoves) {
+                    return;
+                }
+
+                Board board = game.model.getBoard();
+
+                if (!board.isEmpty(row, col)) {
+                    printInvalidMove();
                     return;
                 }
 
@@ -99,9 +111,7 @@ public class TicTacToePage extends Page {
                     buttons[row][col].setText(game.getSymbol(owner));
                 }
 
-                buttons[row][col].setEnabled(
-                    acceptingMoves && owner == null
-                );
+                buttons[row][col].setEnabled(acceptingMoves);
             }
         }
     }
