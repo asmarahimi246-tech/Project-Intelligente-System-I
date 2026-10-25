@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.pages.context.widgets.Button;
-import app.util.Config;
 
 /**
  * BasePage works like a base html
@@ -17,12 +16,6 @@ import app.util.Config;
 public class BuilderBasePage extends Page {
     private Page previous;
     private Page content;
-
-    @Override
-    public String toString() {
-        String toReturn = "builderBase(" + content.toString() + ")";
-        return toReturn;
-    }
 
     /**
      * Makes a base page surounding the content
@@ -42,13 +35,9 @@ public class BuilderBasePage extends Page {
         // create the base page
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
-        setBackground(Config.BACKGROUND_COLOR);
-        content.setBackground(Config.BACKGROUND_COLOR);
-
 
         // add header
-        //TODO: bug fix this
-        //add(header(), BorderLayout.PAGE_START);
+        add(header(), BorderLayout.PAGE_START);
 
         // add content
         add(content, BorderLayout.CENTER);
@@ -68,7 +57,7 @@ public class BuilderBasePage extends Page {
         Button button = new Button(event -> {
             PageManager manager = PageManager.getInstance();
             manager.setCurrentPage(previous);
-            }, "back to " + previous.toString());
+            });
         header.add(button);
 
         // get the current page name

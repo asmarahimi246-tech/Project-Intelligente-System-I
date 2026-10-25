@@ -1,15 +1,11 @@
 package app.pages;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import app.App;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
-import app.pages.context.widgets.Button;
-import app.pages.context.widgets.OptionMenu;
 import app.pages.gameBuilder.GameSelectionPage;
-import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
 
@@ -27,27 +23,8 @@ public class MainPage extends Page {
 
     @Override
     public void createSwingUi() {
-        // backgound
-        setBackground(Config.BACKGROUND_COLOR);
-
-        // make buttons
-        ArrayList<Button> options = new ArrayList<Button>();
-
-        // manager
-        PageManager manager = PageManager.getInstance();
-
-        // game builder button
-        Page gameBuilder = new BasePage(new GameSelectionPage());
-        Button gameBuilderButton = new Button(event -> {manager.setCurrentPage(gameBuilder);}, "Game Selection");
-        options.add(gameBuilderButton);
-
-        // exit button
-        Button exitButton = new Button(event -> {App.close();}, "Exit");
-        options.add(exitButton);
-
-        // make menu
-        OptionMenu menu = new OptionMenu(options, "=== Main Menu ===");
-        add(menu);
+        // TODO: add ui
+        throw new UnsupportedOperationException("UI not implemented");
     }
 
     @Override
@@ -62,7 +39,7 @@ public class MainPage extends Page {
         // get input
         Scanner scanner = ScannerSingleton.getInstance();
         CLIIntegerField field = new CLIIntegerField.Builder(scanner, "Something went wrong.")
-            .max(2)
+            .max(3)
             .min(1)
             .build();
         int choice = field.getInput();
@@ -76,6 +53,11 @@ public class MainPage extends Page {
                 break;
 
             case 2:
+                Page swingTest = new BasePage(new SwingTestPage());
+                manager.setCurrentPage(swingTest);
+                break;
+
+            case 3:
                 App.close();
                 break;
         

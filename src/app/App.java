@@ -1,16 +1,13 @@
 package app;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.NoSuchElementException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.util.Config;
-import app.util.Logger;
 
 /**
  * <pre>
@@ -45,7 +42,7 @@ public class App {
             applicationFrame = new JFrame("applicationFrame");
             applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             applicationFrame.setResizable(false);
-            applicationFrame.setSize(1000, 1000);
+            applicationFrame.setSize(500, 500);
             applicationFrame.setLocationRelativeTo(null);
         } else {
             applicationFrame = null;
@@ -62,7 +59,6 @@ public class App {
         PageManager manager = PageManager.getInstance();
 
         try {
-            // its better to do this in an observer pattern
             while (RUNNING) {
                 // only update when needed
                 // prevents flickering in swing
@@ -71,35 +67,14 @@ public class App {
                     // because some open() functions dont close
                     // unless there cli input
 
-                    // yeah this is cursed
-                    // not a good solution
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-
                     // get the page
                     Page page = manager.getCurrentPage();
-
-                    Logger.logDebug("----");
-                    Logger.logDebug(page.toString() + "whut");
 
                     // set the page for swing 
                     // this works because page extends JPanel
                     // shows a white page if empty
                     if (Config.SWING_SUPPORTED) {
-                        try {
-                            SwingUtilities.invokeAndWait(() -> setContentPane(page));
-                            
-                        } catch (InvocationTargetException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
+                        setContentPane(page);
                     }
 
                     // open the page 
@@ -135,10 +110,6 @@ public class App {
      */
     private void setContentPane(JPanel page) {
         applicationFrame.setContentPane(page);
-        
-        Logger.logDebug("currently" + applicationFrame.getContentPane().toString());
-
-        applicationFrame.getContentPane().setBackground(Config.BACKGROUND_COLOR);
         applicationFrame.revalidate();
         applicationFrame.repaint();
         applicationFrame.setVisible(true);

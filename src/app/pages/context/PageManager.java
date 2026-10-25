@@ -3,8 +3,6 @@ package app.pages.context;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import app.util.Logger;
-
 /**
  * PageManager
  * 
@@ -49,7 +47,6 @@ public class PageManager {
     public void setCurrentPage(Page page) {
         this.changed = true;
         this.page = page;
-        Logger.logDebug("page changed to: " + page.toString());
     }
 
     /**

@@ -14,9 +14,6 @@ mvnw
 mvnw.cmd
 pom.xml
 
-# Other
-.out/
-
 # Logs
 *.log
 
