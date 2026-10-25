@@ -51,7 +51,8 @@ public class OnlineOpponent extends Player {
         // by automaticaly making new queues for each subtype 
         // (^ feels like where entering a local minimum with this with the y axes being the shityness of the code)
         //
-        // TODO: check if the player has moves get the move from the below command if parameter PLAYER is the same as super.name (probably needs a while loop)
+        // TODO: check if the player has moves get the move from the below command if parameter PLAYER
+        //  is the same as super.name (probably needs a while loop)
         // SVR GAME MOVE {PLAYER: "<speler>", MOVE: "<zet>", DETAILS: "<reactie spel op zet>"}
         //
         // NOTE: there might be some problems with order

@@ -150,7 +150,8 @@ public class ServerMessageParser {
     }
 
     private void setHelpDetails() {
-        helpDetails = svrMessage.substring(svrMessage.indexOf(" " + 2));
+        String[] parts = svrMessage.split(" ", 3);
+        helpDetails = parts.length > 2 ? parts[2] : "";
     }
 
     private void setErrDetails() {
@@ -198,25 +199,4 @@ public class ServerMessageParser {
             case SVR -> parseSvr(msgType);
         };
     }
-
-    /**
-     * Returns the value of the specified key in the parsed message details
-     *
-     * @param key the key whose value is requested
-     * @return the value of the key
-     */
-    public String getValue (String key) {
-        return gameDetails.get(key);
-    }
-
-    public MessageType getMessageType() {
-        return msgType;
-    }
-
-    public MessageSubtype getMessageSubtype() { return msgSubtype; }
-
-    public MessageAddon getMessageAddon() { return  msgAddon; }
-
-    public String getErrDetails() { return errorDetails; }
-
 }

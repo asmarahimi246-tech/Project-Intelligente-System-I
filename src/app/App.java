@@ -9,14 +9,7 @@ import app.pages.context.Page;
 import app.pages.context.PageManager;
 
 /**
- * <pre>
  * Runs the app and controls its flow from a high level.
- *
- * Examples:
- * &gt; Show the main page.
- * &gt; Return to the menu or exit.
- *
- * </pre>
  */
 public class App {
     // volatile so the application can close when 

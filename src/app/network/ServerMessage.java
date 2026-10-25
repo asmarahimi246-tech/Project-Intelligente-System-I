@@ -51,15 +51,15 @@ public class ServerMessage {
      * @param addon addon to subtype of server message
      *              --> WIN/LOSS/DRAW/MATCH
      *              --> YOURTURN/MOVE
-     *              --> CHALLENGE/CHALLENGE_CANCELLED
-     * @param details further details of server message
+     *              --> CHALLENGE/CANCELLED
+     * @param gameDetails further details of server message
      */
     public ServerMessage(MessageType type, MessageSubtype subtype,
-                         MessageAddon addon, Map<String, String> details) {
+                         MessageAddon addon, Map<String, String> gameDetails) {
         this.type = type;
         this.subtype = subtype;
         this.addon = addon;
-        this.gameDetails = Map.copyOf(details);
+        this.gameDetails = Map.copyOf(gameDetails);
     }
 
     /**
@@ -87,7 +87,7 @@ public class ServerMessage {
         return addon;
     }
 
-    public String getValue(String key) {
+    public String getDetailValue(String key) {
         return gameDetails.get(key);
     }
 
