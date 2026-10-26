@@ -31,10 +31,7 @@ public class ServerListener implements Runnable {
      * @param okQueue okQueue
      * @param svrQueue scrQueue
      */
-    public ServerListener(BufferedReader reader,
-                          ConcurrentLinkedQueue<String> okQueue,
-                          ConcurrentLinkedQueue<String> svrQueue,
-                          BooleanSupplier clientClosing) {
+    public ServerListener(BufferedReader reader, ConcurrentLinkedQueue<String> okQueue, ConcurrentLinkedQueue<String> svrQueue, BooleanSupplier clientClosing) {
         this.reader = reader;
         this.okQueue = okQueue;
         this.svrQueue = svrQueue;
