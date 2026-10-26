@@ -1,0 +1,101 @@
+package src.app.pages.gameBuilder;
+
+import app.games.framework.game.Game;
+import app.games.framework.game.GameBuilder;
+import app.games.framework.player.Player;
+import app.games.framework.player.PlayerOption;
+import app.pages.BasePage;
+import app.pages.GamePage;
+import app.pages.context.Page;
+import app.pages.context.PageManager;
+import app.util.ScannerSingleton;
+import app.util.cliInputFields.CLIIntegerField;
+
+import java.util.List;
+import java.util.Scanner;
+
+/**
+ * PlayerPage
+ * 
+ * This page allows users to add players to a game
+ * 
+ * @param <G> is the game class
+ * @param <B> is the builder class
+ * 
+ * The way you make this page is simmilar to making an arraylist
+ * making an arraylist with Strings
+ * ArrayList &lt; String &gt;  strings = new ArrayList &lt; String &gt; ();
+ * 
+ * example for tic tac toe
+ * G = TicTacToeGame
+ * B = TicTacToeBuilder
+ * 
+ * in code:
+ * TicTacToeBuilder builder = new TicTacToeBuilder();
+ * Page page = new PlayerPage &lt; TicTacToeGame,TicTacToeBuilder &gt; (builder);
+ */
+public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Page {
+    private final B builder;
+
+    @Override
+    public String toString() {
+        String toReturn = "player page";
+        return toReturn;
+    }
+
+    /**
+     * Constructor needs builder to save choosen variables
+     * 
+     * @param builder the builder
+     */
+    public PlayerPage(B builder) {
+        this.builder = builder;
+
+        // add the default players for the selected game mode
+        this.builder.addDefaultPlayers();
+    }
+
+    @Override
+    public void open() {        
+        super.open();
+        
+        // game page
+        PageManager manager = PageManager.getInstance();
+        Page page = new BasePage(new GamePage<G,B>(builder));
+        manager.setCurrentPage(page);
+    }
+
+    @Override
+    public void createSwingUi() {
+        // TODO: add ui
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
+    public void createCLI() {
+        int playersLeft = builder.getPlayersToAdd() + 1;
+
+        // loop until all nessacary players are added
+        while (builder.getPlayersToAdd() > 0) {
+            // get choices
+            List<PlayerOption<? extends Player>> options = builder.getPlayerOptions();
+
+            // print
+            System.out.println("=== " + builder.toString() + ": Player " + (playersLeft - builder.getPlayersToAdd()) + " Selection ===");
+            for (int index = 1; index <= options.size(); index ++) {
+                System.out.println(index + ". " + options.get(index - 1).label());
+            }
+
+            // get input
+            Scanner scanner = ScannerSingleton.getInstance();
+            CLIIntegerField field = new CLIIntegerField.Builder(scanner, "Something went wrong.")
+                .max(options.size())
+                .min(1)
+                .build();
+            int choice = field.getInput();
+
+            // proccess input
+            builder.addPlayer(options.get(choice - 1));
+        }
+    }
+}
