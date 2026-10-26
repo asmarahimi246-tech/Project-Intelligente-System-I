@@ -120,6 +120,10 @@ public class OnlinePlayer extends Player {
         // SVR GAME MOVE {PLAYER: "<speler>", MOVE: "<zet>", DETAILS: "<reactie spel op zet>"}
         // (please push it back to the head of the queue, remote player needs it)
         // (^ the function for this is not implemented yet)
+        //
+        //
+        // getByType(MessageType)
+        //
         super.state = PlayerState.CAN_MOVE;
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'waitForTurn'");
