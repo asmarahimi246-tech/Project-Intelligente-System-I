@@ -15,7 +15,6 @@ import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
 import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
-import app.games.framework.game.GameMode;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerOption;
 
@@ -41,6 +40,7 @@ import app.games.framework.player.PlayerOption;
  */
 public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Page {
     private final B builder;
+    private int totalPlayersToAdd;
 
     @Override
     public String toString() {
@@ -58,6 +58,8 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
 
         // add the default players for the selected game mode
         this.builder.addDefaultPlayers();
+
+        totalPlayersToAdd = builder.getPlayersToAdd();
     }
 
     @Override
@@ -77,14 +79,15 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
             PageManager manager = PageManager.getInstance();
             Page page = new BasePage(new GamePage<G,B>(builder));
             manager.setCurrentPage(page);
+        } else {
+            removeAll();
+            drawNewUi();
+            revalidate();
         }
     }
 
-    @Override
-    public void createSwingUi() {
-        int playersLeft = builder.getPlayersToAdd() + 1;
-        
-
+    /** draw a new ui */
+    private void drawNewUi() {
         // make buttons
         ArrayList<Button> options = new ArrayList<Button>();
 
@@ -102,8 +105,14 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
         }
 
         // make menu
-        OptionMenu menu = new OptionMenu(options, "=== " + builder.toString() + ": Player " + (playersLeft - builder.getPlayersToAdd()) + " Selection ===");
+        int playersLeft = builder.getPlayersToAdd() + 1;
+        OptionMenu menu = new OptionMenu(options, "=== " + builder.toString() + ": Player " + (totalPlayersToAdd - playersLeft) + " Selection ===");
         add(menu);
+    }
+
+    @Override
+    public void createSwingUi() {
+        continueToGamePage();
     }
 
     @Override
