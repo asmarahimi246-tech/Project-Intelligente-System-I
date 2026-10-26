@@ -1,8 +1,6 @@
 package app.games.tictactoe;
 import java.util.ArrayList;
 
-import javax.swing.SwingUtilities;
-
 import app.games.framework.game.Game;
 import app.games.framework.move.Move;
 import app.games.framework.player.Player;
@@ -32,6 +30,19 @@ public class TicTacToeGame extends Game {
      */
     public TicTacToeGame(TicTacToePage page, ArrayList<Player> players) {
         super(page, players);
+
+        if (Config.X_AND_O) {
+            // add x and o to the player names
+            Player x = super.players.get(0);
+            String oldX = x.getName();
+            String newX = "x" + oldX;
+            super.players.get(0).setName(newX);
+        
+            Player o = super.players.get(1);
+            String oldO = o.getName();
+            String newO = "o" + oldO;
+            super.players.get(1).setName(newO);
+        }
         
         super.running = true;
         //TODO Auto-generated constructor stub
@@ -43,29 +54,13 @@ public class TicTacToeGame extends Game {
         throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 
-    /**
-     * Symbol
-     */
-    public String getSymbol(Player player) {
-        if (Config.X_AND_O) {
-            if (player == players.get(0)) {
-                return "X";
-            }
-            return "O";
-        } else {
-            String toReturn = "" + player.getName().toUpperCase().charAt(0);
-            return toReturn;
-        }
-    }
-
     /**    (non-Javadoc)
      * TODO: put print statements in page
-     * @see app.games.framework.game.Game#run()
+     * @see Game#run()
      */
     @Override
     public void run() {
         int moves = 0;
-        TicTacToePage view = (TicTacToePage) page;
 
         // game loop
         while (running) {
@@ -74,13 +69,11 @@ public class TicTacToeGame extends Game {
             for (Player player : players) {
                 // set the current player
                 model.setCurrentPlayer(player);
-                
-                if (Config.SWING_SUPPORTED) {
-                    SwingUtilities.invokeLater(() -> page.open());
-                } else {
-                    page.open();
-                }
 
+                // open the page
+                page.open();
+
+                // let the player do a move
                 player.doMove(this);
 
 
@@ -96,8 +89,7 @@ public class TicTacToeGame extends Game {
                 // check for win
                 if (model.checkForWin()) {
                     running = false;
-                    System.out.println("hello");
-                    view.showResult(player.getName() + " wins!");
+                    System.out.println(player.getName() + " wins");
                     break;
                 }
 
@@ -105,7 +97,7 @@ public class TicTacToeGame extends Game {
                 moves++;
                 if (moves == 9) {
                     running = false;
-                    view.showResult("Draw!");
+                    System.out.println("draw ):");
                     break;
                 };
             }

@@ -7,5 +7,5 @@ package app.network;
 public enum MessageType {
     OK,
     ERR,
-    SRV
+    SVR
 }

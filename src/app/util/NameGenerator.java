@@ -47,6 +47,21 @@ public class NameGenerator {
         String middle = MIDDLES[RANDOM.nextInt(MIDDLES.length)];
         String ending = ENDINGS[RANDOM.nextInt(ENDINGS.length)];
 
-        return (prefix + middle + ending);
+        String name = (prefix + middle + ending);
+
+        if (isTooLong(name) == true) {
+            prefix = PREFIXES[RANDOM.nextInt(PREFIXES.length)];
+            middle = MIDDLES[RANDOM.nextInt(MIDDLES.length)];
+            ending = ENDINGS[RANDOM.nextInt(ENDINGS.length)];
+
+            name = (prefix + middle + ending);
+        } else {
+            return name;
+        }
+        return name;
+    }
+
+    private boolean isTooLong(String name) {
+        return name.length() > 16;
     }
 }

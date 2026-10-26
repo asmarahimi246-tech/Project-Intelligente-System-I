@@ -5,7 +5,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -47,8 +49,8 @@ public class Client {
 
         // still dont exactly know how concurent linked queue works i do know that its a thread save queue
         // make server listen with a lambda function
-        ConcurrentLinkedQueue<String> okQueue = new ConcurrentLinkedQueue<>();
-        ConcurrentLinkedQueue<String> svrQueue = new ConcurrentLinkedQueue<>();
+        BlockingQueue<String> okQueue = new LinkedBlockingQueue<>();
+        BlockingQueue<String> svrQueue = new LinkedBlockingQueue<>();
         this.listener = new ServerListener(reader, okQueue, svrQueue, () -> closing.get());
 
         //place it on a thread and start it
@@ -92,18 +94,16 @@ public class Client {
      * @return the message
      */
     public ServerMessage getNextSvrMessage() {
-        //TODO: add the message parser to the server listener
-        listener.getNextSvrMessage();
-        throw new UnsupportedOperationException("Unimplemented method 'getNextSvrMessage'");
+        return listener.getNextSvrMessage();
+//        throw new UnsupportedOperationException("Unimplemented method 'getNextSvrMessage' in Client");
     }
 
     /**
      * Returns a svr message back to the queue
      */
     public void returnSvrMessage(ServerMessage message) {
-        //TODO: add the message parser to the server listener
         listener.returnSvrMessage(null);
-        throw new UnsupportedOperationException("Unimplemented method 'returnSvrMessage'");
+//        throw new UnsupportedOperationException("Unimplemented method 'returnSvrMessage'");
     }
 
     /**

@@ -1,7 +1,5 @@
 package app.pages;
 
-import java.awt.GridLayout;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -9,8 +7,6 @@ import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
-
-import app.util.Config;
 
 /**
  * GamePage
@@ -43,7 +39,6 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
 
     @Override
     public void createSwingUi() {
-        setLayout(new GridLayout(1, 1));
         // TODO: ui surounding the page
         // the game page is only a widget and contain only the minimal needed for a game
         // exampe:
@@ -68,10 +63,6 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
 
         // then build the content view
         game.run();
-
-        if (Config.SWING_SUPPORTED) {
-            return;
-        }
 
         // return to main menu when the game ends
         PageManager manager = PageManager.getInstance();

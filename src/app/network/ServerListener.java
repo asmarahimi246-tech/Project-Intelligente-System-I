@@ -3,7 +3,9 @@ package app.network;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -18,11 +20,14 @@ import java.util.function.BooleanSupplier;
  */
 public class ServerListener implements Runnable {
     private volatile boolean errorFlag = false;
-    private final ConcurrentLinkedQueue<String> okQueue;
-    private final ConcurrentLinkedQueue<String> svrQueue;
+    private final BlockingQueue<String> okQueue;
+    private final BlockingQueue<String> svrQueue;
     private final BooleanSupplier clientClosing;
     private BufferedReader reader;
     private Socket socket;
+    private String rawMessage;
+    private final MessageHandler handler;
+    private ServerMessage svrMessage;
 
     /**
      * Constructor
@@ -31,42 +36,79 @@ public class ServerListener implements Runnable {
      * @param okQueue okQueue
      * @param svrQueue scrQueue
      */
-    public ServerListener(BufferedReader reader, ConcurrentLinkedQueue<String> okQueue, ConcurrentLinkedQueue<String> svrQueue, BooleanSupplier clientClosing) {
+    public ServerListener(
+            BufferedReader reader,
+            BlockingQueue<String> okQueue,
+            BlockingQueue<String> svrQueue,
+            BooleanSupplier clientClosing) {
+
         this.reader = reader;
         this.okQueue = okQueue;
         this.svrQueue = svrQueue;
         this.clientClosing = clientClosing;
+        this.handler = new MessageHandler();
     }
 
     /**    (non-Javadoc)
      * 
-     * @see java.lang.Runnable#run()
+     * @see Runnable#run()
      */
     @Override
     public void run() {
-        try {
-            String message;
-            while ((message = reader.readLine()) != null) {
-                //TODO: message parser
+        System.out.println("DEBUG: ServerListener started");
 
-                if (message.contains("ERR")) {
-                    System.err.println("[error] " + message);
-                    errorFlag = true;
-                } else if (message.contains("OK")) {
-                    okQueue.add(message);
-                } else if (message.contains("SVR")) {
-                    svrQueue.add(message);
+        try {
+            while (!clientClosing.getAsBoolean()
+                    && (rawMessage = reader.readLine()) != null) {
+
+                System.out.println(
+                        "DEBUG: Received from server: [" + rawMessage + "]"
+                );
+
+                // Ignore startup messages that aren't part of the protocol.
+                if (!rawMessage.startsWith("OK")
+                        && !rawMessage.startsWith("ERR")
+                        && !rawMessage.startsWith("SVR")) {
+
+                    System.out.println(
+                            "DEBUG: Ignoring unrecognized server message: "
+                                    + rawMessage
+                    );
+                    continue;
+                }
+
+                ServerMessage message = handler.handleMessage(rawMessage);
+
+                switch (message.getType()) {
+                    case OK -> {
+                        okQueue.add(rawMessage);
+                        System.out.println("DEBUG: Added to okQueue");
+                    }
+                    case ERR -> {
+                        errorFlag = true;
+                        System.err.println("DEBUG: Server error: " + rawMessage);
+                    }
+                    case SVR -> {
+                        svrQueue.add(rawMessage);
+                        System.out.println("DEBUG: Added to svrQueue");
+                    }
                 }
             }
 
             if (!clientClosing.getAsBoolean()) {
-                System.err.println("Server closed the connection");
+                System.err.println("DEBUG: Server closed the connection");
             }
+
         } catch (IOException e) {
             if (!clientClosing.getAsBoolean()) {
-                System.err.println("Server connection lost");
+                System.err.println("DEBUG: Server connection lost");
                 e.printStackTrace();
             }
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.err.println(
+                    "DEBUG: Failed to process message: [" + rawMessage + "]"
+            );
+            e.printStackTrace();
         }
     }
 
@@ -81,26 +123,35 @@ public class ServerListener implements Runnable {
 
     /**
      * checks for ok in the queue
-     * 
+     *
      * @return the ok
      */
-    public String getNextOkMessage() {
-        return okQueue.poll(); // removes and returns the head of the queue
+    public ServerMessage getNextSvrMessage() {
+        try {
+            return handler.handleMessage(svrQueue.take());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException(
+                    "Interrupted while waiting for server message", e
+            );
+        }
     }
 
-    /**
-     * checks for server messages in the queue
-     * 
-     * @return the server message
-     */
-    public String getNextSvrMessage() {
-        return svrQueue.poll(); // removes and returns the head of the queue
+    public ServerMessage getNextOkMessage() {
+        try {
+            return handler.handleMessage(okQueue.take());
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException(
+                    "Interrupted while waiting for OK message", e
+            );
+        }
     }
 
     /**
      * Returns a svr message back to the queue
      */
     public void returnSvrMessage(String message) {
-        throw new UnsupportedOperationException("Unimplemented method 'returnSvrMessage'");
+        throw new UnsupportedOperationException("Unimplemented method 'returnSvrMessage' in ServerListener");
     }
 }

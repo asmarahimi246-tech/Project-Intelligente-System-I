@@ -55,7 +55,9 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
 
                 shared = new Client(socket);
             } catch (Exception e) {
-                // TODO: handle exception
+                throw new IllegalStateException(
+                        "Failed to connect to the game server", e
+                );
             }
          }
         return super.setMode(mode);
@@ -83,6 +85,14 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         Player one = super.players.get(0).build();
         // types: Online, Local
         Player two = super.players.get(1).build();
+
+        if (one instanceof OnlinePlayer onlinePlayer) {
+            onlinePlayer.initialize();
+        }
+
+        if (two instanceof OnlinePlayer onlinePlayer) {
+            onlinePlayer.initialize();
+        }
 
         // Online
         if (super.mode.equals("online")) {
@@ -139,25 +149,38 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
     public List<PlayerOption<? extends Player>> getPlayerOptions() {
         List<PlayerOption<?>> toReturn = null;
 
-        // online players
         if (super.mode.equals("online")) {
-
-
             toReturn = List.of(
-                new PlayerOption<OnlinePlayer>("player", () -> new OnlinePlayer(new UserStrategy(page), shared)),
-                new PlayerOption<OnlinePlayer>("ai", () -> new OnlinePlayer(new AIStrategy(), shared))
-                );
+                    new PlayerOption<OnlinePlayer>("player", () -> {
+                        if (shared == null) {
+                            throw new IllegalStateException(
+                                    "Client has not been initialized. Call setMode(\"online\") first."
+                            );
+                        }
 
-        // local players
+                        return new OnlinePlayer(new UserStrategy(page), shared);
+                    }),
+
+                    new PlayerOption<OnlinePlayer>("ai", () -> {
+                        if (shared == null) {
+                            throw new IllegalStateException(
+                                    "Client has not been initialized. Call setMode(\"online\") first."
+                            );
+                        }
+
+                        return new OnlinePlayer(new AIStrategy(), shared);
+                    })
+            );
         } else if (super.mode.equals("local")) {
             toReturn = List.of(
-                new PlayerOption<LocalPlayer>("player", () -> new LocalPlayer(new UserStrategy(page))),
-                new PlayerOption<LocalPlayer>("ai", () -> new LocalPlayer(new AIStrategy()))
-                );
+                    new PlayerOption<LocalPlayer>(
+                            "player", () -> new LocalPlayer(new UserStrategy(page))
+                    ),
+                    new PlayerOption<LocalPlayer>(
+                            "ai", () -> new LocalPlayer(new AIStrategy())
+                    )
+            );
         }
-        // do nothing for tournament
-        // TODO: tournament
-
         return toReturn;
     }
 

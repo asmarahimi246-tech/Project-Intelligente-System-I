@@ -8,6 +8,36 @@ import app.games.framework.player.Player;
 public class Board {
     private final Tile[][] board = new Tile[3][3];
 
+    @Override
+    public String toString() {
+        String toReturn = "";
+
+        // loop trough all tiles
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[row].length; col++) {
+                // get the owner of a tile
+                Player owner = board[row][col].owner;
+
+                // add spacer
+                if (col != 0) {
+                    toReturn += "|";
+                }
+
+                // check if its null
+                if (owner == null) {
+                    toReturn += "_";
+                } else {
+                    // Place first char of name if not null
+                    String playerName = board[row][col].owner.getName().toUpperCase();
+                    toReturn += playerName.charAt(0);
+                }
+            }
+            toReturn += "\n";
+        }
+        
+        return toReturn;
+    }
+
     /**
      * Creates a board an initializes the tiles
      */

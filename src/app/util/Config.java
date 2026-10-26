@@ -13,7 +13,7 @@ public class Config {
     public static final int LOCALPORT = 7789;
     public static final String ONLINEIP = null;
     public static final int ONLINEPORT = 7789;
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     // swing ui
     public static final boolean SWING_SUPPORTED = false;
@@ -22,5 +22,5 @@ public class Config {
 
     // TODO: move settings to settings
     // ticTacToe
-    public static final boolean X_AND_O = false;
+    public static final boolean X_AND_O = true;
 }
