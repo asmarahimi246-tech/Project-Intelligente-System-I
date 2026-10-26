@@ -6,6 +6,7 @@ import app.games.tictactoe.TicTacToeGame;
 import app.games.tictactoe.TicTacToePage;
 import app.games.tictactoe.model.Board;
 import app.games.tictactoe.model.TicTacToeMove;
+import app.util.Logger;
 /**
  * UserStrategy
  * 
@@ -43,6 +44,12 @@ public class UserStrategy implements MoveSrategy {
         // and check if its valid
         while (toReturn == null || !board.isEmpty(toReturn.row(), toReturn.column())){
             toReturn = page.requestMove();
+
+            // return null if its the closing move
+            // TODO: can probably be better
+            if (toReturn.row() == -1) {
+                return null;
+            }
         }
         // return the move if its valid
         return toReturn;

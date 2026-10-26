@@ -15,7 +15,6 @@ import app.util.NameGenerator;
  * OnlinePlayer
  */
 public class OnlinePlayer extends Player {
-    private MoveSrategy strategy;
     private Client client; // the client is always shared with the remote
 
     /**

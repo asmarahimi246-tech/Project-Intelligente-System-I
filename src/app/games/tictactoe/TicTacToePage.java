@@ -36,6 +36,8 @@ public class TicTacToePage extends Page {
             new ArrayBlockingQueue<>(1);
 
     private boolean acceptingMoves = false;
+    private static final TicTacToeMove CLOSE_MOVE = new TicTacToeMove(-1, -1);
+
 
     /**
      * TODO:
@@ -197,6 +199,7 @@ public class TicTacToePage extends Page {
      * @return the move
      */
     public TicTacToeMove requestMove() {
+
         if (!Config.SWING_SUPPORTED) {
             return cliInput();
         } 
@@ -240,5 +243,11 @@ public class TicTacToePage extends Page {
         int collomn = yfield.getInput() - 1;
 
         return new TicTacToeMove(row, collomn);
+    }
+
+    @Override
+    public void close() {
+        moves.offer(CLOSE_MOVE);
+        super.close();
     }
 }

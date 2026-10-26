@@ -9,11 +9,19 @@ import javax.swing.JPanel;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.pages.context.widgets.Button;
+import app.util.Config;
+import app.util.Logger;
 
 /**
  * BasePage works like a base html
  */
 public class BasePage extends Page {
+    @Override
+    public String toString() {
+        String toReturn = "base(" + content.toString() + ")";
+        return toReturn;
+    }
+
     private Page content;
 
     /**
@@ -32,6 +40,8 @@ public class BasePage extends Page {
         // create the base page
         BorderLayout layout = new BorderLayout();
         setLayout(layout);
+        setBackground(Config.BACKGROUND_COLOR);
+        content.setBackground(Config.BACKGROUND_COLOR);
 
         // add header
         add(header(), BorderLayout.PAGE_START);
@@ -52,10 +62,11 @@ public class BasePage extends Page {
 
         // add the button
         Button button = new Button(event -> {
+            Logger.logDebug("goin back to main");
             PageManager manager = PageManager.getInstance();
             Page main = new MainPage();
             manager.setCurrentPage(main);
-            });
+            }, "back to main");
         header.add(button);
 
         // get the current page name
@@ -77,5 +88,10 @@ public class BasePage extends Page {
 
         // then build the content view
         content.open();
+    }
+
+    @Override
+    public void close() {
+        content.close();
     }
 }

@@ -1,23 +1,31 @@
 package app;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ForkJoinPool.ManagedBlocker;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import app.pages.ClosingPage;
 import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.util.Config;
+import app.util.Logger;
 
 /**
- * <pre>
  * Runs the app and controls its flow from a high level.
  *
  * Examples:
- * &gt; Show the main page.
- * &gt; Return to the menu or exit.
+ * Show the main page.
+ * Return to the menu or exit.
  *
- * </pre>
+ * Sources:
+ * Swing event dispatch thread info: https://www.youtube.com/watch?v=PDKyjl9I0EA
+ *      Use: for making it sleep while the page is changing
  */
 public class App {
     /** 
@@ -40,10 +48,18 @@ public class App {
         // swing setup
         if (Config.SWING_SUPPORTED) {
             applicationFrame = new JFrame("applicationFrame");
-            applicationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            applicationFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             applicationFrame.setResizable(false);
-            applicationFrame.setSize(500, 500);
+            applicationFrame.setSize(1000, 1000);
             applicationFrame.setLocationRelativeTo(null);
+
+            // add a listener to close the application on pressing X
+            applicationFrame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    close();
+                }
+            });
         } else {
             applicationFrame = null;
         }
@@ -60,33 +76,43 @@ public class App {
 
         try {
             while (RUNNING) {
-                // only update when needed
-                // prevents flickering in swing
-                if (manager.changed()) {
-                    // we cant have swing and cli at the same time
-                    // because some open() functions dont close
-                    // unless there cli input
+                Logger.logDebug("[app]");
 
-                    // get the page
-                    Page page = manager.getCurrentPage();
+                Page page;
 
-                    // set the page for swing 
-                    // this works because page extends JPanel
-                    // shows a white page if empty
-                    if (Config.SWING_SUPPORTED) {
-                        setContentPane(page);
+                // get the page
+                page = manager.waitForNewPage();
+
+                // set the page for swing 
+                // this works because page extends JPanel
+                // shows a white page if empty
+                if (Config.SWING_SUPPORTED) {
+                    try {
+                        // block EDT until content pane is set
+                        // wait for the swing ui to be set before doing open
+                        SwingUtilities.invokeAndWait(() -> setContentPane(page));
+                    } catch (InvocationTargetException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
-
-                    // open the page 
-                    page.open();
                 }
+
+                Logger.logDebug("current page: " + page.toString());
+
+                // open the page 
+                page.open();
             }
         } catch (NoSuchElementException e) {
             System.err.println("Something went wrong.");
             e.printStackTrace(System.err);
+        } catch (InterruptedException e) {
+            System.err.println("Something went wrong.");
+            e.printStackTrace(System.err);
         }
 
-        System.out.println("Closing application.");
         if (Config.SWING_SUPPORTED) {
             applicationFrame.dispose();
         }
@@ -98,6 +124,17 @@ public class App {
      * Static so it can be closed everywhere
      */
     public static void close() {
+        Logger.logDebug("closing app");
+
+        PageManager manager = PageManager.getInstance();
+
+        // set to clossing page
+        // prevents double swing gui and looks nice
+        Page page = new ClosingPage();
+        manager.setCurrentPage(page);
+
+        // close the manager
+        manager.close();
         RUNNING = false;
     }
 
@@ -110,6 +147,7 @@ public class App {
      */
     private void setContentPane(JPanel page) {
         applicationFrame.setContentPane(page);
+        applicationFrame.getContentPane().setBackground(Config.BACKGROUND_COLOR);
         applicationFrame.revalidate();
         applicationFrame.repaint();
         applicationFrame.setVisible(true);

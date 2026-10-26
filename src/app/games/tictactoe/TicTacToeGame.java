@@ -9,6 +9,7 @@ import app.games.framework.player.Player;
 import app.games.tictactoe.model.TicTacToeModel;
 import app.games.tictactoe.model.TicTacToeMove;
 import app.util.Config;
+import app.util.Logger;
 
 /**
  * <pre>
@@ -73,6 +74,8 @@ public class TicTacToeGame extends Game {
 
         // game loop
         while (running) {
+            Logger.logDebug("[tic tac toe]");
+            Logger.logDebug("new tic tac toe round");
 
             // each player does a move
             for (Player player : players) {
@@ -87,6 +90,9 @@ public class TicTacToeGame extends Game {
 
                 player.doMove(this);
 
+                if (!running) {
+                    break;
+                }
 
                 if (Config.DEBUG) {
                     try {
@@ -119,8 +125,14 @@ public class TicTacToeGame extends Game {
     public void procesMove(Move move) {
         if (move instanceof TicTacToeMove) {
             model.placeMove((TicTacToeMove) move);
-
         }
+    }
+
+    @Override
+    public void close() {
+        super.close();
+        Logger.logDebug("game closing: " + page.toString());
+        page.close();
     }
 
 }

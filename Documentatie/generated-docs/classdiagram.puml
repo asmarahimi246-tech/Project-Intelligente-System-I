@@ -236,6 +236,7 @@ class app.pages.BasePage {
 	{method} +createCLI () : void
 	{method} +createSwingUi () : void
 	{method} +open () : void
+	{method} +toString () : String
 }
 
 
@@ -248,13 +249,6 @@ class app.pages.GamePage {
 
 
 class app.pages.MainPage {
-	{method} +createCLI () : void
-	{method} +createSwingUi () : void
-	{method} +toString () : String
-}
-
-
-class app.pages.SwingTestPage {
 	{method} +createCLI () : void
 	{method} +createSwingUi () : void
 	{method} +toString () : String
@@ -279,16 +273,22 @@ class app.pages.context.widgets.Button {
 }
 
 
+class app.pages.context.widgets.OptionMenu {
+}
+
+
 class app.pages.gameBuilder.BuilderBasePage {
 	{method} +createCLI () : void
 	{method} +createSwingUi () : void
 	{method} +open () : void
+	{method} +toString () : String
 }
 
 
 class app.pages.gameBuilder.GameSelectionPage {
 	{method} +createCLI () : void
 	{method} +createSwingUi () : void
+	{method} +toString () : String
 }
 
 
@@ -309,14 +309,24 @@ class app.pages.gameBuilder.PlayerPage {
 
 
 class app.util.Config {
+	{field} {static} +ACCENT_COLOR : Color
+	{field} {static} +ACCENT_HOVER_COLOR : Color
 	{field} {static} +BACKGROUND_COLOR : Color
+	{field} {static} +BORDER : Border
+	{field} {static} +BORDER_COLOR : Color
 	{field} {static} +DEBUG : boolean
+	{field} {static} +ERROR_COLOR : Color
 	{field} {static} +FOREGROUND_COLOR : Color
 	{field} {static} +LOCALPORT : int
+	{field} {static} +MEDIUM_FONT : Font
+	{field} {static} +MUTED_FOREGROUND_COLOR : Color
 	{field} {static} +ONLINEIP : String
 	{field} {static} +ONLINEPORT : int
 	{field} {static} +SERVERJAR : Path
+	{field} {static} +SUCCESS_COLOR : Color
+	{field} {static} +SURFACE_COLOR : Color
 	{field} {static} +SWING_SUPPORTED : boolean
+	{field} {static} +WARNING_COLOR : Color
 	{field} {static} +X_AND_O : boolean
 }
 
@@ -409,7 +419,6 @@ app.pages.GamePage *--  app.games.framework.game.Game : game
 app.pages.GamePage *--  app.games.framework.game.GameBuilder : builder
 app.pages.GamePage --|>  app.pages.context.Page
 app.pages.MainPage --|>  app.pages.context.Page
-app.pages.SwingTestPage --|>  app.pages.context.Page
 app.pages.context.PageManager -->  app.pages.context.Page : page
 app.pages.context.PageManager -->  app.pages.context.PageManager : INSTANCE
 app.pages.gameBuilder.BuilderBasePage -->  app.pages.context.Page : content
