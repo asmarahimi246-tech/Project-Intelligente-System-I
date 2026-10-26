@@ -91,4 +91,9 @@ public class BuilderBasePage extends Page {
         // then build the content view
         content.open();
     }
+
+    @Override
+    public void close() {
+        content.close();
+    }
 }

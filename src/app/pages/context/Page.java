@@ -40,4 +40,9 @@ public abstract class Page extends JPanel {
             createCLI();
         }
     }
+
+    /**
+     * closes the page
+     */
+    public void close() {}
 }

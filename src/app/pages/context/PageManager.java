@@ -52,9 +52,15 @@ public class PageManager {
      * @param page the page to set it to
      */
     public synchronized void setCurrentPage(Page page) {
+        // close old page
+        if (this.page != null) {
+            Logger.logDebug("closing: " + this.page.toString());
+            this.page.close();
+        }
+
+        // set new page
         this.page = page;
         this.changed = true;
-        //this.page = page;
         Logger.logDebug("page changed to: " + page.toString());
 
         // notify that the page has changed

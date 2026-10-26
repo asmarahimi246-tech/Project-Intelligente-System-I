@@ -8,6 +8,7 @@ import app.pages.context.Page;
 import app.pages.context.PageManager;
 
 import app.util.Config;
+import app.util.Logger;
 
 /**
  * GamePage
@@ -45,7 +46,6 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
     @Override
     public void createSwingUi() {
         setLayout(new GridLayout(1, 1));
-        // TODO: ui surounding the page
         // the game page is only a widget and contain only the minimal needed for a game
         // exampe:
         // tic tac toe only has a 3x3 grid with X and O
@@ -83,5 +83,11 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
     @Override
     public void createCLI() {
         // im very usefull
+    }
+
+    @Override
+    public void close() {
+        // close the game
+        game.close();
     }
 }

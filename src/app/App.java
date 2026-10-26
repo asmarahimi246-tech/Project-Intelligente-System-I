@@ -76,9 +76,9 @@ public class App {
 
         try {
             while (RUNNING) {
-                Page page;
+                Logger.logDebug("[app]");
 
-                Logger.logDebug("=== App ===");
+                Page page;
 
                 // get the page
                 page = manager.waitForNewPage();
@@ -124,7 +124,10 @@ public class App {
      * Static so it can be closed everywhere
      */
     public static void close() {
+        Logger.logDebug("closing app");
+
         PageManager manager = PageManager.getInstance();
+
         // set to clossing page
         // prevents double swing gui and looks nice
         Page page = new ClosingPage();
@@ -144,9 +147,6 @@ public class App {
      */
     private void setContentPane(JPanel page) {
         applicationFrame.setContentPane(page);
-        
-        Logger.logDebug("current swing page: " + applicationFrame.getContentPane().toString());
-
         applicationFrame.getContentPane().setBackground(Config.BACKGROUND_COLOR);
         applicationFrame.revalidate();
         applicationFrame.repaint();

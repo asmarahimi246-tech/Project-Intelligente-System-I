@@ -10,6 +10,7 @@ import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.pages.context.widgets.Button;
 import app.util.Config;
+import app.util.Logger;
 
 /**
  * BasePage works like a base html
@@ -61,6 +62,7 @@ public class BasePage extends Page {
 
         // add the button
         Button button = new Button(event -> {
+            Logger.logDebug("goin back to main");
             PageManager manager = PageManager.getInstance();
             Page main = new MainPage();
             manager.setCurrentPage(main);
@@ -86,5 +88,10 @@ public class BasePage extends Page {
 
         // then build the content view
         content.open();
+    }
+
+    @Override
+    public void close() {
+        content.close();
     }
 }
