@@ -1,152 +1,155 @@
 package app;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.NoSuchElementException;
-import java.util.concurrent.TimeUnit;
 
-import app.common.util.Config;
-import app.common.util.ScannerSingleton;
-import app.menus.MainMenu;
-import app.menus.common.MenuContext;
-import app.menus.common.MenuState;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.util.NoSuchElementException;
+import java.util.concurrent.ForkJoinPool.ManagedBlocker;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import app.pages.ClosingPage;
+import app.pages.context.Page;
+import app.pages.context.PageManager;
+import app.util.Config;
+import app.util.Logger;
 
 /**
- * App
- * 
- * The app is a singleton (explenation v)
- * https://refactoring.guru/design-patterns/singleton
- * 
- * Its a singleton to make send close signal globaly accesable
- * 
- * It also prevents the making of multiple Apps 
- * thus solving the problem of multiple local server runnig on the same port
+ * Runs the app and controls its flow from a high level.
+ *
+ * Examples:
+ * Show the main page.
+ * Return to the menu or exit.
+ *
+ * Sources:
+ * Swing event dispatch thread info: https://www.youtube.com/watch?v=PDKyjl9I0EA
+ *      Use: for making it sleep while the page is changing
  */
-public class App
-{
-    private static App INSTANCE;
-    private Process localServer;
-    private static boolean RUNNING;
+public class App {
+    /** 
+     * volatile so the application can close when 
+     * a different thread gets an error or 
+     * just wants to close the application
+     * for example the server listener
+     */
+    private static volatile boolean RUNNING;
+    /**
+     * The application frame of the app
+     */
+    private final JFrame applicationFrame;
+
 
     /**
      * Constructor
      */
-    private App() {
-        this.setup();
+    public App () {
+        // swing setup
+        if (Config.SWING_SUPPORTED) {
+            applicationFrame = new JFrame("applicationFrame");
+            applicationFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            applicationFrame.setResizable(false);
+            applicationFrame.setSize(1000, 1000);
+            applicationFrame.setLocationRelativeTo(null);
 
-        // set app to running
-        RUNNING = true;
-    }
-
-    /**
-     * Get instance
-     * @return the instance
-     */
-    public static App getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new App();
+            // add a listener to close the application on pressing X
+            applicationFrame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    close();
+                }
+            });
+        } else {
+            applicationFrame = null;
         }
-        return INSTANCE;
     }
 
     /**
-     * The main method - entry point of the application.
-     *
-     * @param args command-line arguments
+     * Run the application
      */
-    public static void main( String[] args )
-    {
-        // create and run the application
-        App app = App.getInstance();
-        app.run();
+    public void run() {
+        RUNNING = true;
 
-        // For when it crashes
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            System.out.println("Something went wrong. Closing application");
-            app.close();
-        }));
-    }
-
-    /**
-     * runs the application
-     */
-    private void run() {
-        // get an instance of the current menu state
-        MenuContext context = MenuContext.getInstance();
+        // get an instance of the page manager
+        PageManager manager = PageManager.getInstance();
 
         try {
-            while (RUNNING){
-                MenuState state = context.getState();
-                state.open();
+            while (RUNNING) {
+                Logger.logDebug("[app]");
+
+                Page page;
+
+                // get the page
+                page = manager.waitForNewPage();
+
+                // set the page for swing 
+                // this works because page extends JPanel
+                // shows a white page if empty
+                if (Config.SWING_SUPPORTED) {
+                    try {
+                        // block EDT until content pane is set
+                        // wait for the swing ui to be set before doing open
+                        SwingUtilities.invokeAndWait(() -> setContentPane(page));
+                    } catch (InvocationTargetException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+
+                Logger.logDebug("current page: " + page.toString());
+
+                // open the page 
+                page.open();
             }
         } catch (NoSuchElementException e) {
-            System.out.println("Something went wrong. Closing application");
-        } finally {
-            this.close();
+            System.err.println("Something went wrong.");
+            e.printStackTrace(System.err);
+        } catch (InterruptedException e) {
+            System.err.println("Something went wrong.");
+            e.printStackTrace(System.err);
+        }
+
+        if (Config.SWING_SUPPORTED) {
+            applicationFrame.dispose();
         }
     }
 
     /**
-     * Does setup things
+     * Close the application
      * 
-     * like starting the local server
+     * Static so it can be closed everywhere
      */
-    private void setup() {        
-        // setup local server
-        try{
-            // from config
-            Path serverPath = Config.SERVERJAR;
+    public static void close() {
+        Logger.logDebug("closing app");
 
-            // starting server
-            ProcessBuilder server = new ProcessBuilder("java", "-jar", serverPath.normalize().toString());
-            localServer = server.start();
+        PageManager manager = PageManager.getInstance();
 
-            // print where the server is listening
-            System.out.println("Local server listening on: localhost:" + Config.LOCALPORT);
+        // set to clossing page
+        // prevents double swing gui and looks nice
+        Page page = new ClosingPage();
+        manager.setCurrentPage(page);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // set a entry menu as the menu state
-        MenuState entryMenu = new MainMenu();
-        MenuContext context = MenuContext.getInstance();
-        context.setState(entryMenu);
-    }
-
-    /**
-     * Closes the application
-     */
-    private void close() {
-        // close scanner
-        ScannerSingleton.closeInstance();
-
-        // close local server
-        if (localServer != null) {
-            localServer.destroy();
-
-            try {
-                // give it some time
-                boolean finished = localServer.waitFor(5, TimeUnit.SECONDS);
-                if (finished) {
-                    int exitCode = localServer.exitValue();
-                    System.out.println("Local server exited with code: " + exitCode);
-
-                // force if to slow
-                } else {
-                    System.out.println("Local server did not exit within the timeout period");
-                    System.out.println("Force closing local server");
-                    localServer.destroyForcibly();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * Sends a signal to tell the application to close
-     */
-    public static void sendCloseSignal() {
+        // close the manager
+        manager.close();
         RUNNING = false;
+    }
+
+    /**
+     * shows a page
+     * 
+     * note: expects the ui to already be build
+     * 
+     * @param page
+     */
+    private void setContentPane(JPanel page) {
+        applicationFrame.setContentPane(page);
+        applicationFrame.getContentPane().setBackground(Config.BACKGROUND_COLOR);
+        applicationFrame.revalidate();
+        applicationFrame.repaint();
+        applicationFrame.setVisible(true);
     }
 }

@@ -1,5 +1,5 @@
 # Maven output directories
-target/
+.mvn/target/
 
 # IDE's
 /.idea/
@@ -8,9 +8,14 @@ target/
 /.settings/
 /.vscode/
 
-# Maven wrapper
-/mvnw
-/mvnw.cmd
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+pom.xml
+
+# Other
+.out/
 
 # Logs
 *.log
