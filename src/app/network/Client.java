@@ -5,6 +5,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -22,6 +25,8 @@ public class Client {
     private BufferedReader reader;
     private PrintWriter writer;
     private ServerListener listener;
+    List<ServerMessage> okList;
+    List<ServerMessage> svrList;
 
 
     /**
@@ -47,9 +52,10 @@ public class Client {
 
         // still dont exactly know how concurent linked queue works i do know that its a thread save queue
         // make server listen with a lambda function
-        ConcurrentLinkedQueue<String> okQueue = new ConcurrentLinkedQueue<>();
-        ConcurrentLinkedQueue<String> svrQueue = new ConcurrentLinkedQueue<>();
-        this.listener = new ServerListener(reader, okQueue, svrQueue, () -> closing.get());
+
+        okList = Collections.synchronizedList(new LinkedList<ServerMessage>());
+        svrList = Collections.synchronizedList(new LinkedList<ServerMessage>());
+        this.listener = new ServerListener(reader, okList, svrList, () -> closing.get());
 
         //place it on a thread and start it
         Thread thread = new Thread(listener);
@@ -91,10 +97,11 @@ public class Client {
      * 
      * @return the message
      */
-    public ServerMessage getNextSvrMessage() {
-        //TODO: add the message parser to the server listener
-        listener.getNextSvrMessage();
-        throw new UnsupportedOperationException("Unimplemented method 'getNextSvrMessage'");
+    public synchronized ServerMessage getSvrMessageBySubTypeAndAddon(MessageSubtype subtype, MessageAddon addon) {
+        ServerMessage toReturn = null;
+        for (ServerMessage message : svrList) {
+
+        }
     }
 
     /**

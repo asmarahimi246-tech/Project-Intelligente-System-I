@@ -134,5 +134,4 @@ public class TicTacToeGame extends Game {
         Logger.logDebug("game closing: " + page.toString());
         page.close();
     }
-
 }

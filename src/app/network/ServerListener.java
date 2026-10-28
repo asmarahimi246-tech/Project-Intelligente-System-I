@@ -3,8 +3,13 @@ package app.network;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BooleanSupplier;
+
+import app.util.Logger;
 
 /**
  * Client
@@ -18,25 +23,29 @@ import java.util.function.BooleanSupplier;
  */
 public class ServerListener implements Runnable {
     private volatile boolean errorFlag = false;
-    private final ConcurrentLinkedQueue<String> okQueue;
-    private final ConcurrentLinkedQueue<String> svrQueue;
+    //TODO: wait for ok
+    public List<ServerMessage> okList;
+    public List<ServerMessage> svrList;
     private final BooleanSupplier clientClosing;
     private BufferedReader reader;
     private Socket socket;
+    private String rawMessage;
+    private final MessageHandler handler;
 
     /**
      * A server listener listens to the server and sorts answers into queues
      * 
      * @param reader reader
      * @param okQueue okQueue
-     * @param svrQueue scrQueue
+     * @param svrList svrList
      * @param clientClosing if the client us closing
      */
-    public ServerListener(BufferedReader reader, ConcurrentLinkedQueue<String> okQueue, ConcurrentLinkedQueue<String> svrQueue, BooleanSupplier clientClosing) {
+    public ServerListener(BufferedReader reader, List<ServerMessage> okList, List<ServerMessage> svrList, BooleanSupplier clientClosing) {
         this.reader = reader;
-        this.okQueue = okQueue;
-        this.svrQueue = svrQueue;
+        this.okList = okList;
+        this.svrList = svrList;
         this.clientClosing = clientClosing;
+        this.handler = new MessageHandler();
     }
 
     /**    (non-Javadoc)
@@ -45,30 +54,40 @@ public class ServerListener implements Runnable {
      */
     @Override
     public void run() {
-        try {
-            String message;
-            while ((message = reader.readLine()) != null) {
-                //TODO: message parser
+        Logger.logDebug("ServerListener started");
 
-                if (message.contains("ERR")) {
+        try {
+            while (!clientClosing.getAsBoolean() && (rawMessage = reader.readLine()) != null) {
+                // Ignore startup messages that aren't part of the protocol.
+                if (!rawMessage.startsWith("OK")
+                        && !rawMessage.startsWith("ERR")
+                        && !rawMessage.startsWith("SVR")) {
+
+                    Logger.logDebug("Ignoring unrecognized server message: " + rawMessage);
+                    continue;
+                }
+
+                // get a message handler
+                ServerMessage message = handler.handleMessage(rawMessage);
+
+                // sort by type
+                if (message.getType() == MessageType.ERR) {
                     System.err.println("[error] " + message);
                     errorFlag = true;
-                } else if (message.contains("OK")) {
-                    okQueue.add(message);
-                } else if (message.contains("SVR")) {
-                    svrQueue.add(message);
+                } else if (message.getType() == MessageType.OK) {
+                    okList.add(message);
+                } else if (message.getType() == MessageType.SVR) {
+                    svrList.add(message);
                 }
-            }
-
-            if (!clientClosing.getAsBoolean()) {
-                System.err.println("Server closed the connection");
             }
         } catch (IOException e) {
             if (!clientClosing.getAsBoolean()) {
-                System.err.println("Server connection lost");
+                Logger.logDebug("Server connection lost");
                 e.printStackTrace();
             }
         }
+
+        Logger.logDebug("CLosing server the connection");
     }
 
     /**
@@ -78,32 +97,5 @@ public class ServerListener implements Runnable {
      */
     public boolean isError() {
         return errorFlag;
-    }
-
-    /**
-     * checks for ok in the queue
-     * 
-     * @return the ok
-     */
-    public String getNextOkMessage() {
-        return okQueue.poll(); // removes and returns the head of the queue
-    }
-
-    /**
-     * checks for server messages in the queue
-     * 
-     * @return the server message
-     */
-    public String getNextSvrMessage() {
-        return svrQueue.poll(); // removes and returns the head of the queue
-    }
-
-    /**
-     * Returns a svr message back to the queue
-     * 
-     * @param message the message to return
-     */
-    public void returnSvrMessage(String message) {
-        throw new UnsupportedOperationException("Unimplemented method 'returnSvrMessage'");
     }
 }

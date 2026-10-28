@@ -85,6 +85,8 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         // types: Online, Local
         Player two = super.players.get(1).build();
 
+
+
         // Online
         if (super.mode == GameMode.ONLINE) {
             // setup online player
