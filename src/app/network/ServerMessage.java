@@ -3,6 +3,9 @@ package app.network;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * ServerMessage
+ */
 public class ServerMessage {
     private final MessageType type;
     private MessageSubtype subtype = null;
@@ -11,6 +14,19 @@ public class ServerMessage {
     private String errorDetails = null;
     private ArrayList<String> listDetails = null;
     private String helpDetails = null;
+
+    @Override
+    public String toString() {
+        return "ServerMessage{" +
+                "type=" + type +
+                (subtype != null ? ", subtype=" + subtype : "") +
+                (addon != null ? ", addon=" + addon : "") +
+                (gameDetails != null ? ", gameDetails=" + gameDetails : "") +
+                (errorDetails != null ? ", errorDetails='" + errorDetails + '\'' : "") +
+                (listDetails != null ? ", listDetails=" + listDetails : "") +
+                (helpDetails != null ? ", helpDetails='" + helpDetails + '\'' : "") +
+                '}';
+    }
 
     /**
      * Constructor for "OK" server messages
@@ -66,6 +82,7 @@ public class ServerMessage {
      * Constructor for "SVR GAMELIST/PLAYERLIST"
      * @param type type of server message --> SVR
      * @param subtype subtype of server message --> GAMELIST/PLAYERLIST
+     * @param listDetails TODO: this
      */
     public ServerMessage(MessageType type,
                          MessageSubtype subtype,
@@ -75,34 +92,68 @@ public class ServerMessage {
         this.listDetails = listDetails;
     }
 
+    /**
+     * TODO: comments
+     * @return iets
+     */
     public MessageType getType() {
         return type;
     }
 
+    /**
+     * TODO: comments
+     * @return iets
+     */
     public MessageSubtype getSubtype() {
         return subtype;
     }
 
+    /**
+     * TODO: comments
+     * @return iets
+     */
     public MessageAddon getAddon() {
         return addon;
     }
 
+    /**
+     * TODO: comments
+     * @param key key
+     * 
+     * @return iets
+     */
     public String getDetailValue(String key) {
         return gameDetails.get(key);
     }
 
+    /**
+     * TODO: comments
+     * @return iets
+     */
     public Map<String, String> getGameDetails() {
         return gameDetails;
     }
 
+    /**
+     * TODO: comments
+     * @return iets
+     */
     public String getErrorDetails() {
         return errorDetails;
     }
 
+    /**
+     * TODO: comments
+     * @return iets
+     */
     public ArrayList<String> getListDetails() {
         return listDetails;
     }
 
+    /**
+     * TODO: comments
+     * @return iets
+     */
     public String getHelpDetails() {
         return helpDetails;
     }

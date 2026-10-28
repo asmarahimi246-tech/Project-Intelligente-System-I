@@ -6,7 +6,9 @@ import java.net.Socket;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.BooleanSupplier;
 
 import app.util.Logger;
@@ -20,12 +22,16 @@ import app.util.Logger;
  * 
  * 
  * TODO: better sources
+ * Sources: 
+ * synchronizedLinkedList: https://stackoverflow.com/questions/11360401/java-synchronized-list,
+ *                         https://www.w3schools.com/java/java_linkedlist.asp,
+ *                         https://www.baeldung.com/java-queue-linkedblocking-concurrentlinked
  */
 public class ServerListener implements Runnable {
     private volatile boolean errorFlag = false;
     //TODO: wait for ok
-    public List<ServerMessage> okList;
-    public List<ServerMessage> svrList;
+    public final LinkedBlockingQueue<ServerMessage> okQueue;
+    public final LinkedBlockingQueue<ServerMessage> svrQueue;
     private final BooleanSupplier clientClosing;
     private BufferedReader reader;
     private Socket socket;
@@ -37,13 +43,13 @@ public class ServerListener implements Runnable {
      * 
      * @param reader reader
      * @param okQueue okQueue
-     * @param svrList svrList
+     * @param svrQueue svrQueue
      * @param clientClosing if the client us closing
      */
-    public ServerListener(BufferedReader reader, List<ServerMessage> okList, List<ServerMessage> svrList, BooleanSupplier clientClosing) {
+    public ServerListener(BufferedReader reader, LinkedBlockingQueue<ServerMessage> okQueue, LinkedBlockingQueue<ServerMessage> svrQueue, BooleanSupplier clientClosing) {
         this.reader = reader;
-        this.okList = okList;
-        this.svrList = svrList;
+        this.okQueue = okQueue;
+        this.svrQueue = svrQueue;
         this.clientClosing = clientClosing;
         this.handler = new MessageHandler();
     }
@@ -75,9 +81,9 @@ public class ServerListener implements Runnable {
                     System.err.println("[error] " + message);
                     errorFlag = true;
                 } else if (message.getType() == MessageType.OK) {
-                    okList.add(message);
+                    okQueue.add(message);
                 } else if (message.getType() == MessageType.SVR) {
-                    svrList.add(message);
+                    svrQueue.add(message);
                 }
             }
         } catch (IOException e) {

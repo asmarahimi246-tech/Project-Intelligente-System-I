@@ -1,5 +1,8 @@
 package app.network;
 
+/**
+ * MessageAddon
+ */
 public enum MessageAddon {
     MATCH,
     YOURTURN,

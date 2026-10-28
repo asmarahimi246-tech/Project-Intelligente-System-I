@@ -119,6 +119,9 @@ public class ServerMessageParser {
         }
     }
 
+    /**
+     * TODO: this
+     */
     private void setListDetails() {
         String listItem;
         String[] rawDetails = svrMessage.substring(svrMessage.indexOf("[") + 1, svrMessage.indexOf("]")).split(",");
@@ -130,6 +133,9 @@ public class ServerMessageParser {
         }
     }
 
+    /**
+     * TODO: this
+     */
     private void setGameDetails() {
         String key;
         String value;
@@ -143,20 +149,40 @@ public class ServerMessageParser {
         }
     }
 
+    /**
+     * TODO: this
+     */
     private void setHelpDetails() {
         String[] parts = svrMessage.split(" ", 3);
         helpDetails = parts.length > 2 ? parts[2] : "";
     }
 
+    /**
+     * TODO: this
+     */
     private void setErrDetails() {
         errorDetails = svrMessage.substring(svrMessage.indexOf(" ") + 1);
     }
 
+    /**
+     * TODO: this
+     * 
+     * @param msgType iets
+     * 
+     * @return iets
+     */
     private ServerMessage parseErr(MessageType msgType) {
         setErrDetails();
         return new ServerMessage(msgType, errorDetails);
     }
 
+    /**
+     * TODO: this
+     * 
+     * @param msgType iets
+     * 
+     * @return iets
+     */
     private ServerMessage parseSvr(MessageType msgType) {
         setMessageSubtype();
         return switch (msgSubtype) {
@@ -176,8 +202,10 @@ public class ServerMessageParser {
             default -> throw new IllegalStateException("Unexpected value: " + msgSubtype);
         };
     }
+
     /**
      * Parses a server message and returns its components as a ServerMessage object
+     * 
      * @param message the server message String to parse
      * @return a new ServerMessage object containing the parsed type, subtype, addon
      * and details

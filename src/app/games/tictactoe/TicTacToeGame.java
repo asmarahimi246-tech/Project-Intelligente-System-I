@@ -88,6 +88,7 @@ public class TicTacToeGame extends Game {
                     page.open();
                 }
 
+                Logger.logDebug("start move");
                 player.doMove(this);
 
                 if (!running) {

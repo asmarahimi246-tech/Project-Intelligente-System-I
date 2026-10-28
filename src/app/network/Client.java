@@ -8,7 +8,9 @@ import java.net.Socket;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -25,8 +27,6 @@ public class Client {
     private BufferedReader reader;
     private PrintWriter writer;
     private ServerListener listener;
-    List<ServerMessage> okList;
-    List<ServerMessage> svrList;
 
 
     /**
@@ -52,10 +52,9 @@ public class Client {
 
         // still dont exactly know how concurent linked queue works i do know that its a thread save queue
         // make server listen with a lambda function
-
-        okList = Collections.synchronizedList(new LinkedList<ServerMessage>());
-        svrList = Collections.synchronizedList(new LinkedList<ServerMessage>());
-        this.listener = new ServerListener(reader, okList, svrList, () -> closing.get());
+        LinkedBlockingQueue<ServerMessage> okQueue = new LinkedBlockingQueue<>();
+        LinkedBlockingQueue<ServerMessage> svrList = new LinkedBlockingQueue<>();
+        this.listener = new ServerListener(reader, okQueue, svrList, () -> closing.get());
 
         //place it on a thread and start it
         Thread thread = new Thread(listener);
@@ -82,37 +81,56 @@ public class Client {
         // by checking queue
         boolean ok = false;
         while (!ok) {
-            if (this.listener.isError()) {
+            if (listener.isError()) {
                 System.err.println("Error received from server");
-            } else if (this.listener.getNextOkMessage() != null) {
-                ok = true;
+                return false;
+            } else
+                try {
+                    if (listener.okQueue.take() != null) {
+                        ok = true;
+                    }
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+        }
+
+        return ok;
+    }
+
+    /**
+     * gets the next svr message by the subtype and optional addon
+     * 
+     * @param subtype the message subtype
+     * @param addon the message addon
+     * @return the message
+     */
+    public ServerMessage getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype subtype, MessageAddon addon) {
+        ServerMessage toReturn = null;
+
+        while (toReturn == null) {
+            // check for error
+            if (listener.isError()) {
+                System.err.println("Error received from server");
+                return toReturn;
+            }
+
+            // loop throug all messages in the list
+            for (ServerMessage message : listener.svrQueue) {
+
+                // check if the subtype is correct
+                if (message.getSubtype() == subtype) {
+                    // check for addon
+                    if (message.getAddon() == addon || addon == null) {
+                        toReturn = message;
+                        listener.svrQueue.remove(toReturn);
+                        break;
+                    }
+                }
             }
         }
 
-        return true;
-    }
-
-    /**
-     * gets the next svr message
-     * 
-     * @return the message
-     */
-    public synchronized ServerMessage getSvrMessageBySubTypeAndAddon(MessageSubtype subtype, MessageAddon addon) {
-        ServerMessage toReturn = null;
-        for (ServerMessage message : svrList) {
-
-        }
-    }
-
-    /**
-     * Returns a svr message back to the queue
-     * 
-     * @param message the message to return
-     */
-    public void returnSvrMessage(ServerMessage message) {
-        //TODO: add the message parser to the server listener
-        listener.returnSvrMessage(null);
-        throw new UnsupportedOperationException("Unimplemented method 'returnSvrMessage'");
+        return toReturn;
     }
 
     /**
