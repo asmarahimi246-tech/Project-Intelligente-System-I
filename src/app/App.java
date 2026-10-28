@@ -15,6 +15,7 @@ import app.pages.context.Page;
 import app.pages.context.PageManager;
 import app.util.Config;
 import app.util.Logger;
+import app.util.ScannerSingleton;
 
 /**
  * Runs the app and controls its flow from a high level.
@@ -136,6 +137,10 @@ public class App {
         // close the manager
         manager.close();
         RUNNING = false;
+
+        
+        // close the scanner
+        ScannerSingleton.closeInstance();
     }
 
     /**

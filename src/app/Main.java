@@ -28,20 +28,6 @@ public class Main {
      * @throws IOException exception
      */
     public static void main(String[] args) throws IOException {
-        // set swing style
-        if (Config.SWING_SUPPORTED) {
-            try {
-                for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-                    if ("Nimbus".equals(info.getName())) {
-                        UIManager.setLookAndFeel(info.getClassName());
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
         // new code v
         // set a start page
         PageManager manager = PageManager.getInstance();
@@ -51,8 +37,5 @@ public class Main {
         // make an app and run it
         App app = new App();
         app.run();
-
-        // close the scanner
-        ScannerSingleton.closeInstance();
     }
 }
