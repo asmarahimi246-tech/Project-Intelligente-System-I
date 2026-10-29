@@ -1,5 +1,7 @@
 package app.uiPages.gameBuilder;
 
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,6 +12,7 @@ import app.games.framework.game.GameBuilder;
 import app.games.framework.game.GameMode;
 import app.games.tictactoe.TicTacToeBuilder;
 import app.games.tictactoe.TicTacToeGame;
+import app.network.Client;
 import app.uiPages.TournamentPage;
 import app.uiPages.context.Page;
 import app.uiPages.context.PageManager;
@@ -38,6 +41,9 @@ import app.util.cliInputFields.CLIIntegerField;
  * in code:
  * TicTacToeBuilder builder = new TicTacToeBuilder();
  * Page page = new ModePage &lt; TicTacToeGame,TicTacToeBuilder &gt; (builder);
+ * 
+ * Sources:
+ *      swingWorker: https://www.geeksforgeeks.org/java/swingworker-in-java/
  */
 public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page {
     private final B builder;
@@ -84,24 +90,50 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
      * @param mode the online mode to start in
      */
     private void startOnlineMode(GameMode mode) {
-        builder.setMode(mode);
-        new SwingWorker<Boolean, Void>() {
-            @Override
-            protected Boolean doInBackground() throws Exception {
-                return builder.login(); // must return true only after server confirms login
-            }
+        Socket socket;
+        Client client;
 
-            @Override
-            protected void done() {
-                try {
-                    if (get()) {
-                        continueToPlayerPage();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        // make the socket and client
+        try {
+            if (Config.DEBUG) {
+                socket = new Socket("localhost", Config.LOCALPORT);
+            } else {
+                socket = new Socket(Config.ONLINEIP, Config.ONLINEPORT);
             }
-        }.execute();
+            client = new Client(socket);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return;
+        }
+
+        // use a worker thread for swing
+        // to keep ui interactive while preventing bugs
+        if (Config.SWING_SUPPORTED) {
+            new SwingWorker<Boolean, Void>() {
+                // the thing to do
+                @Override
+                protected Boolean doInBackground() throws Exception {
+                    return client.login();
+                }
+
+                // exicutes when its done
+                @Override
+                protected void done() {
+                    try {
+                        // get waits for computation to be complete 
+                        // very nice
+                        if (get()) {
+                            continueToPlayerPage();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.execute();
+        } else {
+            client.login();
+            continueToPlayerPage();
+        }
     }
 
     @Override
@@ -158,9 +190,11 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
                 break;
             case 2:
                 gameMode = GameMode.ONLINE;
+                startOnlineMode(gameMode);
                 break;
             case 3:
                 gameMode = GameMode.TOURNAMENT;
+                startOnlineMode(gameMode);
                 break;
             default:
                 return;

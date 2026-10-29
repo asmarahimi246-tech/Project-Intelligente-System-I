@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import app.games.framework.game.Game;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerOption;
+import app.network.Client;
 import app.uiPages.context.Page;
 
 /**
@@ -34,6 +35,8 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
     protected int playersToAdd;
     /** The players to add as option. can be made into a player with .build() */
     protected ArrayList<PlayerOption<? extends Player>> players = new ArrayList<PlayerOption<? extends Player>>();
+    /** A client */
+    protected Client client;
 
     /**
      * Constructor
@@ -65,13 +68,6 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
     public GameMode getMode() {
         return mode;
     }
-
-    /**
-     * Logs in
-     * 
-     * @return true if succesfull
-     */
-    public abstract boolean login();
 
     /**
      * Adds default players
@@ -116,6 +112,15 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
      */
     public int getPlayersToAdd() {
         return playersToAdd;
+    }
+
+    /**
+     * Sets the client
+     * 
+     * @param client to set to
+     */
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     /**
