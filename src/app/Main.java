@@ -1,8 +1,8 @@
 package app;
 
-import app.pages.MainPage;
-import app.pages.context.PageManager;
-import app.pages.context.Page;
+import app.uiPages.MainPage;
+import app.uiPages.context.Page;
+import app.uiPages.context.PageManager;
 import app.util.Config;
 import app.util.ScannerSingleton;
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import app.games.framework.move.Move;
 import app.games.framework.player.Player;
-import app.pages.context.Page;
+import app.uiPages.context.Page;
 
 /**
  * <pre>

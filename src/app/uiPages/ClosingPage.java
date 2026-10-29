@@ -1,4 +1,4 @@
-package app.pages;
+package app.uiPages;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 
-import app.pages.context.Page;
+import app.uiPages.context.Page;
 import app.util.Config;
 
 /**

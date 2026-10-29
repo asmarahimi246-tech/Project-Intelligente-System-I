@@ -1,14 +1,14 @@
-package app.pages;
+package app.uiPages;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import app.App;
-import app.pages.context.Page;
-import app.pages.context.PageManager;
-import app.pages.context.widgets.Button;
-import app.pages.context.widgets.OptionMenu;
-import app.pages.gameBuilder.GameSelectionPage;
+import app.uiPages.context.Page;
+import app.uiPages.context.PageManager;
+import app.uiPages.context.widgets.Button;
+import app.uiPages.context.widgets.OptionMenu;
+import app.uiPages.gameBuilder.GameSelectionPage;
 import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;

@@ -1,4 +1,4 @@
-package app.pages.gameBuilder;
+package app.uiPages.gameBuilder;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -6,9 +6,9 @@ import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import app.pages.context.Page;
-import app.pages.context.PageManager;
-import app.pages.context.widgets.Button;
+import app.uiPages.context.Page;
+import app.uiPages.context.PageManager;
+import app.uiPages.context.widgets.Button;
 import app.util.Config;
 
 /**

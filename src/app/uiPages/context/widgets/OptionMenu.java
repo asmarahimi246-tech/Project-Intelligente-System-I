@@ -1,4 +1,4 @@
-package app.pages.context.widgets;
+package app.uiPages.context.widgets;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;

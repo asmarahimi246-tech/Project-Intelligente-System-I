@@ -1,15 +1,9 @@
-package app.pages.gameBuilder;
+package app.uiPages.gameBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import app.pages.BasePage;
-import app.pages.GamePage;
-import app.pages.context.Page;
-import app.pages.context.PageManager;
-import app.pages.context.widgets.Button;
-import app.pages.context.widgets.OptionMenu;
 import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
@@ -17,6 +11,12 @@ import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerOption;
+import app.uiPages.BasePage;
+import app.uiPages.GamePage;
+import app.uiPages.context.Page;
+import app.uiPages.context.PageManager;
+import app.uiPages.context.widgets.Button;
+import app.uiPages.context.widgets.OptionMenu;
 
 /**
  * PlayerPage

@@ -10,9 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import app.pages.ClosingPage;
-import app.pages.context.Page;
-import app.pages.context.PageManager;
+import app.uiPages.ClosingPage;
+import app.uiPages.context.Page;
+import app.uiPages.context.PageManager;
 import app.util.Config;
 import app.util.Logger;
 import app.util.ScannerSingleton;
@@ -117,6 +117,8 @@ public class App {
         if (Config.SWING_SUPPORTED) {
             applicationFrame.dispose();
         }
+
+        Logger.logDebug("game closing");
     }
 
     /**

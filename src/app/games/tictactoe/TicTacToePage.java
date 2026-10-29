@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 
 import app.games.tictactoe.model.Board;
 import app.games.tictactoe.model.TicTacToeMove;
-import app.pages.context.Page;
+import app.uiPages.context.Page;
 import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;

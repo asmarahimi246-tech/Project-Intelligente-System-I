@@ -1,4 +1,4 @@
-package app.pages.gameBuilder;
+package app.uiPages.gameBuilder;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -8,10 +8,10 @@ import app.games.framework.game.GameBuilder;
 import app.games.framework.game.GameMode;
 import app.games.tictactoe.TicTacToeBuilder;
 import app.games.tictactoe.TicTacToeGame;
-import app.pages.context.Page;
-import app.pages.context.PageManager;
-import app.pages.context.widgets.Button;
-import app.pages.context.widgets.OptionMenu;
+import app.uiPages.context.Page;
+import app.uiPages.context.PageManager;
+import app.uiPages.context.widgets.Button;
+import app.uiPages.context.widgets.OptionMenu;
 import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;

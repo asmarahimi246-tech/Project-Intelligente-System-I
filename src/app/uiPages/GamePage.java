@@ -1,12 +1,11 @@
-package app.pages;
+package app.uiPages;
 
 import java.awt.GridLayout;
 
 import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
-import app.pages.context.Page;
-import app.pages.context.PageManager;
-
+import app.uiPages.context.Page;
+import app.uiPages.context.PageManager;
 import app.util.Config;
 import app.util.Logger;
 

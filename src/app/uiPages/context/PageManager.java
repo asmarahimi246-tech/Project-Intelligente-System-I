@@ -1,4 +1,4 @@
-package app.pages.context;
+package app.uiPages.context;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
