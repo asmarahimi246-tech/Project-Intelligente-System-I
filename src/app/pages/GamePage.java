@@ -69,6 +69,7 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
 
         // then build the content view
         game.run();
+        Logger.logDebug("game end");
 
         if (Config.SWING_SUPPORTED) {
             return;
