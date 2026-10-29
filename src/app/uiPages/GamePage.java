@@ -89,5 +89,6 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
     public void close() {
         // close the game
         game.close();
+        builder.close();
     }
 }

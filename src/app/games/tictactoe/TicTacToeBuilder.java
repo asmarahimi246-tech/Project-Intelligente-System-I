@@ -7,7 +7,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 import app.games.tictactoe.players.OnlineOpponent;
-import app.games.tictactoe.players.moveStrategies.AIStrategy;
+import app.games.tictactoe.players.moveStrategies.AggresiveAIStrategy;
+import app.games.tictactoe.players.moveStrategies.PassiveAIStrategy;
 import app.games.tictactoe.players.moveStrategies.UserStrategy;
 import app.network.Client;
 import app.util.Config;
@@ -148,20 +149,30 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
 
             toReturn = List.of(
                 new PlayerOption<OnlinePlayer>("player", () -> new OnlinePlayer(new UserStrategy(page), shared)),
-                new PlayerOption<OnlinePlayer>("ai", () -> new OnlinePlayer(new AIStrategy(), shared))
+                new PlayerOption<OnlinePlayer>("aggresive ai", () -> new OnlinePlayer(new AggresiveAIStrategy(), shared)),
+                new PlayerOption<OnlinePlayer>("passive ai", () -> new OnlinePlayer(new PassiveAIStrategy(), shared))
+                
                 );
 
         // local players
         } else if (super.mode == GameMode.LOCAL) {
             toReturn = List.of(
                 new PlayerOption<LocalPlayer>("player", () -> new LocalPlayer(new UserStrategy(page))),
-                new PlayerOption<LocalPlayer>("ai", () -> new LocalPlayer(new AIStrategy()))
+                new PlayerOption<LocalPlayer>("aggresive ai", () -> new LocalPlayer(new AggresiveAIStrategy())),
+                new PlayerOption<LocalPlayer>("passive ai", () -> new LocalPlayer(new PassiveAIStrategy()))
                 );
         }
         // do nothing for tournament
         // TODO: tournament
 
         return toReturn;
+    }
+
+    @Override 
+    public void close() {
+        if (super.mode == GameMode.ONLINE) {
+            shared.close();
+        }
     }
 
 }

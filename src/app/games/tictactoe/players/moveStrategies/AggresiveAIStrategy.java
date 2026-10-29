@@ -8,14 +8,18 @@ import app.games.tictactoe.model.Board;
 import app.games.tictactoe.model.TicTacToeMove;
 import app.games.tictactoe.players.LocalPlayer;
 import app.util.Logger;
+
 /**
  * AI
  */
-public class AIStrategy implements MoveSrategy {
-    private Player aIToMove;
+public class AggresiveAIStrategy implements MoveSrategy {
+    // ai player
+    private Player aIPlayer;
+    // opponent player
     private Player simulatedOpponent;
-    private TriPredicate<Board, Integer, Integer> isOpponent = (board, row, col) -> (!board.isEmpty(row, col) && !(board.getOwner(row, col) == aIToMove));
-    private TriPredicate<Board, Integer, Integer> isAi = (board, row, col) -> (!board.isEmpty(row, col) && (board.getOwner(row, col) == aIToMove));
+
+    private TriPredicate<Board, Integer, Integer> isOpponent = (board, row, col) -> (!board.isEmpty(row, col) && !(board.getOwner(row, col) == aIPlayer));
+    private TriPredicate<Board, Integer, Integer> isAi = (board, row, col) -> (!board.isEmpty(row, col) && (board.getOwner(row, col) == aIPlayer));
 
     @FunctionalInterface
     interface TriPredicate<A, B, C> {
@@ -66,6 +70,8 @@ public class AIStrategy implements MoveSrategy {
             // calculate the best ai move
             int maxPossibleWins = 0;
             int endScore = Integer.MIN_VALUE;
+
+            //TODO: 0 to 9
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
                     if (board.isEmpty(row, col)) {
@@ -73,7 +79,7 @@ public class AIStrategy implements MoveSrategy {
                         Board copy = board.copy();
 
                         // place tile in the copy
-                        copy.place(row, col, aIToMove);
+                        copy.place(row, col, aIPlayer);
 
                         // calculate score in new branch
                         MoveScore result = minimax(copy, false);
@@ -97,6 +103,8 @@ public class AIStrategy implements MoveSrategy {
             // calculate the best oppoment move
             int maxPossibleWins = 0;
             int endScore = Integer.MAX_VALUE;
+
+            //TODO: 0 to 9
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
                     if (board.isEmpty(row, col)) {
@@ -146,7 +154,7 @@ public class AIStrategy implements MoveSrategy {
                     Board copy = board.copy();
 
                     // place tile in the copy
-                    copy.place(row, col, aIToMove);
+                    copy.place(row, col, aIPlayer);
 
                     // calculate score in new branch
                     MoveScore score = minimax(copy, false);
@@ -260,7 +268,7 @@ public class AIStrategy implements MoveSrategy {
         Board board = ticTacToe.model.getBoard();
 
         // checks who self is
-        aIToMove = ticTacToe.model.getCurrentPlayer();
+        aIPlayer = ticTacToe.model.getCurrentPlayer();
 
         return calculateBestMove(board);
     }

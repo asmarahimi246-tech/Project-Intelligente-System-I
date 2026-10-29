@@ -101,4 +101,9 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
     public int getPlayersToAdd() {
         return playersToAdd;
     }
+
+    /**
+     * Closes the builder
+     */
+    public abstract void close();
 }
