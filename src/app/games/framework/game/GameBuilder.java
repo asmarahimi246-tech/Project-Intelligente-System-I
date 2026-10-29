@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 import app.games.framework.game.Game;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerOption;
-import app.pages.context.Page;
+import app.uiPages.context.Page;
 
 /**
  * <pre>

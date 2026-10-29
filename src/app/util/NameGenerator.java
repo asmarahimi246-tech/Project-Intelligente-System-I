@@ -13,44 +13,15 @@ import java.util.Random;
 public class NameGenerator {
     private static final Random RANDOM = new Random();
 
-    private static final String[] PREFIXES = {
-        "pixel", "arcade", "puzzle",
-        "game", "mini", "quick", "clever", "lucky", "speedy",
-        "bouncy", "cosmic", "turbo", "sneaky", "happy", "mighty"
-    };
-
-    private static final String[] MIDDLES = {
-        "board", "button", "combo", "level", "match", "move",
-        "pixel", "play", "score", "turn", "quest", "bonus",
-        "brain", "star", "spark", "dash", "power", "puzzle"
-    };
-
-    private static final String[] ENDINGS = {
-        "champ", "champion", "master", "ace", "hero", "pro",
-        "wizard", "winner", "whiz", "legend", "champ", "player",
-        "tiger", "chyan", "inator", "rocket", "star", "ninja"
-    };
-
-    private static final String[] SPECIAL_NAMES = {
-        "dynamite", "rittervonkase", "muller",
-        "herobrine", "itisi", "moonlord",
-        "doovensmirch", "kamisama", "bochitherock"
-    };
-
     /** 
      * Gets a name 
      * 
      * @return a random name
      */
     public String getName() {
-        if (RANDOM.nextInt(5) == 0) {
-            return SPECIAL_NAMES[RANDOM.nextInt(SPECIAL_NAMES.length)];
-        }
+        int randomnumber = 1000 + RANDOM.nextInt(9000);
+        String playername = "Player" + randomnumber;
 
-        String prefix = PREFIXES[RANDOM.nextInt(PREFIXES.length)];
-        String middle = MIDDLES[RANDOM.nextInt(MIDDLES.length)];
-        String ending = ENDINGS[RANDOM.nextInt(ENDINGS.length)];
-
-        return (prefix + middle + ending);
+        return playername;
     }
 }

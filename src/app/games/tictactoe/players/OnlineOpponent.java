@@ -3,7 +3,12 @@ package app.games.tictactoe.players;
 import app.games.framework.game.Game;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerState;
+import app.games.tictactoe.model.TicTacToeMove;
 import app.network.Client;
+import app.network.MessageAddon;
+import app.network.MessageSubtype;
+import app.network.ServerMessage;
+import app.util.Logger;
 
 /**
  * OnlineOpponent
@@ -24,21 +29,46 @@ public class OnlineOpponent extends Player {
     public OnlineOpponent(Client client) {
         this.client = client;
 
-        // TODO: get the name from the parameter OPPONENT of the below server command
-        // SVR GAME MATCH {PLAYERTOMOVE: "<naam speler1>", GAMETYPE: "<speltype>", OPPONENT: "<naam tegenstander>"}
-        super.name = "";
+        // wait for match
+        ServerMessage msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MATCH);
+        Logger.logDebug(msg.toString());
 
-        // TODO: get the name from the parameter PLAYERTOMOVE of the below server command
-        // SVR GAME MATCH {PLAYERTOMOVE: "<naam speler1>", GAMETYPE: "<speltype>", OPPONENT: "<naam tegenstander>"}
-        // and check if its the same as super.name to determine if this player does the first move
-        isFirst = false;
+        // get the opponent name
+        super.name = msg.getGameDetails().get("OPPONENT");
+        Logger.logDebug("opponent = " + name);
+
+        // check if the opponent is first
+        String toMove = msg.getGameDetails().get("PLAYERTOMOVE");
+        Logger.logDebug("player to move = " + toMove);
+        if (toMove.equalsIgnoreCase(super.name)) {
+            Logger.logDebug("opponent starts");
+            isFirst = true;
+        } else {
+            Logger.logDebug("player starts");
+            isFirst = false;
+        }
+
         super.state = PlayerState.INITIALIZED;
     }
 
     @Override
     public void doMove(Game game) {
-        super.state = PlayerState.CAN_MOVE;
+        Logger.logDebug("opponent move");
 
+        // get the move
+        ServerMessage msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MOVE);
+        while (!msg.getGameDetails().get("PLAYER").equalsIgnoreCase(super.name)) {
+            Logger.logDebug("key = " + msg.getGameDetails().get("PLAYER"));
+
+            msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MOVE);
+        }
+        Logger.logDebug(msg.toString());
+        int serverMove = Integer.parseInt(msg.getGameDetails().get("MOVE"));
+
+        TicTacToeMove move = new TicTacToeMove(serverMove/3, serverMove%3);
+
+        // process rge move
+        game.procesMove(move);
         super.state = PlayerState.EXECUTED_TURN;
     }
 
@@ -49,28 +79,5 @@ public class OnlineOpponent extends Player {
      */
     public boolean isFirst() {
         return isFirst;
-    }
-
-    /**
-     * Waits for a turn
-     */
-    public void waitForTurn() {
-        // CODE SMELL ):
-        //
-        // IDEA: maybe better to sort the svr messages based on message subtypes
-        // by automaticaly making new queues for each subtype 
-        // (^ feels like where entering a local minimum with this with the y axes being the shityness of the code)
-        //
-        // TODO: check if the player has moves get the move from the below command if parameter PLAYER is the same as super.name (probably needs a while loop)
-        // SVR GAME MOVE {PLAYER: "<speler>", MOVE: "<zet>", DETAILS: "<reactie spel op zet>"}
-        //
-        // NOTE: there might be some problems with order
-        // where the server first sends the below command:
-        // SVR GAME YOURTURN {TURNMESSAGE: "<bericht voor deze beurt>"}
-        // (please push it back to the head of the queue, online player needs it)
-        // (^ the function for this is not implemented yet)
-        super.state = PlayerState.CAN_MOVE;
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'waitForTurn'");
     }
 }

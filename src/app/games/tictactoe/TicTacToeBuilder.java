@@ -80,10 +80,12 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
 
         
         // make players
-        // types: Remote, Local
-        Player one = super.players.get(0).build();
         // types: Online, Local
         Player two = super.players.get(1).build();
+        // types: Remote, Local
+        Player one = super.players.get(0).build();
+
+
 
         // Online
         if (super.mode == GameMode.ONLINE) {
@@ -92,8 +94,8 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
 
                 // server based order
                 // by waiting for Match message
-                boolean remotePlayerFirst = onlineOpponent.isFirst();
-                if(remotePlayerFirst) {
+                boolean onlineOpponentFirst = onlineOpponent.isFirst();
+                if(onlineOpponentFirst) {
                     players.add(onlineOpponent);
                     players.add(onlinePlayer);
                 } else {

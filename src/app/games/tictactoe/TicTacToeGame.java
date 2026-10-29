@@ -88,6 +88,7 @@ public class TicTacToeGame extends Game {
                     page.open();
                 }
 
+                Logger.logDebug("start move");
                 player.doMove(this);
 
                 if (!running) {
@@ -134,5 +135,4 @@ public class TicTacToeGame extends Game {
         Logger.logDebug("game closing: " + page.toString());
         page.close();
     }
-
 }
