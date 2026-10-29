@@ -76,9 +76,6 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
         // example for tic tac toe
         // G = TicTacToeGame
         // B = TicTacToeBuilder
-        synchronized (builder) {
-            while (builder.getMode() == null) {}
-        }
         Page page = new PlayerPage<G,B>(builder);
         PageManager manager = PageManager.getInstance();
         manager.setCurrentPage(page);
@@ -116,15 +113,12 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
                     return client.login();
                 }
 
-                // exicutes when its done
+                // executes when its done
                 @Override
                 protected void done() {
                     try {
-                        // get waits for computation to be complete 
-                        // very nice
-                        if (get()) {
-                            continueToPlayerPage();
-                        }
+                        builder.setClient(client);
+                        continueToPlayerPage();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -132,7 +126,6 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
             }.execute();
         } else {
             client.login();
-            continueToPlayerPage();
         }
     }
 
@@ -150,12 +143,14 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
 
         // online mode button
         Button onlineButton = new Button(event -> {
+            builder.setMode(GameMode.ONLINE); 
             startOnlineMode(GameMode.ONLINE);}
             , "Online game");
         options.add(onlineButton);
 
         // tournament mode button
         Button tournamentButton = new Button(event -> {
+            builder.setMode(GameMode.TOURNAMENT); 
             startOnlineMode(GameMode.TOURNAMENT);}
             , "Tournament");
         options.add(tournamentButton);

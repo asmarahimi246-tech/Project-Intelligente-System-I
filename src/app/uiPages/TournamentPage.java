@@ -16,6 +16,7 @@ import app.util.Logger;
 public class TournamentPage<G extends Game, B extends GameBuilder<G, B>> extends Page {
     private final B builder;
     private Game game = null;
+    private Thread gameThread;
 
     @Override
     public String toString() {
@@ -36,52 +37,61 @@ public class TournamentPage<G extends Game, B extends GameBuilder<G, B>> extends
 
     @Override
     public void createSwingUi() {
+        removeAll();
         setLayout(new GridLayout(1, 1));
         // the game page is only a widget and contain only the minimal needed for a game
         // exampe:
         // tic tac toe only has a 3x3 grid with X and O
-
-        // check if the page  exists
-        PageManager manager = PageManager.getInstance();
-        Page page = game.getPage();
-        if (page == null) {
-            Page main = new MainPage();
-            manager.setCurrentPage(main);
-        }
+        if (game == null) {
+            // add a loading page
+            LoadingPage loading = new LoadingPage("waiting for match...");
+            loading.open();
+            add(loading);
+            Logger.logDebug("waiting for match...");
+        } else {
+            // check if the page  exists
+            PageManager manager = PageManager.getInstance();
+            Page page = game.getPage();
+            if (page == null) {
+                Page main = new MainPage();
+                manager.setCurrentPage(main);
+            }
 
         // add the page
         add(page);
+        }
     }
 
     @Override
     public void open() {
-        PageManager manager = PageManager.getInstance();
+        // this is not how one does this it needs a good interupt
+        // it currently only closes the thread when completely exiting
+        // the application going to main only hides it
+        // TODO: add interupt
+        Runnable gameRunnable = () -> {
+            // repeatidly rebuild until the a page change is requested
+            while (true) {
+                game = null;
+                super.open();
+                Logger.logDebug("starting new tournament round");
 
-        // repeatidly rebuild until the a page change is requested
-        while (!manager.pageChangeRequested()) {
-            Logger.logDebug("starting new tournament round");
-            removeAll();
+                // get the game
+                game = builder.build();
+                super.open();
 
-            // get the game
-            game = builder.build();
+                // then build the content view
+                game.run();
+                Logger.logDebug("tournament round end");
+            }
+        };
 
-            // build this view first
-            super.open();
+        gameThread = new Thread(gameRunnable);      
 
-            // then build the content view
-            game.run();
-            Logger.logDebug("tournament round end");
-
-            revalidate();
-        }
+        gameThread.start();
 
         if (Config.SWING_SUPPORTED) {
             return;
         }
-
-        // return to main menu when the game ends
-        Page main = new MainPage();
-        manager.setCurrentPage(main);
     }
 
     @Override
@@ -93,7 +103,6 @@ public class TournamentPage<G extends Game, B extends GameBuilder<G, B>> extends
     public void close() {
         // close the game
         Logger.logDebug("closing tournament");
-        game.close();
-        builder.close();
+        gameThread.interrupt();
     }
 }

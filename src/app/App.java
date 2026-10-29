@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import app.uiPages.ClosingPage;
+import app.uiPages.LoadingPage;
 import app.uiPages.context.Page;
 import app.uiPages.context.PageManager;
 import app.util.Config;
@@ -119,6 +119,10 @@ public class App {
         }
 
         Logger.logDebug("game closing");
+
+        // force it when stuck
+        // TODO: actualy make it si this isnt needed
+        System.exit(0);
     }
 
     /**
@@ -133,7 +137,7 @@ public class App {
 
         // set to clossing page
         // prevents double swing gui and looks nice
-        Page page = new ClosingPage();
+        Page page = new LoadingPage("application closing");
         manager.setCurrentPage(page);
 
         // close the manager

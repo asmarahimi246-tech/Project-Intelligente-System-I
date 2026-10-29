@@ -20,7 +20,12 @@ import app.util.Config;
  * 
  * The last page you see before the application closses
  */
-public class ClosingPage extends Page {
+public class LoadingPage extends Page {
+    String text;
+
+    public LoadingPage(String text) {
+        this.text = text;
+    }
 
     @Override
     public String toString() {
@@ -38,7 +43,7 @@ public class ClosingPage extends Page {
         content.setBackground(Config.BACKGROUND_COLOR);
 
         // closing message
-        JLabel message = new JLabel("Closing application...", SwingConstants.CENTER);
+        JLabel message = new JLabel(text, SwingConstants.CENTER);
         message.setFont(Config.MEDIUM_FONT);
         message.setForeground(Config.FOREGROUND_COLOR);
         message.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -61,7 +66,7 @@ public class ClosingPage extends Page {
 
     @Override
     public void createCLI() {
-        System.out.println("Closing application...");
+        System.out.println(text);
     }
     
     @Override
