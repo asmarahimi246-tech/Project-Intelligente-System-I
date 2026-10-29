@@ -80,7 +80,7 @@ public class PageManager {
     public synchronized Page waitForNewPage() throws InterruptedException {
         // only update when needed
         // prevents flickering in swing
-        while (!changed && running) {
+        while (!pageChangeRequested() && running) {
             wait();
         }
         changed = false;
@@ -93,5 +93,16 @@ public class PageManager {
     public synchronized void close() {
         running = false;
         notifyAll();
+    }
+
+    /**
+     * Checks if there is a request to change the page
+     * 
+     * NOTE: technicaly doesnt need to be synchronized but might change
+     * 
+     * @return true if there is a request
+     */
+    public synchronized boolean pageChangeRequested() {
+        return changed;
     }
 }

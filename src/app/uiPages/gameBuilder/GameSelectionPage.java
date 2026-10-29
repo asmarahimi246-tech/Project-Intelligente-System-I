@@ -45,7 +45,7 @@ public class GameSelectionPage extends Page {
 
         // game builder button
         TicTacToeBuilder builder = new TicTacToeBuilder();
-        Page modePage = new BuilderBasePage(new ModePage<TicTacToeGame,TicTacToeBuilder>(builder), this);
+        Page modePage = new ModePage<TicTacToeGame,TicTacToeBuilder>(builder);
         Button modeButton = new Button(event -> {manager.setCurrentPage(modePage);}, "Tic Tac Toe");
         options.add(modeButton);
 
@@ -77,7 +77,7 @@ public class GameSelectionPage extends Page {
                 TicTacToeBuilder builder = new TicTacToeBuilder();
 
                 //TODO: need the builder base page not this
-                page = new BuilderBasePage(new ModePage<TicTacToeGame,TicTacToeBuilder>(builder), this);
+                page = new ModePage<TicTacToeGame,TicTacToeBuilder>(builder);
                 break;
         
             default:

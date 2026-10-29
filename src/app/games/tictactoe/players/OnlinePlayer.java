@@ -32,21 +32,6 @@ public class OnlinePlayer extends Player {
         this.strategy = strategy;
         this.client = client;
         super.state = PlayerState.INITIALIZED;
-
-        switch (getState()) {
-            case INITIALIZED:
-                login();
-
-            case LOGGED_IN:
-                subscribe();
-
-            case SUBSCRIBED:
-                break;
-                
-            default:
-                System.err.println("something went wrong: closing game");
-                // TODO: actual error
-            }
     }
 
     @Override
@@ -68,41 +53,10 @@ public class OnlinePlayer extends Player {
         super.state = PlayerState.EXECUTED_TURN;
     }
 
-
-    /**
-     * Generats a unique name
-     * 
-     * @return the name
-     */
-    private String generateUniqueName() {
-        client.sendCommand("get playerlist");
-        ServerMessage msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.PLAYERLIST, null);
-        ArrayList<String> playerlist = msg.getListDetails();
-
-        NameGenerator nameGenerator = new NameGenerator();
-        String name = nameGenerator.getName();
-
-        // check if the random name is taken
-        // if so, generate a new one
-        // if not the name is unique and can be returned
-        while (playerlist.contains(name)) {
-            name = nameGenerator.getName();
-        }
-        return name;
-    }
-
-    /**
-     * Logs into the server
-     */
-    private void login() {
-        String name = generateUniqueName();
-        client.sendCommand("login " + name);
-    }
-
     /**
      * Subscribes to the game
      */
-    private void subscribe() {
+    public void subscribe() {
         client.sendCommand("subscribe tic-tac-toe" );
     }
 }

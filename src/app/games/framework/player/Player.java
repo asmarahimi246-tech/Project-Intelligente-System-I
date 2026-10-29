@@ -9,7 +9,7 @@ import app.util.NameGenerator;
  */
 public abstract class Player {
     /** The player name */
-    protected String name;
+    protected String name = null;
     /** The state of the player */
     protected PlayerState state;
     /** The strategy used to calculate the turn */

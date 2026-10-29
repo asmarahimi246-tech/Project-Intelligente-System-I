@@ -3,11 +3,14 @@ package app.uiPages.gameBuilder;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.SwingWorker;
+
 import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
 import app.games.framework.game.GameMode;
 import app.games.tictactoe.TicTacToeBuilder;
 import app.games.tictactoe.TicTacToeGame;
+import app.uiPages.TournamentPage;
 import app.uiPages.context.Page;
 import app.uiPages.context.PageManager;
 import app.uiPages.context.widgets.Button;
@@ -57,10 +60,6 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
     @Override
     public void open() {
         super.open();
-
-        if (!Config.SWING_SUPPORTED) {
-            continueToPlayerPage();
-        }
     }
 
     /**
@@ -71,9 +70,38 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
         // example for tic tac toe
         // G = TicTacToeGame
         // B = TicTacToeBuilder
-        Page page = new BuilderBasePage(new PlayerPage<G,B>(builder), this);
+        synchronized (builder) {
+            while (builder.getMode() == null) {}
+        }
+        Page page = new PlayerPage<G,B>(builder);
         PageManager manager = PageManager.getInstance();
         manager.setCurrentPage(page);
+    }
+
+    /**
+     * starts an online game
+     * 
+     * @param mode the online mode to start in
+     */
+    private void startOnlineMode(GameMode mode) {
+        builder.setMode(mode);
+        new SwingWorker<Boolean, Void>() {
+            @Override
+            protected Boolean doInBackground() throws Exception {
+                return builder.login(); // must return true only after server confirms login
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    if (get()) {
+                        continueToPlayerPage();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.execute();
     }
 
     @Override
@@ -90,10 +118,15 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
 
         // online mode button
         Button onlineButton = new Button(event -> {
-            builder.setMode(GameMode.ONLINE); 
-            continueToPlayerPage();}
+            startOnlineMode(GameMode.ONLINE);}
             , "Online game");
         options.add(onlineButton);
+
+        // tournament mode button
+        Button tournamentButton = new Button(event -> {
+            startOnlineMode(GameMode.TOURNAMENT);}
+            , "Tournament");
+        options.add(tournamentButton);
 
         // make menu
         OptionMenu menu = new OptionMenu(options, "=== " + builder.toString() + ": Mode Selection ===");
@@ -106,12 +139,13 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
         System.out.println("=== " + builder.toString() + ": Mode Selection ===");
         System.out.println("1. Local game");
         System.out.println("2. Online game");
+        System.out.println("3. Tournament game");
         System.out.print("Enter your choice: ");
 
         // get input
         Scanner scanner = ScannerSingleton.getInstance();
         CLIIntegerField field = new CLIIntegerField.Builder(scanner, "Something went wrong.")
-            .max(2)
+            .max(3)
             .min(1)
             .build();
         int choice = field.getInput();
@@ -125,10 +159,20 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
             case 2:
                 gameMode = GameMode.ONLINE;
                 break;
-        
-            default:
+            case 3:
+                gameMode = GameMode.TOURNAMENT;
                 break;
+            default:
+                return;
         }
+
         builder.setMode(gameMode);
+        continueToPlayerPage();
+    }
+
+    @Override
+    public void close() {
+        // close the builder
+        // builder.close();
     }
 }

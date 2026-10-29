@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +13,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import app.util.Logger;
+import app.util.NameGenerator;
 
 /**
  * Client
@@ -27,6 +31,7 @@ public class Client {
     private BufferedReader reader;
     private PrintWriter writer;
     private ServerListener listener;
+    private String name = null;
 
 
     /**
@@ -65,10 +70,13 @@ public class Client {
      * writes a command to the server
      * 
      * @param command the command
+     * 
+     * @return true if succesfull
      */
-    public void sendCommand(String command) {
-        //write to server
+    public boolean sendCommand(String command) {
+        Logger.logDebug("sending " + command);
         writer.println(command);
+        return isOk();
     }
 
     /**
@@ -94,7 +102,6 @@ public class Client {
                     e.printStackTrace();
                 }
         }
-
         return ok;
     }
 
@@ -147,5 +154,49 @@ public class Client {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Generats a unique name
+     */
+    public void generateUniqueName() {
+        Logger.logDebug("get playerlist");
+        sendCommand("get playerlist");
+        Logger.logDebug("playerlist");
+        ServerMessage msg = getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.PLAYERLIST, null);
+        ArrayList<String> playerlist = msg.getListDetails();
+
+        NameGenerator nameGenerator = new NameGenerator();
+        name = nameGenerator.getName();
+
+        // check if the random name is taken
+        // if so, generate a new one
+        // if not the name is unique and can be returned
+        while (playerlist.contains(name)) {
+            name = nameGenerator.getName();
+        }
+    }
+
+    /**
+     * Logs into the server
+     * 
+     * @return true if succesfull
+     */
+    public boolean login() {
+        Logger.logDebug("generating name");
+        generateUniqueName();
+        Logger.logDebug("login client");
+        sendCommand("login " + name);
+        Logger.logDebug("login succes");
+        return true;
+    }
+
+    /**
+     * Gets the name
+     * 
+     * @return the name
+     */
+    public String getName() {
+        return name;
     }
 }

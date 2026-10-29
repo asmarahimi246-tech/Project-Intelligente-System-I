@@ -75,6 +75,7 @@ public class ServerListener implements Runnable {
 
                 // get a message handler
                 ServerMessage message = handler.handleMessage(rawMessage);
+                Logger.logDebug(rawMessage);
 
                 // sort by type
                 if (message.getType() == MessageType.ERR) {

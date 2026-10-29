@@ -28,7 +28,12 @@ public class OnlineOpponent extends Player {
      */
     public OnlineOpponent(Client client) {
         this.client = client;
+    }
 
+    /**
+     * Logs into the server
+     */
+    public void waitForMatch() {
         // wait for match
         ServerMessage msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MATCH);
         Logger.logDebug(msg.toString());

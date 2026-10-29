@@ -9,10 +9,12 @@ import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
 import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
+import app.games.framework.game.GameMode;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerOption;
 import app.uiPages.BasePage;
 import app.uiPages.GamePage;
+import app.uiPages.TournamentPage;
 import app.uiPages.context.Page;
 import app.uiPages.context.PageManager;
 import app.uiPages.context.widgets.Button;
@@ -65,8 +67,11 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
     @Override
     public void open() {        
         super.open();
-
-        if (!Config.SWING_SUPPORTED) {
+        
+        // check if the mode is tournament or not
+        if (builder.getMode() == GameMode.TOURNAMENT) {
+            continueToTournamentPage();
+        } else {
             continueToGamePage();
         }
     }
@@ -81,38 +86,24 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
             manager.setCurrentPage(page);
         } else {
             removeAll();
-            drawNewUi();
+            createSwingUi();
             revalidate();
         }
     }
 
-    /** draw a new ui */
-    private void drawNewUi() {
-        // make buttons
-        ArrayList<Button> options = new ArrayList<Button>();
-
-        // get players
-        List<PlayerOption<? extends Player>> playerOptions = builder.getPlayerOptions();
-
-        // add player buttons
-        for (int index = 0; index < playerOptions.size(); index ++) {
-            PlayerOption<? extends Player> player = playerOptions.get(index);
-            Button playerButton = new Button(event -> {
-                builder.addPlayer(player);
-                continueToGamePage();}, 
-                player.label());
-            options.add(playerButton);
+    /**
+     * Continues to the tournament page
+     */
+    private void continueToTournamentPage() {
+        if (builder.getPlayersToAdd() == 0) {
+            PageManager manager = PageManager.getInstance();
+            Page page = new BasePage(new TournamentPage<G,B>(builder));
+            manager.setCurrentPage(page);
+        } else {
+            removeAll();
+            createSwingUi();
+            revalidate();
         }
-
-        // make menu
-        int playersLeft = builder.getPlayersToAdd() + 1;
-        OptionMenu menu = new OptionMenu(options, "=== " + builder.toString() + ": Player " + (totalPlayersToAdd - playersLeft) + " Selection ===");
-        add(menu);
-    }
-
-    @Override
-    public void createSwingUi() {
-        continueToGamePage();
     }
 
     @Override
@@ -141,5 +132,39 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
             // proccess input
             builder.addPlayer(options.get(choice - 1));
         }
+    }
+
+    @Override
+    public void createSwingUi() {
+        // make buttons
+        ArrayList<Button> options = new ArrayList<Button>();
+
+        // get players
+        List<PlayerOption<? extends Player>> playerOptions = builder.getPlayerOptions();
+
+        // add player buttons
+        for (int index = 0; index < playerOptions.size(); index ++) {
+            PlayerOption<? extends Player> player = playerOptions.get(index);
+            Button playerButton = new Button(event -> {
+                builder.addPlayer(player);
+                if (builder.getMode() == GameMode.TOURNAMENT) {
+                    continueToTournamentPage();
+                } else {
+                    continueToGamePage();
+                }}, 
+                player.label());
+            options.add(playerButton);
+        }
+
+        // make menu
+        int playersLeft = builder.getPlayersToAdd() + 1;
+        OptionMenu menu = new OptionMenu(options, "=== " + builder.toString() + ": Player " + (totalPlayersToAdd - playersLeft) + " Selection ===");
+        add(menu);
+    }
+
+    @Override
+    public void close() {
+        // close the builder
+        // builder.close();
     }
 }

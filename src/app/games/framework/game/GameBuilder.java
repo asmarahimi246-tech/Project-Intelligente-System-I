@@ -58,6 +58,22 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
     }
 
     /**
+     * Gets the game mode
+     * 
+     * @return the mode
+     */
+    public GameMode getMode() {
+        return mode;
+    }
+
+    /**
+     * Logs in
+     * 
+     * @return true if succesfull
+     */
+    public abstract boolean login();
+
+    /**
      * Adds default players
      * 
      * Example:

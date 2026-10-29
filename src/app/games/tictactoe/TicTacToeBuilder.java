@@ -11,10 +11,15 @@ import app.games.tictactoe.players.moveStrategies.AggresiveAIStrategy;
 import app.games.tictactoe.players.moveStrategies.PassiveAIStrategy;
 import app.games.tictactoe.players.moveStrategies.UserStrategy;
 import app.network.Client;
+import app.network.MessageSubtype;
+import app.network.ServerMessage;
 import app.util.Config;
+import app.util.Logger;
+import app.util.NameGenerator;
 import app.util.ScannerSingleton;
 import app.games.tictactoe.players.OnlinePlayer;
 import app.games.tictactoe.players.LocalPlayer;
+import app.App;
 import app.games.framework.game.GameBuilder;
 import app.games.framework.game.GameMode;
 import app.games.framework.player.Player;
@@ -38,7 +43,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
 
     @Override
     public TicTacToeBuilder setMode(GameMode mode) {
-        if (mode == GameMode.ONLINE) {
+        if (mode == GameMode.ONLINE || mode == GameMode.TOURNAMENT) {
             try {
                 // make the socket for online gaming
                 Socket socket;
@@ -59,9 +64,11 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
             } catch (Exception e) {
                 // TODO: handle exception
             }
-         }
+        }
         return super.setMode(mode);
     }
+
+    
 
     @Override
     public String toString() {
@@ -83,7 +90,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         // make players
         // types: Online, Local
         Player two = super.players.get(1).build();
-        // types: Remote, Local
+        // types: Opponent, Local
         Player one = super.players.get(0).build();
 
 
@@ -92,6 +99,12 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         if (super.mode == GameMode.ONLINE) {
             // setup online player
             if (one instanceof OnlineOpponent onlineOpponent && two instanceof OnlinePlayer onlinePlayer) {
+
+                // login player
+                onlinePlayer.subscribe();
+
+                // wait for match
+                onlineOpponent.waitForMatch();
 
                 // server based order
                 // by waiting for Match message
@@ -116,6 +129,25 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
                 players.add(two);
                 players.add(one);
             }
+            // Tournament
+        } else if (super.mode == GameMode.TOURNAMENT) {
+            // setup online player
+            if (one instanceof OnlineOpponent onlineOpponent && two instanceof OnlinePlayer onlinePlayer) {
+                // wait for match
+                onlineOpponent.waitForMatch();
+
+                // server based order
+                // by waiting for Match message
+                boolean onlineOpponentFirst = onlineOpponent.isFirst();
+                if(onlineOpponentFirst) {
+                    players.add(onlineOpponent);
+                    players.add(onlinePlayer);
+                } else {
+                    players.add(onlinePlayer);
+                    players.add(onlineOpponent);
+                }
+            }
+
         }
 
         // make and set the game
@@ -127,14 +159,14 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
 
     @Override 
     public TicTacToeBuilder addDefaultPlayers(){
-        // add remote player if online
+        // add remote player if online or tournament
         if (super.mode == GameMode.ONLINE) {
-
+            PlayerOption<OnlineOpponent> remote = new PlayerOption<OnlineOpponent>("remote", () -> new OnlineOpponent(shared));
+            super.addPlayer(remote);
+        } else if (super.mode == GameMode.TOURNAMENT) {
             PlayerOption<OnlineOpponent> remote = new PlayerOption<OnlineOpponent>("remote", () -> new OnlineOpponent(shared));
             super.addPlayer(remote);
         }
-        // do nothing for local
-        // TODO: tournament
 
         return this;
     }
@@ -145,22 +177,34 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
 
         // online players
         if (super.mode == GameMode.ONLINE) {
-
-
             toReturn = List.of(
                 new PlayerOption<OnlinePlayer>("player", () -> new OnlinePlayer(new UserStrategy(page), shared)),
-                new PlayerOption<OnlinePlayer>("aggresive ai", () -> new OnlinePlayer(new AggresiveAIStrategy(), shared)),
-                new PlayerOption<OnlinePlayer>("passive ai", () -> new OnlinePlayer(new PassiveAIStrategy(), shared))
-                
+                new PlayerOption<OnlinePlayer>("aggresive ai", () -> new OnlinePlayer(new AggresiveAIStrategy(), shared))
                 );
 
         // local players
         } else if (super.mode == GameMode.LOCAL) {
             toReturn = List.of(
                 new PlayerOption<LocalPlayer>("player", () -> new LocalPlayer(new UserStrategy(page))),
-                new PlayerOption<LocalPlayer>("aggresive ai", () -> new LocalPlayer(new AggresiveAIStrategy())),
-                new PlayerOption<LocalPlayer>("passive ai", () -> new LocalPlayer(new PassiveAIStrategy()))
+                new PlayerOption<LocalPlayer>("aggresive ai", () -> new LocalPlayer(new AggresiveAIStrategy()))
                 );
+
+        // tournament players
+        } else if (super.mode == GameMode.TOURNAMENT) {
+            toReturn = List.of(
+                new PlayerOption<OnlinePlayer>("player", () -> {
+                    OnlinePlayer player = new OnlinePlayer(new UserStrategy(page), shared);
+                    // generate name before build so its used in multiple games
+                    player.setName(shared.getName());
+                    return player;
+                    }),
+                new PlayerOption<OnlinePlayer>("aggresive ai", () -> {
+                    OnlinePlayer player = new OnlinePlayer(new AggresiveAIStrategy(), shared);
+                    // generate name before build so its used in multiple games
+                    player.setName(shared.getName());
+                    return player;
+                    })
+            );
         }
         // do nothing for tournament
         // TODO: tournament
@@ -170,9 +214,14 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
 
     @Override 
     public void close() {
-        if (super.mode == GameMode.ONLINE) {
+        if (mode == GameMode.ONLINE || mode == GameMode.TOURNAMENT) {
             shared.close();
         }
+    }
+
+    @Override
+    public boolean login() {
+        return shared.login();
     }
 
 }
