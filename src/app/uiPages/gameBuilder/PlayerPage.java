@@ -157,8 +157,8 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
         }
 
         // make menu
-        int playersLeft = builder.getPlayersToAdd() + 1;
-        OptionMenu menu = new OptionMenu(options, "=== " + builder.toString() + ": Player " + (totalPlayersToAdd - playersLeft) + " Selection ===");
+        int playersLeft = builder.getPlayersToAdd();
+        OptionMenu menu = new OptionMenu(options, "=== " + builder.toString() + ": Player " + (totalPlayersToAdd - playersLeft + 1) + " Selection ===");
         add(menu);
     }
 
