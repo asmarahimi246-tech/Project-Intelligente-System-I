@@ -1,8 +1,5 @@
 package app.uiPages.context;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 import app.util.Logger;
 
 /**
@@ -13,7 +10,7 @@ import app.util.Logger;
  * 
  * Its a singleton to prevent infinitly nesting pages
  * This makes it easyer to close the application and 
- * prevents unnesacary recourse usage
+ * prevents unnesacary resource usage
  * 
  * The menus use a state behavioral pattern (explanation v)
  * https://refactoring.guru/design-patterns/state
@@ -92,6 +89,7 @@ public class PageManager {
      */
     public synchronized void close() {
         running = false;
+        page.close();
         notifyAll();
     }
 

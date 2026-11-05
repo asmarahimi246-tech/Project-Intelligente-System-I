@@ -3,8 +3,6 @@ package app;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
-import java.util.NoSuchElementException;
-import java.util.concurrent.ForkJoinPool.ManagedBlocker;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -93,11 +91,18 @@ public class App {
                         // wait for the swing ui to be set before doing open
                         SwingUtilities.invokeAndWait(() -> setContentPane(page));
                     } catch (InvocationTargetException e) {
-                        // TODO Auto-generated catch block
+                        // EDT threw an exception
+                        System.err.println("Something went wrong.");
+                        System.err.println("Turning off swing. and using cli as fallback.");
                         e.printStackTrace();
+                        applicationFrame.dispose();
+                        Config.SWING_SUPPORTED = false;
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
+                        // thread interupted
+                        System.err.println("Something went wrong.");
                         e.printStackTrace();
+                        close();
+                        break;
                     }
                 }
 
@@ -106,11 +111,8 @@ public class App {
                 // open the page 
                 page.open();
             }
-        } catch (NoSuchElementException e) {
-            System.err.println("Something went wrong.");
-            e.printStackTrace(System.err);
         } catch (InterruptedException e) {
-            System.err.println("Something went wrong.");
+            System.err.println("Something went wrong. Manager got interupted.");
             e.printStackTrace(System.err);
         }
 
@@ -118,10 +120,10 @@ public class App {
             applicationFrame.dispose();
         }
 
-        Logger.logDebug("game closing");
+        Logger.logDebug("application closing");
 
         // force it when stuck
-        // TODO: actualy make it si this isnt needed
+        // TODO: actualy make it so this isnt needed
         System.exit(0);
     }
 
