@@ -41,7 +41,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
 
 
     @Override 
-    public TicTacToeBuilder addDefaultPlayers(){
+    protected TicTacToeBuilder addDefaultPlayers(){
         // add remote player if online or tournament
         if (mode == GameMode.ONLINE || mode == GameMode.TOURNAMENT) {
             PlayerOption<OnlineOpponent> remote = new PlayerOption<OnlineOpponent>("remote", () -> new OnlineOpponent(client));

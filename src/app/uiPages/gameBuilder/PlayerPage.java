@@ -59,7 +59,7 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
         this.builder = builder;
 
         // add the default players for the selected game mode
-        this.builder.addDefaultPlayers();
+        // this.builder.addDefaultPlayers();
 
         totalPlayersToAdd = builder.getPlayersToAdd();
     }
@@ -157,7 +157,7 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
         }
 
         // make menu
-        int playersLeft = builder.getPlayersToAdd() + 1;
+        int playersLeft = builder.getPlayersToAdd() - 1;
         OptionMenu menu = new OptionMenu(options, "=== " + builder.toString() + ": Player " + (totalPlayersToAdd - playersLeft) + " Selection ===");
         add(menu);
     }

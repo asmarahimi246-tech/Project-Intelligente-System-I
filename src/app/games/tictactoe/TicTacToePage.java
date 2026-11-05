@@ -38,18 +38,10 @@ public class TicTacToePage extends Page {
     private boolean acceptingMoves = false;
     private static final TicTacToeMove CLOSE_MOVE = new TicTacToeMove(-1, -1);
 
-
     /**
      * TODO:
      */
-    public void printBoardScore() {
-        System.out.println("Board:");
-    }
-
-    /**
-     * TODO:
-     */
-    public void printInvalidMove() {
+    private void printInvalidMove() {
         if (Config.SWING_SUPPORTED) {
             JOptionPane.showMessageDialog(this, "That square is occupied. Choose an empty square."
             );
@@ -102,7 +94,7 @@ public class TicTacToePage extends Page {
     /**
      * refresh board
      */
-    public void refreshBoard() {
+    private void refreshBoard() {
         Board board = game.model.getBoard();
 
         for (int row = 0; row < 3; row++) {
@@ -157,7 +149,7 @@ public class TicTacToePage extends Page {
      * 
      * @param board the board to print
      */
-    public void printBoard(Board board) {
+    private void printBoard(Board board) {
         String toPrint = "";
 
         // loop trough all tiles

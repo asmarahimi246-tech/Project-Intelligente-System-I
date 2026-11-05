@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import app.games.tictactoe.TicTacToeBuilder;
 import app.games.tictactoe.TicTacToeGame;
+import app.uiPages.BasePage;
 import app.uiPages.MainPage;
 import app.uiPages.context.Page;
 import app.uiPages.context.PageManager;
@@ -45,7 +46,7 @@ public class GameSelectionPage extends Page {
 
         // game builder button
         TicTacToeBuilder builder = new TicTacToeBuilder();
-        Page modePage = new ModePage<TicTacToeGame,TicTacToeBuilder>(builder);
+        Page modePage = new BasePage(new ModePage<TicTacToeGame,TicTacToeBuilder>(builder));
         Button modeButton = new Button(event -> {manager.setCurrentPage(modePage);}, "Tic Tac Toe");
         options.add(modeButton);
 
@@ -77,7 +78,7 @@ public class GameSelectionPage extends Page {
                 TicTacToeBuilder builder = new TicTacToeBuilder();
 
                 //TODO: need the builder base page not this
-                page = new ModePage<TicTacToeGame,TicTacToeBuilder>(builder);
+                page = new BasePage(new ModePage<TicTacToeGame,TicTacToeBuilder>(builder));
                 break;
         
             default:

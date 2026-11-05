@@ -13,6 +13,7 @@ import app.games.framework.game.GameMode;
 import app.games.tictactoe.TicTacToeBuilder;
 import app.games.tictactoe.TicTacToeGame;
 import app.network.Client;
+import app.uiPages.BasePage;
 import app.uiPages.TournamentPage;
 import app.uiPages.context.Page;
 import app.uiPages.context.PageManager;
@@ -76,7 +77,7 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
         // example for tic tac toe
         // G = TicTacToeGame
         // B = TicTacToeBuilder
-        Page page = new PlayerPage<G,B>(builder);
+        Page page = new BasePage(new PlayerPage<G,B>(builder));
         PageManager manager = PageManager.getInstance();
         manager.setCurrentPage(page);
     }

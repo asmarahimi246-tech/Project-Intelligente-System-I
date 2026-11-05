@@ -57,6 +57,8 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
      */
     public B setMode(GameMode mode) {
         this.mode = mode;
+        // add the default players for the selected game mode
+        addDefaultPlayers();
         return self();
     }
 
@@ -77,7 +79,7 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
      * 
      * @return the builder
      */
-    public abstract B addDefaultPlayers();
+    protected abstract B addDefaultPlayers();
 
     /**
      * Builds the game
