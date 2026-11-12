@@ -20,11 +20,11 @@ public class Config {
     /** Port used by the online server. */
     public static final int ONLINEPORT = 7789;
     /** Whether debug mode is enabled. */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     // swing
     /** Whether the Swing user interface is supported. */
-    public static boolean SWING_SUPPORTED = true;
+    public static boolean SWING_SUPPORTED = false;
     /** Background color used by the Swing user interface. */
     public static final Color BACKGROUND_COLOR = new Color(38, 42, 48);
     /** Foreground color used by the Swing user interface. */

@@ -9,6 +9,8 @@ import javax.swing.SwingWorker;
 import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
 import app.games.framework.game.GameMode;
+import app.games.tictactoe.TicTacToeBuilder;
+import app.games.tictactoe.TicTacToeGame;
 import app.network.Client;
 import app.uiPages.BasePage;
 import app.uiPages.context.Page;
@@ -190,6 +192,8 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
                 startOnlineMode(gameMode);
                 break;
             default:
+                PageManager manager = PageManager.getInstance();
+                manager.setCurrentPage(this);
                 return;
         }
 

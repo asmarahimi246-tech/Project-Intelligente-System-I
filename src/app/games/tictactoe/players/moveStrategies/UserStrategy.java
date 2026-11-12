@@ -40,7 +40,7 @@ public class UserStrategy implements MoveSrategy {
 
         // request input from the page
         // and check if its valid
-        while (toReturn == null || !board.isEmpty(toReturn.row(), toReturn.column())){
+        while (toReturn == null || !board.getByPos(toReturn.row(), toReturn.column()).isEmpty()){
             toReturn = page.requestMove();
 
             // return null if its the closing move

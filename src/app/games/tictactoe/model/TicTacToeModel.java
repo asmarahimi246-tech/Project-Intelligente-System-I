@@ -27,7 +27,7 @@ import app.games.framework.player.Player;
 public class TicTacToeModel {
     private Player currentPlayer;
     private Board board = new Board();
-    private TriPredicate<Board, Integer, Integer> isAi = (board, row, col) -> (!board.isEmpty(row, col) && (board.getOwner(row, col) == currentPlayer));
+    private TriPredicate<Board, Integer, Integer> isAi = (board, row, col) -> (!board.getByPos(row, col).isEmpty()) && (board.getByPos(row, col).getOwner() == currentPlayer);
 
     @FunctionalInterface
     interface TriPredicate<A, B, C> {
@@ -49,7 +49,7 @@ public class TicTacToeModel {
      * @param move the move to place
      */
     public void placeMove(TicTacToeMove move) {
-        board.place(move.row(), move.column(), currentPlayer);
+        board.getByPos(move.row(), move.column()).setOwner(currentPlayer);
     }
 
     /**

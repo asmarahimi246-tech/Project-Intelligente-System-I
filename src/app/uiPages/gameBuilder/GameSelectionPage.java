@@ -82,14 +82,9 @@ public class GameSelectionPage extends Page {
                 break;
         
             default:
-                break;
-        }
-
-        // error handling
-        if (page == null) {
-            System.err.println("Page is null");
-            System.err.println("Returning to main menu");
-            page = new MainPage();
+                PageManager manager = PageManager.getInstance();
+                manager.setCurrentPage(this);
+                return;
         }
 
         PageManager manager = PageManager.getInstance();
