@@ -7,6 +7,7 @@ import java.util.Random;
 import app.games.tictactoe.players.OnlineOpponent;
 import app.games.tictactoe.players.moveStrategies.AggresiveAIStrategy;
 import app.games.tictactoe.players.moveStrategies.PassiveAIStrategy;
+import app.games.tictactoe.players.moveStrategies.RandomAiStrategy;
 import app.games.tictactoe.players.moveStrategies.UserStrategy;
 import app.games.tictactoe.players.OnlinePlayer;
 import app.games.tictactoe.players.LocalPlayer;
@@ -61,7 +62,8 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
             toReturn = List.of(
                 new PlayerOption<OnlinePlayer>("player", () -> new OnlinePlayer(new UserStrategy(page), client)),
                 new PlayerOption<OnlinePlayer>("aggresive ai", () -> new OnlinePlayer(new AggresiveAIStrategy(), client)),
-                new PlayerOption<OnlinePlayer>("passive ai", () -> new OnlinePlayer(new PassiveAIStrategy(), client))
+                new PlayerOption<OnlinePlayer>("passive ai", () -> new OnlinePlayer(new PassiveAIStrategy(), client)),
+                new PlayerOption<OnlinePlayer>("random ai", () -> new OnlinePlayer(new RandomAiStrategy(), client))
                 );
 
         // local players
@@ -69,7 +71,8 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
             toReturn = List.of(
                 new PlayerOption<LocalPlayer>("player", () -> new LocalPlayer(new UserStrategy(page))),
                 new PlayerOption<LocalPlayer>("aggresive ai", () -> new LocalPlayer(new AggresiveAIStrategy())),
-                new PlayerOption<LocalPlayer>("passive ai", () -> new LocalPlayer(new PassiveAIStrategy()))
+                new PlayerOption<LocalPlayer>("passive ai", () -> new LocalPlayer(new PassiveAIStrategy())),
+                new PlayerOption<LocalPlayer>("random ai", () -> new LocalPlayer(new RandomAiStrategy()))
                 );
 
         // tournament players
@@ -89,6 +92,12 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
                     }),
                 new PlayerOption<OnlinePlayer>("passive ai", () -> {
                     OnlinePlayer player = new OnlinePlayer(new PassiveAIStrategy(), client);
+                    // generate name before build so its used in multiple games
+                    player.setName(client.getName());
+                    return player;
+                    }),
+                new PlayerOption<OnlinePlayer>("random ai", () -> {
+                    OnlinePlayer player = new OnlinePlayer(new RandomAiStrategy(), client);
                     // generate name before build so its used in multiple games
                     player.setName(client.getName());
                     return player;
