@@ -6,14 +6,12 @@ import app.games.tictactoe.TicTacToeGame;
 import app.games.tictactoe.TicTacToePage;
 import app.games.tictactoe.model.Board;
 import app.games.tictactoe.model.TicTacToeMove;
-import app.util.Logger;
+
 /**
  * UserStrategy
  * 
  * A strategy to do a move by geting user input
  * Uses the page to get input from
- * 
- * TODO: input from page (send message to Yuna if this is not possible)
  */
 public class UserStrategy implements MoveSrategy {
     TicTacToePage page;
@@ -46,7 +44,10 @@ public class UserStrategy implements MoveSrategy {
             toReturn = page.requestMove();
 
             // return null if its the closing move
+            // the closing move closes the game
             // TODO: can probably be better
+            // maybe in a way where it exits this
+            // with a notify
             if (toReturn.row() == -1) {
                 return null;
             }

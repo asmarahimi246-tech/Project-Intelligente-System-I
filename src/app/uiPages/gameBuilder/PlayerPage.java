@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
 import app.games.framework.game.Game;

@@ -1,19 +1,13 @@
 package app.games.tictactoe.players;
 
-import java.util.ArrayList;
-
 import app.games.tictactoe.model.TicTacToeMove;
 import app.games.framework.game.Game;
-import app.games.framework.game.GameType;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerState;
 import app.network.Client;
 import app.network.MessageAddon;
 import app.network.MessageSubtype;
-import app.network.ServerMessage;
-import app.util.Logger;
-import app.util.NameGenerator;
 
 /**
  * OnlinePlayer

@@ -4,7 +4,6 @@ import java.awt.GridLayout;
 
 import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
-import app.games.framework.game.GameMode;
 import app.uiPages.context.Page;
 import app.uiPages.context.PageManager;
 import app.util.Config;

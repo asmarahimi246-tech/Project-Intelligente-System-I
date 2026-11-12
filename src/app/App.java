@@ -24,7 +24,7 @@ import app.util.ScannerSingleton;
  *
  * Sources:
  * Swing event dispatch thread info: https://www.youtube.com/watch?v=PDKyjl9I0EA
- *      Use: for making it sleep while the page is changing
+ *      Use: for making sure we wait until swing finishes
  */
 public class App {
     /** 

@@ -1,6 +1,5 @@
 package app.uiPages.gameBuilder;
 
-import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -10,11 +9,8 @@ import javax.swing.SwingWorker;
 import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
 import app.games.framework.game.GameMode;
-import app.games.tictactoe.TicTacToeBuilder;
-import app.games.tictactoe.TicTacToeGame;
 import app.network.Client;
 import app.uiPages.BasePage;
-import app.uiPages.TournamentPage;
 import app.uiPages.context.Page;
 import app.uiPages.context.PageManager;
 import app.uiPages.context.widgets.Button;
@@ -44,7 +40,8 @@ import app.util.cliInputFields.CLIIntegerField;
  * Page page = new ModePage &lt; TicTacToeGame,TicTacToeBuilder &gt; (builder);
  * 
  * Sources:
- *      swingWorker: https://www.geeksforgeeks.org/java/swingworker-in-java/
+ * SwingWorker: https://www.geeksforgeeks.org/java/swingworker-in-java/
+ *       Use: To make sure the UI stays interactive while waiting for a slow task to complete
  */
 public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page {
     private final B builder;

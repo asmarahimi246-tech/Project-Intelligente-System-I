@@ -20,6 +20,7 @@ import app.util.Logger;
  * 
  * Sources:
  * Wait and Notify: https://www.baeldung.com/java-wait-notify
+ *	 Use: for making the page manager sleep until the page changed
  */
 public class PageManager {
     private static PageManager INSTANCE;

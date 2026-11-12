@@ -28,5 +28,4 @@ public class LocalPlayer extends Player {
         game.procesMove(move);
         super.state = PlayerState.EXECUTED_TURN;
     }
-
 }

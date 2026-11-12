@@ -2,12 +2,6 @@ package app.network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.Socket;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.BooleanSupplier;
 
@@ -26,6 +20,7 @@ import app.util.Logger;
  * synchronizedLinkedList: https://stackoverflow.com/questions/11360401/java-synchronized-list,
  *                         https://www.w3schools.com/java/java_linkedlist.asp,
  *                         https://www.baeldung.com/java-queue-linkedblocking-concurrentlinked
+ *       Use: to make the messages accesable from a different thread
  */
 public class ServerListener implements Runnable {
     private volatile boolean errorFlag = false;
@@ -34,7 +29,6 @@ public class ServerListener implements Runnable {
     public final LinkedBlockingQueue<ServerMessage> svrQueue;
     private final BooleanSupplier clientClosing;
     private BufferedReader reader;
-    private Socket socket;
     private String rawMessage;
     private final MessageHandler handler;
 

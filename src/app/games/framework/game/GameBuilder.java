@@ -13,19 +13,24 @@ import app.uiPages.context.Page;
 /**
  * <pre>
  * GameBuilder
- * &gt; Creates a game of the selected GameType.
- * &gt; Keeps game-type checks separate from GameApp, which should focus
+ * Creates a game of the selected GameType.
+ * Keeps game-type checks separate from GameApp, which should focus
  *   on running the games.
  *
  * EX:
- * &gt; Game class
- *   &gt; Input: GameType
- *   &gt; Check which game it is (e.g., with switch/case)
- *   &gt; Return a new instance of the corresponding game model
+ * Game class
+ *   Input: GameType
+ *   Check which game it is (e.g., with switch/case)
+ *   Return a new instance of the corresponding game model
  * </pre>
  * 
  * @param <B> is the game specific
  * @param <G> is the game
+ * 
+ * Sources:
+ * Type parameters: https://www.w3schools.com/java/java_generics.asp
+ *       Use: to make it possible for the extended gameBuilders to return a specific type
+ *       EX: the TicTacToeBuilder returns a TicTacToeGame
  */
 @SuppressWarnings({"unused"})
 public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
