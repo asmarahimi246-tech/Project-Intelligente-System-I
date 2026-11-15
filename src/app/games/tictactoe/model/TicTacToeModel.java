@@ -107,4 +107,13 @@ public class TicTacToeModel {
         // no one can win
         return false;
     }
+
+    /**
+     * Sets the board
+     * 
+     * @param toSet the board to set it to
+     */
+    public void setBoard(Board toSet) {
+        board = toSet;
+    }
 }
