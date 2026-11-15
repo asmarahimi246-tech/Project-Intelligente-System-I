@@ -128,6 +128,13 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
                 .build();
             int choice = field.getInput();
 
+            // error handling
+            if (choice == -1) {
+                PageManager manager = PageManager.getInstance();
+                manager.setCurrentPage(this);
+                return;
+            }
+
             // proccess input
             builder.addPlayer(options.get(choice - 1));
         }

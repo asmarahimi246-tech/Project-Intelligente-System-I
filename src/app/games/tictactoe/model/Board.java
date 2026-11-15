@@ -16,20 +16,22 @@ public class Board {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
                 board[row][col] = new Tile();
+                int id = (row)*3 + col + 1;
+                board[row][col].setId(id);
             }
         }
     }
 
-    /**
+    /**dee
      * Checks if the tile is empty
      * 
      * @param row row
      * @param col collumn
      * @return true if empty
      */
-    public boolean isEmpty(int row, int col) {
-        return board[row][col].isEmpty();
-    }
+    //public boolean isEmpty(int row, int col) {
+    //    return board[row][col].isEmpty();
+    //}
 
     /**
      * Checks if the board is full
@@ -48,15 +50,45 @@ public class Board {
     }
 
     /**
+     * Gets a tile by its ID
+     * 
+     * @param id the id
+     * @return the tile
+     */
+    public Tile getById(int id) {
+        Tile toReturn = null;
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[row].length; col++) {
+                if (board[row][col].getId() == id) {
+                    toReturn = board[row][col];
+                    break;
+                }
+            }
+        }
+        return toReturn;
+    }
+
+    /**
+     * Gets a tile by its position
+     * 
+     * @param row row
+     * @param col col
+     * @return the tile
+     */
+    public Tile getByPos(int row, int col) {
+        return board[row][col];
+    }
+
+    /**
      * Places a tile
      * 
      * @param row row
      * @param col collumn
      * @param player the player that places the tile
      */
-    public void place(int row, int col, Player player) {
-        board[row][col].setOwner(player);
-    }
+    //public void place(int row, int col, Player player) {
+    //    board[row][col].setOwner(player);
+    //}
 
     /**
      * Gets the owner
@@ -65,9 +97,9 @@ public class Board {
      * @param col collumn
      * @return the owner
      */
-    public Player getOwner(int row, int col) {
-        return board[row][col].getOwner();
-    }
+    //public Player getOwner(int row, int col) {
+    //    return board[row][col].getOwner();
+    //}
 
     /**
      * Creates a board from a other board

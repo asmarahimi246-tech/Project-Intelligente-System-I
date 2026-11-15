@@ -18,8 +18,8 @@ public class AggresiveAIStrategy implements MoveSrategy {
     // opponent player
     private Player simulatedOpponent;
 
-    private TriPredicate<Board, Integer, Integer> isOpponent = (board, row, col) -> (!board.isEmpty(row, col) && !(board.getOwner(row, col) == aIPlayer));
-    private TriPredicate<Board, Integer, Integer> isAi = (board, row, col) -> (!board.isEmpty(row, col) && (board.getOwner(row, col) == aIPlayer));
+    private TriPredicate<Board, Integer, Integer> isOpponent = (board, row, col) -> (!board.getByPos(row, col).isEmpty() && !(board.getByPos(row, col).getOwner() == aIPlayer));
+    private TriPredicate<Board, Integer, Integer> isAi = (board, row, col) -> (!board.getByPos(row, col).isEmpty() && (board.getByPos(row, col).getOwner() == aIPlayer));
 
     @FunctionalInterface
     interface TriPredicate<A, B, C> {
@@ -71,15 +71,14 @@ public class AggresiveAIStrategy implements MoveSrategy {
             int maxPossibleWins = 0;
             int endScore = Integer.MIN_VALUE;
 
-            //TODO: 0 to 9
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
-                    if (board.isEmpty(row, col)) {
+                    if (board.getByPos(row, col).isEmpty()) {
                         // copy board
                         Board copy = board.copy();
 
                         // place tile in the copy
-                        copy.place(row, col, aIPlayer);
+                        copy.getByPos(row, col).setOwner(aIPlayer);
 
                         // calculate score in new branch
                         MoveScore result = minimax(copy, false);
@@ -107,12 +106,12 @@ public class AggresiveAIStrategy implements MoveSrategy {
             //TODO: 0 to 9
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
-                    if (board.isEmpty(row, col)) {
+                    if (board.getByPos(row, col).isEmpty()) {
                         // copy board
                         Board copy = board.copy();
 
                         // place tile in the copy
-                        copy.place(row, col, simulatedOpponent);
+                        copy.getByPos(row, col).setOwner(simulatedOpponent);
 
                         // calculate score in new branch
                         MoveScore result = minimax(copy, true);
@@ -148,13 +147,13 @@ public class AggresiveAIStrategy implements MoveSrategy {
         // start a tree of moves at every tile
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                if (board.isEmpty(row, col)) {
+                if (board.getByPos(row, col).isEmpty()) {
 
                     // copy board
                     Board copy = board.copy();
 
                     // place tile in the copy
-                    copy.place(row, col, aIPlayer);
+                    copy.getByPos(row, col).setOwner(aIPlayer);
 
                     // calculate score in new branch
                     MoveScore score = minimax(copy, false);
@@ -255,6 +254,8 @@ public class AggresiveAIStrategy implements MoveSrategy {
      */
     @Override
     public TicTacToeMove getMove(Game game) {
+        Logger.logDebug("Agressive ai is doing a move");
+
         simulatedOpponent = new LocalPlayer(this);
         simulatedOpponent.setName("S");
 
