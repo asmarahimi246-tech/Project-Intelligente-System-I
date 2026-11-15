@@ -1,7 +1,6 @@
 package app.games.tictactoe.model;
 
 import app.games.framework.player.Player;
-import app.util.Logger;
 
 /**
  * TIle

@@ -6,7 +6,6 @@ import java.util.Scanner;
 import app.games.tictactoe.TicTacToeBuilder;
 import app.games.tictactoe.TicTacToeGame;
 import app.uiPages.BasePage;
-import app.uiPages.MainPage;
 import app.uiPages.context.Page;
 import app.uiPages.context.PageManager;
 import app.uiPages.context.widgets.Button;
@@ -76,8 +75,7 @@ public class GameSelectionPage extends Page {
             case 1:
                 // start building a tic tac toe game
                 TicTacToeBuilder builder = new TicTacToeBuilder();
-
-                //TODO: need the builder base page not this
+                
                 page = new BasePage(new ModePage<TicTacToeGame,TicTacToeBuilder>(builder));
                 break;
         

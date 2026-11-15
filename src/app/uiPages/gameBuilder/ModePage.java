@@ -9,8 +9,6 @@ import javax.swing.SwingWorker;
 import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
 import app.games.framework.game.GameMode;
-import app.games.tictactoe.TicTacToeBuilder;
-import app.games.tictactoe.TicTacToeGame;
 import app.network.Client;
 import app.uiPages.BasePage;
 import app.uiPages.context.Page;
