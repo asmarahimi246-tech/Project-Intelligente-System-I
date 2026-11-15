@@ -20,7 +20,7 @@ public class Config {
     /** Port used by the online server. */
     public static final int ONLINEPORT = 7789;
     /** Whether debug mode is enabled. */
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     // swing
     /** Whether the Swing user interface is supported. */

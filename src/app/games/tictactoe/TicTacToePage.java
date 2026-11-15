@@ -73,7 +73,7 @@ public class TicTacToePage extends Page {
 
                 Board board = game.model.getBoard();
 
-                if (!board.isEmpty(row, col)) {
+                if (!board.getByPos(row, col).isEmpty()) {
                     printInvalidMove();
                     return;
                 }
@@ -99,7 +99,7 @@ public class TicTacToePage extends Page {
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                Player owner = board.getOwner(row, col);
+                Player owner = board.getByPos(row, col).getOwner();
 
                 if (owner == null) {
                     buttons[row][col].setText("");
@@ -156,7 +156,7 @@ public class TicTacToePage extends Page {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 // get the owner of a tile
-                Player owner = board.getOwner(row, col);
+                Player owner = board.getByPos(row, col).getOwner();
 
                 // add spacer
                 if (col != 0) {
@@ -165,11 +165,12 @@ public class TicTacToePage extends Page {
 
                 // check if its null
                 if (owner == null) {
-                    toPrint += "_";
+                    // get id
+                    int id = (row)*3 + col + 1;
+                    toPrint += "" + id;
                 } else {
                     // Place first char of name if or x
-                    Player player = board.getOwner(row, col);
-                    toPrint += game.getSymbol(player);
+                    toPrint += game.getSymbol(owner);
                 }
             }
             toPrint += "\n";
@@ -217,24 +218,21 @@ public class TicTacToePage extends Page {
     private TicTacToeMove cliInput() {
 
         // get input
-        System.out.println("give row v (1-3)");
+        System.out.println("give number (1-9)");
         Scanner scanner = ScannerSingleton.getInstance();
         CLIIntegerField xfield = new CLIIntegerField.Builder(scanner, "Something went wrong.")
-            .max(3)
+            .max(9)
             .min(1)
             .defaultInput(2)
             .build();
-        int row = xfield.getInput() - 1;
+        int number = xfield.getInput();
 
-        System.out.println("now collom > (1-3)");
-        CLIIntegerField yfield = new CLIIntegerField.Builder(scanner, "Something went wrong.")
-            .max(3)
-            .min(1)
-            .defaultInput(2)
-            .build();
-        int collomn = yfield.getInput() - 1;
+        int index = number - 1;
+        int row = index / 3;
+        int col = index % 3;
 
-        return new TicTacToeMove(row, collomn);
+
+        return new TicTacToeMove(row, col);
     }
 
     @Override

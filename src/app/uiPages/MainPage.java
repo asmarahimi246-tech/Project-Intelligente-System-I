@@ -55,8 +55,7 @@ public class MainPage extends Page {
         // print
         System.out.println("=== Main Menu ===");
         System.out.println("1. Play Game");
-        System.out.println("2. Test swing");
-        System.out.println("3. Exit application");
+        System.out.println("2. Exit application");
         System.out.print("Enter your choice: ");
 
         // get input
@@ -64,6 +63,7 @@ public class MainPage extends Page {
         CLIIntegerField field = new CLIIntegerField.Builder(scanner, "Something went wrong.")
             .max(2)
             .min(1)
+            .defaultInput(-1)
             .build();
         int choice = field.getInput();
 
@@ -80,7 +80,8 @@ public class MainPage extends Page {
                 break;
         
             default:
-                break;
+                manager.setCurrentPage(this);
+                return;
         }
     }
 }
