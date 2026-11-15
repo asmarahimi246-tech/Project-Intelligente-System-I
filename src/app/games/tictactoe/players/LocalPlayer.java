@@ -24,7 +24,7 @@ public class LocalPlayer extends Player {
     @Override
     public void doMove(Game game) {
         super.state = PlayerState.CAN_MOVE;
-        TicTacToeMove move = strategy.getMove(game);
+        TicTacToeMove move = (TicTacToeMove) strategy.getMove(game);
         game.procesMove(move);
         super.state = PlayerState.EXECUTED_TURN;
     }

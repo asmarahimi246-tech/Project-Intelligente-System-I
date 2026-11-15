@@ -1,8 +1,6 @@
 package app.games.framework.move;
 
-
 import app.games.framework.game.Game;
-import app.games.tictactoe.model.TicTacToeMove;
 
 /**
  * Move
@@ -15,6 +13,6 @@ public interface MoveSrategy {
      * @param game the game
      * @return the move
      */
-    public TicTacToeMove getMove(Game game);
+    public Move getMove(Game game);
 }
 

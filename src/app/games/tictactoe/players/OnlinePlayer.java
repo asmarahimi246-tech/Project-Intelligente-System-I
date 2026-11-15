@@ -34,7 +34,7 @@ public class OnlinePlayer extends Player {
         client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.YOURTURN);
 
         // get the move
-        TicTacToeMove move = strategy.getMove(game);
+        TicTacToeMove move = (TicTacToeMove) strategy.getMove(game);
 
         // send move
         if (move != null) {
