@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
-import app.games.framework.exceptions.InvalidMoveException;
 import app.games.framework.game.Game;
 import app.games.framework.move.Move;
 import app.games.framework.player.Player;

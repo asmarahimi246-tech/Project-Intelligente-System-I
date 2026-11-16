@@ -105,22 +105,6 @@ public class PlayerPage<G extends Game, B extends GameBuilder<G, B>> extends Pag
         }
     }
 
-    /**
-     * Continues to the next page
-     * 
-     * @param page page to go toe
-     */
-    private void continueToNextPage(Page page) {
-        if (builder.getPlayersToAdd() == 0) {
-            PageManager manager = PageManager.getInstance();
-            manager.setCurrentPage(page);
-        } else {
-            removeAll();
-            createSwingUi();
-            revalidate();
-        }
-    }
-
     @Override
     public void createCLI() {
         int playersLeft = builder.getPlayersToAdd() + 1;
