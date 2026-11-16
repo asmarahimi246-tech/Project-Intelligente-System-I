@@ -1,5 +1,6 @@
 package app.games.tictactoe.model;
 
+import app.games.framework.exceptions.InvalidMoveException;
 import app.games.framework.player.Player;
 
 /**
@@ -27,7 +28,7 @@ import app.games.framework.player.Player;
 public class TicTacToeModel {
     private Player currentPlayer;
     private Board board = new Board();
-    private TriPredicate<Board, Integer, Integer> isAi = (board, row, col) -> (!board.getByPos(row, col).isEmpty()) && (board.getByPos(row, col).getOwner() == currentPlayer);
+    private TriPredicate<Board, Integer, Integer> isCurrentPlayer = (board, row, col) -> (!board.getByPos(row, col).isEmpty()) && (board.getByPos(row, col).getOwner() == currentPlayer);
 
     @FunctionalInterface
     interface TriPredicate<A, B, C> {
@@ -47,9 +48,14 @@ public class TicTacToeModel {
      * Places a move
      * 
      * @param move the move to place
+     * @throws InvalidMoveException when the move is invalid
      */
-    public void placeMove(TicTacToeMove move) {
-        board.getByPos(move.row(), move.column()).setOwner(currentPlayer);
+    public void placeMove(TicTacToeMove move) throws InvalidMoveException {
+        if (board.getByPos(move.row(), move.column()).isEmpty()) {
+            board.getByPos(move.row(), move.column()).setOwner(currentPlayer);
+        } else {
+            throw new InvalidMoveException("invalid move (tile not empty): " + move.row() + "," + move.column());
+        }
     }
 
     /**
@@ -79,7 +85,7 @@ public class TicTacToeModel {
         // checks cols
         for (int row = 0; row < 3; row++) {
             // check for player
-            if (isAi.test(board, row, 0) && isAi.test(board, row, 1) && isAi.test(board, row, 2)) {
+            if (isCurrentPlayer.test(board, row, 0) && isCurrentPlayer.test(board, row, 1) && isCurrentPlayer.test(board, row, 2)) {
                 return true;
             }
         }
@@ -87,20 +93,20 @@ public class TicTacToeModel {
         // checks rows
         for (int col = 0; col < 3; col++) {
             // check for player
-            if (isAi.test(board, 0, col) && isAi.test(board, 1, col) && isAi.test(board, 2, col)) {
+            if (isCurrentPlayer.test(board, 0, col) && isCurrentPlayer.test(board, 1, col) && isCurrentPlayer.test(board, 2, col)) {
                 return true;
             }
         }
 
         // checks diagonal top left to bottom right
         // check for player
-        if (isAi.test(board, 0, 0) && isAi.test(board, 1, 1) && isAi.test(board, 2, 2)) {
+        if (isCurrentPlayer.test(board, 0, 0) && isCurrentPlayer.test(board, 1, 1) && isCurrentPlayer.test(board, 2, 2)) {
             return true;
         }
 
         // checks diagonal top right to bottom left
         // check for player
-        if (isAi.test(board, 2, 0) && isAi.test(board, 1, 1) && isAi.test(board, 0, 2)) {
+        if (isCurrentPlayer.test(board, 2, 0) && isCurrentPlayer.test(board, 1, 1) && isCurrentPlayer.test(board, 0, 2)) {
             return true;
         }
 

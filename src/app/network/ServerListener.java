@@ -58,7 +58,7 @@ public class ServerListener implements Runnable {
     @Override
     public void run() {
         Logger.logDebug("ServerListener started");
-
+        
         try {
             while (!clientClosing.getAsBoolean() && (rawMessage = reader.readLine()) != null) {
                 // Ignore startup messages that aren't part of the protocol.
@@ -70,11 +70,6 @@ public class ServerListener implements Runnable {
                     continue;
                 }
 
-                // Notify the monitor
-                synchronized (messageMonitor) {
-                    messageMonitor.notifyAll();
-                }
-
                 // get a message handler
                 ServerMessage message = handler.handleMessage(rawMessage);
                 Logger.logDebug(rawMessage);
@@ -83,10 +78,16 @@ public class ServerListener implements Runnable {
                 if (message.getType() == MessageType.ERR) {
                     System.err.println("[error] " + message);
                     errorFlag = true;
+                    synchronized (messageMonitor) {
+                        messageMonitor.notifyAll();
+                    }
                 } else if (message.getType() == MessageType.OK) {
                     okQueue.add(message);
                 } else if (message.getType() == MessageType.SVR) {
-                    svrQueue.add(message);
+                    synchronized (messageMonitor) {
+                        svrQueue.add(message);
+                        messageMonitor.notifyAll();
+                    }
                 }
             }
         } catch (IOException e) {

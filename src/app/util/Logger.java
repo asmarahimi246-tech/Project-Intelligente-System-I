@@ -16,4 +16,13 @@ public class Logger {
             System.out.println(message);
         }
     }
+
+    /**
+     * logs the error
+     * 
+     * @param message the message
+     */
+    public static void logErr(String message) {
+        System.err.println(message);
+    }
 }

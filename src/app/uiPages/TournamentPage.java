@@ -64,14 +64,7 @@ public class TournamentPage<G extends Game, B extends GameBuilder<G, B>> extends
 
     @Override
     public void open() {
-        // this is not how one does this it needs a good interupt
-        // it currently only closes the thread when completely exiting
-        // the application going to main only hides it
-        // TODO: add interupt
-
         builder.prepare();
-
-        gameThread = null;
 
         Runnable gameRunnable = () -> {
             // repeatidly rebuild until the a page change is requested
@@ -88,14 +81,11 @@ public class TournamentPage<G extends Game, B extends GameBuilder<G, B>> extends
                 } catch (RuntimeException e) {
                     if (Thread.currentThread().isInterrupted()) {
                         Logger.logDebug("Builder interrupted");
-                        builder.close();
+                        if (builder != null) {
+                            builder.close();
+                        }
                         return;
                     }
-                    throw e;
-                }
-
-                if (!running) {
-                    break;
                 }
 
                 super.open();
@@ -104,22 +94,26 @@ public class TournamentPage<G extends Game, B extends GameBuilder<G, B>> extends
                 try {
                     game.run();
                 } catch (RuntimeException e) {
+                    // game closed
                     if (Thread.currentThread().isInterrupted()) {
                         Logger.logDebug("Game interrupted");
-                        game.close();
-                        // dont close the builder here it wil give a bug
-                        // and its not needed
+                        if (game != null) {
+                            game.close();
+                        }
                         return;
+                    // other error happened
+                    // rebuild the game
+                    // TODO: a way to know what error
+                    } else {
+                        if (game != null) {
+                            game.close();
+                        }
+                        continue;
                     }
-                    throw e;
                 }
                 Logger.logDebug("=============================");
                 Logger.logDebug("tournament round end");
                 Logger.logDebug("=============================");
-
-                if (!running) {
-                    break;
-                }
             }
         };
 
@@ -142,8 +136,14 @@ public class TournamentPage<G extends Game, B extends GameBuilder<G, B>> extends
         running = false;
         // close the game
         Logger.logDebug("closing tournament");
-        game.close();
-        builder.close();
-        gameThread.interrupt();
+        if (gameThread != null) {
+            gameThread.interrupt();
+        }
+        if (game != null) {
+            game.close();
+        }
+        if (builder != null) {
+            builder.close();
+        }
     }
 }

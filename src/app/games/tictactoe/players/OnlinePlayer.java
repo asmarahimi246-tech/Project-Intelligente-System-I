@@ -1,6 +1,10 @@
 package app.games.tictactoe.players;
 
 import app.games.tictactoe.model.TicTacToeMove;
+
+import javax.naming.TimeLimitExceededException;
+
+import app.games.framework.exceptions.TurnLimitExceededException;
 import app.games.framework.game.Game;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
@@ -9,6 +13,7 @@ import app.network.Client;
 import app.network.MessageAddon;
 import app.network.MessageSubtype;
 import app.util.Config;
+import app.util.Logger;
 
 /**
  * OnlinePlayer
@@ -32,19 +37,24 @@ public class OnlinePlayer extends Player {
     @Override
     public void doMove(Game game) {
         // wait for a move
-        client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.YOURTURN, Config.TURNLIMIT);
+        try {
+            client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.YOURTURN, Config.TURNLIMIT);
 
-        // get the move
-        TicTacToeMove move = (TicTacToeMove) strategy.getMove(game);
+            // get the move
+            TicTacToeMove move = (TicTacToeMove) strategy.getMove(game);
 
-        // send move
-        if (move != null) {
-            int serverMove = move.row()*3 + move.column();
-            client.sendCommand("move " + serverMove);
+            // send move
+            if (move != null) {
+                int serverMove = move.row()*3 + move.column();
+                client.sendCommand("move " + serverMove);
+            }
+
+            // process the move
+            game.procesMove(move);
+            super.state = PlayerState.EXECUTED_TURN;
+        } catch (TimeLimitExceededException e) {
+            Logger.logErr("Turnlimit exceeded. Connection with server lost?");
+            throw new TurnLimitExceededException();
         }
-
-        // process rge move
-        game.procesMove(move);
-        super.state = PlayerState.EXECUTED_TURN;
     }
 }

@@ -10,6 +10,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.naming.TimeLimitExceededException;
+
 import app.util.Config;
 import app.util.Logger;
 import app.util.NameGenerator;
@@ -21,6 +23,7 @@ import app.util.NameGenerator;
  * Made with help from a lot of youtube videos and explanations from deepai
  * 
  * TODO: better sources
+ * TODO: look at interupts
  */
 public class Client {
     private final AtomicBoolean closing = new AtomicBoolean(false);
@@ -118,8 +121,9 @@ public class Client {
      * @param addon the message addon
      * @param timeout max amount of time to wait in miliseconds
      * @return the message
+     * @throws TimeLimitExceededException an exception when the time limit is reached
      */
-    public ServerMessage getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype subtype, MessageAddon addon, long timeout) {
+    public ServerMessage getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype subtype, MessageAddon addon, long timeout) throws TimeLimitExceededException {
         ServerMessage toReturn = null;
 
         long deadline = System.currentTimeMillis() + timeout;
@@ -131,9 +135,9 @@ public class Client {
             }
             
             synchronized (messageMonitor) {
-                while (!closing.get() && toReturn == null) {
+                while (!closing.get()) {
                     if (System.currentTimeMillis() >= deadline) {
-                        throw new InterruptedException();
+                        throw new TimeLimitExceededException(subtype.name() + addon.name() + " was not found within the specified time");
                     }
 
                     for (ServerMessage message : listener.svrQueue) {
@@ -165,13 +169,14 @@ public class Client {
     /**
      * closes the socket
      * 
-     * TODO: error handling
      */
     public void close() {
         try {
-            sendCommand("bye");
             // this should also automaticly closes the listener
             closing.set(true);
+
+            // skiping the wait we dont care about an OK when closing
+            writer.println("bye");
             socket.close();
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -186,19 +191,24 @@ public class Client {
         Logger.logDebug("get playerlist");
         sendCommand("get playerlist");
         Logger.logDebug("playerlist");
-        ServerMessage msg = getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.PLAYERLIST, null, Integer.MAX_VALUE);
-        ArrayList<String> playerlist = msg.getListDetails();
+        ServerMessage msg;
+        try {
+            msg = getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.PLAYERLIST, null, Integer.MAX_VALUE);
+            
+            ArrayList<String> playerlist = msg.getListDetails();
 
-        Logger.logDebug("wut");
-
-        NameGenerator nameGenerator = new NameGenerator();
-        name = nameGenerator.getName();
-
-        // check if the random name is taken
-        // if so, generate a new one
-        // if not the name is unique and can be returned
-        while (playerlist.contains(name)) {
+            NameGenerator nameGenerator = new NameGenerator();
             name = nameGenerator.getName();
+
+            // check if the random name is taken
+            // if so, generate a new one
+            // if not the name is unique and can be returned
+            while (playerlist.contains(name)) {
+                name = nameGenerator.getName();
+            }
+        } catch (TimeLimitExceededException e) {
+            System.err.println("no player list found");
+            Thread.currentThread().interrupt();
         }
     }
 

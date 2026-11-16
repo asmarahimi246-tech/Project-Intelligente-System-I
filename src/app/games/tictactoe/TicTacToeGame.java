@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
+import app.games.framework.exceptions.InvalidMoveException;
 import app.games.framework.game.Game;
 import app.games.framework.move.Move;
 import app.games.framework.player.Player;
@@ -93,15 +94,6 @@ public class TicTacToeGame extends Game {
 
                 if (!running) {
                     break;
-                }
-
-                if (Config.DEBUG) {
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
                 }
 
                 // check for win

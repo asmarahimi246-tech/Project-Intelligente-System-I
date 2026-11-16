@@ -72,10 +72,9 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
     public void open() {
         builder.prepare();
 
-        gameThread = null;
-
-        //TODO: overleggen
-        //idee dit
+        //TODO: discus
+        //idee this
+        //TODO: game states icluding a failed state
 
         // run in tournament mode
         Runnable gameRunnable = () -> {
@@ -93,7 +92,9 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
                 } catch (RuntimeException e) {
                     if (Thread.currentThread().isInterrupted()) {
                         Logger.logDebug("Builder interrupted");
-                        builder.close();
+                        if (builder != null) {
+                            builder.close();
+                        }
                         return;
                     }
                     throw e;
@@ -109,14 +110,22 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
                 try {
                     game.run();
                 } catch (RuntimeException e) {
+                    // game closed
                     if (Thread.currentThread().isInterrupted()) {
                         Logger.logDebug("Game interrupted");
-                        game.close();
-                        // dont close the builder here it wil give a bug
-                        // and its not needed
+                        if (game != null) {
+                            game.close();
+                        }
                         return;
+                    // other error happened
+                    // rebuild the game
+                    // TODO: a way to know what error
+                    } else {
+                        if (game != null) {
+                            game.close();
+                        }
+                        continue;
                     }
-                    throw e;
                 }
                 Logger.logDebug("tournament round end");
 
@@ -148,8 +157,14 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
     public void close() {
         running = false;
         // close the game
-        game.close();
-        builder.close();
-        gameThread.interrupt();
+        if (gameThread != null) {
+            gameThread.interrupt();
+        }
+        if (game != null) {
+            game.close();
+        }
+        if (builder != null) {
+            builder.close();
+        }
     }
 }

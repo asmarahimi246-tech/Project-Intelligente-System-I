@@ -72,14 +72,5 @@ public class LoadingPage extends Page {
     public void open() {
         // build this view first
         super.open();
-
-        if (Config.DEBUG) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
     }
 }
