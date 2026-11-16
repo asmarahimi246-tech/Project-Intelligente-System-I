@@ -124,7 +124,7 @@ public class App {
 
         // force it when stuck
         // TODO: actualy make it so this isnt needed
-        System.exit(0);
+        // System.exit(0);
     }
 
     /**

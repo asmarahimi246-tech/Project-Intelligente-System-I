@@ -94,6 +94,7 @@ public class MoveStrategiesTest {
             .setMode(GameMode.LOCAL)
             .addPlayer(new PlayerOption<LocalPlayer>("player", () -> currentPlayer))
             .addPlayer(new PlayerOption<LocalPlayer>("player", () -> opponent))
+            .prepare()
             .build();
 
         game.model.setCurrentPlayer(currentPlayer);

@@ -8,6 +8,7 @@ import app.games.framework.player.PlayerState;
 import app.network.Client;
 import app.network.MessageAddon;
 import app.network.MessageSubtype;
+import app.util.Config;
 
 /**
  * OnlinePlayer
@@ -31,7 +32,7 @@ public class OnlinePlayer extends Player {
     @Override
     public void doMove(Game game) {
         // wait for a move
-        client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.YOURTURN);
+        client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.YOURTURN, Config.TURNLIMIT);
 
         // get the move
         TicTacToeMove move = (TicTacToeMove) strategy.getMove(game);
@@ -45,12 +46,5 @@ public class OnlinePlayer extends Player {
         // process rge move
         game.procesMove(move);
         super.state = PlayerState.EXECUTED_TURN;
-    }
-
-    /**
-     * Subscribes to the game
-     */
-    public void subscribe() {
-        client.sendCommand("subscribe tic-tac-toe" );
     }
 }

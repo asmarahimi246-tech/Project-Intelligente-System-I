@@ -54,4 +54,9 @@ public class Config {
     // TODO: in own config file
     /** Whether tic-tac-toe displays X and O symbols. */
     public static final boolean X_AND_O = true;
+
+    // server
+    /** The turnlimit in miliseconds */
+    public static final long DEFAULT_TIMOUT = 10000;
+    public static final long TURNLIMIT = 5000;
 }

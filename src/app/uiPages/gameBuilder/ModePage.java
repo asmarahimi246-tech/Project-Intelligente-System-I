@@ -1,21 +1,16 @@
 package app.uiPages.gameBuilder;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import javax.swing.SwingWorker;
 
 import app.games.framework.game.Game;
 import app.games.framework.game.GameBuilder;
 import app.games.framework.game.GameMode;
-import app.network.Client;
 import app.uiPages.BasePage;
 import app.uiPages.context.Page;
 import app.uiPages.context.PageManager;
 import app.uiPages.context.widgets.Button;
 import app.uiPages.context.widgets.OptionMenu;
-import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
 
@@ -79,54 +74,6 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
         manager.setCurrentPage(page);
     }
 
-    /**
-     * starts an online game
-     * 
-     * @param mode the online mode to start in
-     */
-    private void startOnlineMode(GameMode mode) {
-        Socket socket;
-        Client client;
-
-        // make the socket and client
-        try {
-            if (Config.DEBUG) {
-                socket = new Socket("localhost", Config.LOCALPORT);
-            } else {
-                socket = new Socket(Config.ONLINEIP, Config.ONLINEPORT);
-            }
-            client = new Client(socket);
-        } catch (Exception e) {
-            // TODO: handle exception
-            return;
-        }
-
-        // use a worker thread for swing
-        // to keep ui interactive while preventing bugs
-        if (Config.SWING_SUPPORTED) {
-            new SwingWorker<Boolean, Void>() {
-                // the thing to do
-                @Override
-                protected Boolean doInBackground() throws Exception {
-                    return client.login();
-                }
-
-                // executes when its done
-                @Override
-                protected void done() {
-                    try {
-                        builder.setClient(client);
-                        continueToPlayerPage();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }.execute();
-        } else {
-            client.login();
-        }
-    }
-
     @Override
     public void createSwingUi() {
         // make buttons
@@ -141,15 +88,15 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
 
         // online mode button
         Button onlineButton = new Button(event -> {
-            builder.setMode(GameMode.ONLINE); 
-            startOnlineMode(GameMode.ONLINE);}
+            builder.setMode(GameMode.ONLINE);
+            continueToPlayerPage();}
             , "Online game");
         options.add(onlineButton);
 
         // tournament mode button
         Button tournamentButton = new Button(event -> {
-            builder.setMode(GameMode.TOURNAMENT); 
-            startOnlineMode(GameMode.TOURNAMENT);}
+            builder.setMode(GameMode.TOURNAMENT);
+            continueToPlayerPage();}
             , "Tournament");
         options.add(tournamentButton);
 
@@ -183,11 +130,9 @@ public class ModePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
                 break;
             case 2:
                 gameMode = GameMode.ONLINE;
-                startOnlineMode(gameMode);
                 break;
             case 3:
                 gameMode = GameMode.TOURNAMENT;
-                startOnlineMode(gameMode);
                 break;
             default:
                 PageManager manager = PageManager.getInstance();

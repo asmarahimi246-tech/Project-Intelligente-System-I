@@ -1,14 +1,18 @@
 package app.games.framework.game;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+
+import javax.swing.SwingWorker;
 
 import app.games.framework.game.Game;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerOption;
 import app.network.Client;
 import app.uiPages.context.Page;
+import app.util.Config;
 
 /**
  * <pre>
@@ -42,6 +46,8 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
     protected ArrayList<PlayerOption<? extends Player>> players = new ArrayList<PlayerOption<? extends Player>>();
     /** A client */
     protected Client client;
+    /** Game Name */
+    protected String gameName;
 
     /**
      * Constructor
@@ -126,12 +132,50 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
      * 
      * @param client to set to
      */
-    public void setClient(Client client) {
-        this.client = client;
-    }
+    //public void setClient(Client client) {
+    //    this.client = client;
+    //}
 
     /**
      * Closes the builder
      */
     public abstract void close();
+
+    /**
+     * Does preperation before building a game
+     * 
+     * @return self
+     */
+    public B prepare() {
+        if (mode != GameMode.LOCAL) {
+            startOnlineMode();
+        }
+
+        if (mode == GameMode.ONLINE) {
+            client.subscribe(gameName);
+        }
+
+        return self();
+    }
+
+    /**
+     * starts an online game
+     */
+    private void startOnlineMode() {
+        Socket socket;
+
+        // make the socket and client
+        try {
+            if (Config.DEBUG) {
+                socket = new Socket("localhost", Config.LOCALPORT);
+            } else {
+                socket = new Socket(Config.ONLINEIP, Config.ONLINEPORT);
+            }
+            client = new Client(socket);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return;
+        }
+        client.login();
+    }
 }

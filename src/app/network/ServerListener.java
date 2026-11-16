@@ -31,6 +31,7 @@ public class ServerListener implements Runnable {
     private BufferedReader reader;
     private String rawMessage;
     private final MessageHandler handler;
+    private Object messageMonitor = null;
 
     /**
      * A server listener listens to the server and sorts answers into queues
@@ -39,13 +40,15 @@ public class ServerListener implements Runnable {
      * @param okQueue okQueue
      * @param svrQueue svrQueue
      * @param clientClosing if the client us closing
+     * @param messageMonitor the monitor of the thread 
      */
-    public ServerListener(BufferedReader reader, LinkedBlockingQueue<ServerMessage> okQueue, LinkedBlockingQueue<ServerMessage> svrQueue, BooleanSupplier clientClosing) {
+    public ServerListener(BufferedReader reader, LinkedBlockingQueue<ServerMessage> okQueue, LinkedBlockingQueue<ServerMessage> svrQueue, BooleanSupplier clientClosing, Object messageMonitor) {
         this.reader = reader;
         this.okQueue = okQueue;
         this.svrQueue = svrQueue;
         this.clientClosing = clientClosing;
         this.handler = new MessageHandler();
+        this.messageMonitor = messageMonitor;
     }
 
     /**    (non-Javadoc)
@@ -65,6 +68,11 @@ public class ServerListener implements Runnable {
 
                     Logger.logDebug("Ignoring unrecognized server message: " + rawMessage);
                     continue;
+                }
+
+                // Notify the monitor
+                synchronized (messageMonitor) {
+                    messageMonitor.notifyAll();
                 }
 
                 // get a message handler

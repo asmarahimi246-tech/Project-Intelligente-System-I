@@ -15,8 +15,9 @@ import app.util.Logger;
 public class TournamentPage<G extends Game, B extends GameBuilder<G, B>> extends Page {
     private final B builder;
     private Game game = null;
-    private Thread gameThread;
-
+    private volatile Thread gameThread = null;
+    private boolean running = true;
+    
     @Override
     public String toString() {
         String toReturn = "tournament page";
@@ -67,20 +68,58 @@ public class TournamentPage<G extends Game, B extends GameBuilder<G, B>> extends
         // it currently only closes the thread when completely exiting
         // the application going to main only hides it
         // TODO: add interupt
+
+        builder.prepare();
+
+        gameThread = null;
+
         Runnable gameRunnable = () -> {
             // repeatidly rebuild until the a page change is requested
-            while (true) {
+            while (running) {
                 game = null;
                 super.open();
+                Logger.logDebug("=============================");
                 Logger.logDebug("starting new tournament round");
+                Logger.logDebug("=============================");
 
                 // get the game
-                game = builder.build();
+                try {
+                    game = builder.build();
+                } catch (RuntimeException e) {
+                    if (Thread.currentThread().isInterrupted()) {
+                        Logger.logDebug("Builder interrupted");
+                        builder.close();
+                        return;
+                    }
+                    throw e;
+                }
+
+                if (!running) {
+                    break;
+                }
+
                 super.open();
 
                 // then build the content view
-                game.run();
+                try {
+                    game.run();
+                } catch (RuntimeException e) {
+                    if (Thread.currentThread().isInterrupted()) {
+                        Logger.logDebug("Game interrupted");
+                        game.close();
+                        // dont close the builder here it wil give a bug
+                        // and its not needed
+                        return;
+                    }
+                    throw e;
+                }
+                Logger.logDebug("=============================");
                 Logger.logDebug("tournament round end");
+                Logger.logDebug("=============================");
+
+                if (!running) {
+                    break;
+                }
             }
         };
 
@@ -100,8 +139,11 @@ public class TournamentPage<G extends Game, B extends GameBuilder<G, B>> extends
 
     @Override
     public void close() {
+        running = false;
         // close the game
         Logger.logDebug("closing tournament");
+        game.close();
+        builder.close();
         gameThread.interrupt();
     }
 }

@@ -29,6 +29,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
     public TicTacToeBuilder() {
         super();
         super.playersToAdd = 2;
+        super.gameName = "tic-tac-toe";
     }
 
     @Override
@@ -135,7 +136,8 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
             if (one instanceof OnlineOpponent onlineOpponent && two instanceof OnlinePlayer onlinePlayer) {
 
                 // login player
-                onlinePlayer.subscribe();
+                // onlinePlayer.subscribe();
+                //client.subscribe("tic-tac-toe");
 
                 // wait for match
                 onlineOpponent.waitForMatch();

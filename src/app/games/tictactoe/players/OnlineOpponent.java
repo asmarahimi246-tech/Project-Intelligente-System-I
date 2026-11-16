@@ -8,6 +8,7 @@ import app.network.Client;
 import app.network.MessageAddon;
 import app.network.MessageSubtype;
 import app.network.ServerMessage;
+import app.util.Config;
 import app.util.Logger;
 
 /**
@@ -35,7 +36,7 @@ public class OnlineOpponent extends Player {
      */
     public void waitForMatch() {
         // wait for match
-        ServerMessage msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MATCH);
+        ServerMessage msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MATCH, Integer.MAX_VALUE);
         Logger.logDebug(msg.toString());
 
         // get the opponent name
@@ -61,11 +62,12 @@ public class OnlineOpponent extends Player {
         Logger.logDebug("opponent move");
 
         // get the move
-        ServerMessage msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MOVE);
+        ServerMessage msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MOVE, Config.TURNLIMIT);
         while (!msg.getGameDetails().get("PLAYER").equalsIgnoreCase(super.name)) {
             Logger.logDebug("key = " + msg.getGameDetails().get("PLAYER"));
 
-            msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MOVE);
+            msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MOVE, Config.TURNLIMIT);
+            Logger.logDebug("why stuck here");
         }
         Logger.logDebug(msg.toString());
         int serverMove = Integer.parseInt(msg.getGameDetails().get("MOVE"));
