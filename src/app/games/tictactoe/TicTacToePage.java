@@ -18,6 +18,7 @@ import app.uiPages.context.Page;
 import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
+import app.App;
 import app.games.framework.player.Player;
 
 /**
@@ -43,7 +44,7 @@ public class TicTacToePage extends Page {
      */
     private void printInvalidMove() {
         if (Config.SWING_SUPPORTED) {
-            JOptionPane.showMessageDialog(this, "That square is occupied. Choose an empty square."
+            JOptionPane.showMessageDialog(App.getApplicationFrame(), "That square is occupied. Choose an empty square."
             );
         } else {
             System.out.println("That square is occupied. Choose an empty square.");
@@ -128,7 +129,7 @@ public class TicTacToePage extends Page {
         SwingUtilities.invokeLater(() -> {
             acceptingMoves = false;
             refreshBoard();
-            JOptionPane.showMessageDialog(this, message);
+            JOptionPane.showMessageDialog(App.getApplicationFrame(), message);
         });
     }
 

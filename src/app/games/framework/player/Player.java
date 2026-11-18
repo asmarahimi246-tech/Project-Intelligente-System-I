@@ -1,6 +1,7 @@
 package app.games.framework.player;
 
 import app.games.framework.game.Game;
+import app.games.framework.move.Move;
 import app.games.framework.move.MoveSrategy;
 import app.util.NameGenerator;
 
