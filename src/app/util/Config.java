@@ -56,7 +56,10 @@ public class Config {
     public static final boolean X_AND_O = true;
 
     // server
+    /** The team name */
+    public static final String TEAM_NAME = "iForgorWhatTheNameWasSupposedToBe";
+    /** The default timout in miliseconds */
+    public static final long DEFAULT_TIMOUT = 100000;
     /** The turnlimit in miliseconds */
-    public static final long DEFAULT_TIMOUT = 10000;
     public static final long TURNLIMIT = 5000;
 }

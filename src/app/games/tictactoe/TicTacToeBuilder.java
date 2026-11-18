@@ -1,27 +1,32 @@
 package app.games.tictactoe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import app.games.tictactoe.players.OnlineOpponent;
 import app.games.tictactoe.players.moveStrategies.AggresiveAIStrategy;
 import app.games.tictactoe.players.moveStrategies.PassiveAIStrategy;
 import app.games.tictactoe.players.moveStrategies.RandomAiStrategy;
 import app.games.tictactoe.players.moveStrategies.UserStrategy;
+import app.util.Logger;
 import app.games.tictactoe.players.LocalPlayer;
 import app.games.tictactoe.players.OnlinePlayer;
+import app.games.framework.exceptions.IlligalPlayerOptionException;
 import app.games.framework.game.GameBuilder;
 import app.games.framework.game.GameMode;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerOption;
 
 /**
- * builder
- * builds the game
+ * Builder
+ * Builds the game
+ * 
+ * Sources:
+ *       stream filter: https://www.geeksforgeeks.org/java/stream-filter-java-examples/
+ *       Used to find the correct player class in the setup player functions
  */
 public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder> {
-    private TicTacToePage page = new TicTacToePage();
 
     /**
      * Constructor
@@ -30,11 +35,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         super();
         super.playersToAdd = 2;
         super.gameName = "tic-tac-toe";
-    }
-
-    @Override
-    public String toString() {
-        return "Tic Tac Toe Builder";
+        super.page = new TicTacToePage();
     }
 
     @Override
@@ -61,7 +62,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         // online players
         if (mode == GameMode.ONLINE) {
             toReturn = List.of(
-                new PlayerOption<OnlinePlayer>("player", () -> new OnlinePlayer(new UserStrategy(page), client)),
+                new PlayerOption<OnlinePlayer>("player", () -> new OnlinePlayer(new UserStrategy((TicTacToePage) page), client)),
                 new PlayerOption<OnlinePlayer>("aggresive ai", () -> new OnlinePlayer(new AggresiveAIStrategy(), client)),
                 new PlayerOption<OnlinePlayer>("passive ai", () -> new OnlinePlayer(new PassiveAIStrategy(), client)),
                 new PlayerOption<OnlinePlayer>("random ai", () -> new OnlinePlayer(new RandomAiStrategy(), client))
@@ -70,7 +71,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         // local players
         } else if (mode == GameMode.LOCAL) {
             toReturn = List.of(
-                new PlayerOption<LocalPlayer>("player", () -> new LocalPlayer(new UserStrategy(page))),
+                new PlayerOption<LocalPlayer>("player", () -> new LocalPlayer(new UserStrategy((TicTacToePage) page))),
                 new PlayerOption<LocalPlayer>("aggresive ai", () -> new LocalPlayer(new AggresiveAIStrategy())),
                 new PlayerOption<LocalPlayer>("passive ai", () -> new LocalPlayer(new PassiveAIStrategy())),
                 new PlayerOption<LocalPlayer>("random ai", () -> new LocalPlayer(new RandomAiStrategy()))
@@ -80,7 +81,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         } else if (mode == GameMode.TOURNAMENT) {
             toReturn = List.of(
                 new PlayerOption<OnlinePlayer>("player", () -> {
-                    OnlinePlayer player = new OnlinePlayer(new UserStrategy(page), client);
+                    OnlinePlayer player = new OnlinePlayer(new UserStrategy((TicTacToePage) page), client);
                     // generate name before build so its used in multiple games
                     player.setName(client.getName());
                     return player;
@@ -106,7 +107,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
             );
         }
 
-        return toReturn;
+        return toReturn; 
     }
 
     @Override 
@@ -116,79 +117,111 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         }
     }
 
+    /**
+     * Does setup for local players
+     * 
+     * @param builtPlayers the players to setup
+     */
+    @Override 
+    protected ArrayList<Player> setupLocalPlayers(ArrayList<Player> builtPlayers) {
+        ArrayList<Player> setupPlayers = new ArrayList<Player>(builtPlayers);
+
+        // give local players a logical name
+        setupPlayers.get(0).setName("Player 1");
+        setupPlayers.get(0).setName("Player 2");
+
+        // pu the players in a random order
+        Collections.shuffle(setupPlayers);
+        return setupPlayers;
+    };
+
+    /**
+     * Does setup for online players
+     * 
+     * @param builtPlayers the players to setup
+     * 
+     * TODO: abstract the players so it doesnt have to be made for every builder
+     */
     @Override
-    public TicTacToeGame build() {
-        // setup playes
-        ArrayList<Player> players = new ArrayList<Player>();
+    protected ArrayList<Player> setupOnlinePlayers(ArrayList<Player> builtPlayers) {
+        ArrayList<Player> setupPlayers = new ArrayList<Player>(2);
 
+        // filter and get players by type
+        OnlinePlayer online = builtPlayers.stream().filter(player -> player instanceof OnlinePlayer)
+                                .map(player -> (OnlinePlayer) player)
+                                .findFirst()
+                                .orElseThrow(() -> new IlligalPlayerOptionException("An online game needs an online player"));
+
+        OnlineOpponent opponent = builtPlayers.stream().filter(player -> player instanceof OnlineOpponent)
+                                .map(player -> (OnlineOpponent) player)
+                                .findFirst()
+                                .orElseThrow(() -> new IlligalPlayerOptionException("An online game needs an online opponent"));
+
+        // set logical display name
+        online.setName("you");
         
-        // make players
-        // types: Online, Local
-        Player two = super.players.get(1).build();
-        // types: Opponent, Local
-        Player one = super.players.get(0).build();
+        // wait for match
+        opponent.waitForMatch();
 
-
-
-        // Online
-        if (super.mode == GameMode.ONLINE) {
-            // setup online player
-            if (one instanceof OnlineOpponent onlineOpponent && two instanceof OnlinePlayer onlinePlayer) {
-
-                // login player
-                // onlinePlayer.subscribe();
-                //client.subscribe("tic-tac-toe");
-
-                // wait for match
-                onlineOpponent.waitForMatch();
-
-                // server based order
-                // by waiting for Match message
-                boolean onlineOpponentFirst = onlineOpponent.isFirst();
-                if(onlineOpponentFirst) {
-                    players.add(onlineOpponent);
-                    players.add(onlinePlayer);
-                } else {
-                    players.add(onlinePlayer);
-                    players.add(onlineOpponent);
-                }
-            }
-
-        // Local
-        } else if (super.mode == GameMode.LOCAL) {
-            // random order
-            Random random = new Random();
-            if(random.nextBoolean()) {
-                players.add(one);
-                players.add(two);
-            } else {
-                players.add(two);
-                players.add(one);
-            }
-
-            // Tournament
-        } else if (super.mode == GameMode.TOURNAMENT) {
-            // setup online player
-            if (one instanceof OnlineOpponent onlineOpponent && two instanceof OnlinePlayer onlinePlayer) {
-                // wait for match
-                onlineOpponent.waitForMatch();
-
-                // server based order
-                // by waiting for Match message
-                boolean onlineOpponentFirst = onlineOpponent.isFirst();
-                if(onlineOpponentFirst) {
-                    players.add(onlineOpponent);
-                    players.add(onlinePlayer);
-                } else {
-                    players.add(onlinePlayer);
-                    players.add(onlineOpponent);
-                }
-            }
-
+        // server based order
+        // by waiting for Match message
+        boolean opponentFirst = opponent.isFirst();
+        if(opponentFirst) {
+            Logger.logDebug("opponent first");
+            setupPlayers.add(opponent);
+            setupPlayers.add(online);
+        } else {
+            Logger.logDebug("player first");
+            setupPlayers.add(online);
+            setupPlayers.add(opponent);
         }
 
-        // make and set the game
-        TicTacToeGame game = new TicTacToeGame(page, players);
+        return setupPlayers;
+    }
+
+    /**
+     * Does setup for tournament players
+     * 
+     * @param builtPlayers the players to setup
+     * 
+     * TODO: abstract the players so it doesnt have to be made for every builder
+     */
+    @Override
+    protected ArrayList<Player> setupTournamentPlayers(ArrayList<Player> builtPlayers) {
+        // im very usefull
+        return setupTournamentPlayers(builtPlayers);
+    };
+
+    @Override
+    public TicTacToeGame build() {
+        // build players
+        ArrayList<Player> builtPlayers = new ArrayList<>(2);
+
+        for (PlayerOption<? extends Player> playerOption : players) {
+            builtPlayers.add(playerOption.build());
+        }
+
+        // setup players
+        ArrayList<Player> setupPlayers;
+        switch (mode) {
+            case LOCAL:
+                setupPlayers = new ArrayList<Player>(setupLocalPlayers(builtPlayers));
+                break;
+
+            case ONLINE:
+                setupPlayers = new ArrayList<Player>(setupOnlinePlayers(builtPlayers));
+                break;
+
+            case TOURNAMENT:
+                setupPlayers = new ArrayList<Player>(setupTournamentPlayers(builtPlayers));
+                break;
+        
+            default:
+                throw new IllegalStateException("mode doesnt exist", null);
+        }
+
+        // build game
+        TicTacToeGame game = new TicTacToeGame((TicTacToePage) page, setupPlayers);
         page.setGame(game);
 
         return game;
