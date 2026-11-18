@@ -2,7 +2,6 @@ package app.games.tictactoe.model;
 
 import app.games.framework.exceptions.InvalidMoveException;
 import app.games.framework.player.Player;
-import app.util.Config;
 import app.util.Logger;
 
 /**
