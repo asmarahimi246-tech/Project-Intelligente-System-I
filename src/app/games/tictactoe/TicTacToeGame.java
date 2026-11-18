@@ -12,15 +12,13 @@ import app.util.Config;
 import app.util.Logger;
 
 /**
- * <pre>
- * &gt; connect View with Model
- * &gt; get input &amp; make Model do the work, then tell View what to display
+ * connect View with Model
+ * get input &amp; make Model do the work, then tell View what to display
  *
  * EX:
- * &gt; doMove()
- *   --&gt; make model check if move is valid
- *   --&gt; if true, make view update with the move added
- * </pre>
+ * doMove()
+ *   --make model check if move is valid
+ *   --if true, make view update with the move added
  */
 public class TicTacToeGame extends Game {
     public TicTacToeModel model = new TicTacToeModel();
@@ -35,13 +33,6 @@ public class TicTacToeGame extends Game {
         super(page, players);
         
         super.running = true;
-        //TODO Auto-generated constructor stub
-    }
-
-    @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'toString'");
     }
 
     /**
@@ -63,10 +54,6 @@ public class TicTacToeGame extends Game {
         }
     }
 
-    /**    (non-Javadoc)
-     * TODO: put print statements in page
-     * @see app.games.framework.game.Game#run()
-     */
     @Override
     public void run() {
         int moves = 0;
@@ -118,12 +105,5 @@ public class TicTacToeGame extends Game {
         if (move instanceof TicTacToeMove) {
             model.placeMove((TicTacToeMove) move);
         }
-    }
-
-    @Override
-    public void close() {
-        super.close();
-        Logger.logDebug("game closing: " + page.toString());
-        page.close();
     }
 }

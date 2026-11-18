@@ -103,7 +103,6 @@ public class AggresiveAIStrategy implements MoveSrategy {
             int maxPossibleWins = 0;
             int endScore = Integer.MAX_VALUE;
 
-            //TODO: 0 to 9
             for (int row = 0; row < 3; row++) {
                 for (int col = 0; col < 3; col++) {
                     if (board.getByPos(row, col).isEmpty()) {

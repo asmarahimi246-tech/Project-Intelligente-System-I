@@ -1,6 +1,7 @@
 package app.games.tictactoe.players;
 
 import app.games.framework.game.Game;
+import app.games.framework.move.Move;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerState;

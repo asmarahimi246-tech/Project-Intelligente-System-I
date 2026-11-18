@@ -1,7 +1,5 @@
 package app.games.tictactoe.players;
 
-import app.games.tictactoe.model.TicTacToeMove;
-
 import javax.naming.TimeLimitExceededException;
 
 import app.games.framework.exceptions.TurnLimitExceededException;
@@ -9,6 +7,7 @@ import app.games.framework.game.Game;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerState;
+import app.games.tictactoe.model.TicTacToeMove;
 import app.network.Client;
 import app.network.MessageAddon;
 import app.network.MessageSubtype;
@@ -45,7 +44,7 @@ public class OnlinePlayer extends Player {
 
             // send move
             if (move != null) {
-                int serverMove = move.row()*3 + move.column();
+                int serverMove = move.row()*3 +move.column();
                 client.sendCommand("move " + serverMove);
             }
 
