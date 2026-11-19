@@ -18,6 +18,9 @@ import app.uiPages.context.Page;
 import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
+import app.App;
+import app.games.framework.game.Game;
+import app.games.framework.game.GamePage;
 import app.games.framework.player.Player;
 
 /**
@@ -29,7 +32,7 @@ import app.games.framework.player.Player;
  * &gt; printBoard() --&gt; gets the board state from the game and prints it
  * </pre>
  */
-public class TicTacToePage extends Page {
+public class TicTacToePage extends Page implements GamePage {
     private TicTacToeGame game;
     private final JButton[][] buttons = new JButton[3][3];
     private final BlockingQueue<TicTacToeMove> moves =
@@ -43,7 +46,7 @@ public class TicTacToePage extends Page {
      */
     private void printInvalidMove() {
         if (Config.SWING_SUPPORTED) {
-            JOptionPane.showMessageDialog(this, "That square is occupied. Choose an empty square."
+            JOptionPane.showMessageDialog(App.getApplicationFrame(), "That square is occupied. Choose an empty square."
             );
         } else {
             System.out.println("That square is occupied. Choose an empty square.");
@@ -128,7 +131,7 @@ public class TicTacToePage extends Page {
         SwingUtilities.invokeLater(() -> {
             acceptingMoves = false;
             refreshBoard();
-            JOptionPane.showMessageDialog(this, message);
+            JOptionPane.showMessageDialog(App.getApplicationFrame(), message);
         });
     }
 
@@ -182,8 +185,8 @@ public class TicTacToePage extends Page {
      * Sets the game
      * @param game the game
      */
-    public void setGame(TicTacToeGame game) {
-        this.game = game;
+    public void setGame(Game game) {
+        this.game = (TicTacToeGame) game;
     }
 
     /**

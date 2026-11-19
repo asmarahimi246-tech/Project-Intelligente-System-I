@@ -2,6 +2,7 @@ package app.games.tictactoe.players;
 
 import javax.naming.TimeLimitExceededException;
 
+import app.games.framework.exceptions.MatchNotFoundException;
 import app.games.framework.exceptions.TurnLimitExceededException;
 import app.games.framework.game.Game;
 import app.games.framework.player.Player;
@@ -62,7 +63,7 @@ public class OnlineOpponent extends Player {
 
             //TODO: no thread interupt here
             Logger.logErr("No match found");
-            Thread.currentThread().interrupt();
+            throw new MatchNotFoundException();
         }
 
         super.state = PlayerState.INITIALIZED;
@@ -71,6 +72,7 @@ public class OnlineOpponent extends Player {
     @Override
     public void doMove(Game game) {
         Logger.logDebug("opponent move");
+        Logger.logDebug(name);
 
         // get the move
         ServerMessage msg;

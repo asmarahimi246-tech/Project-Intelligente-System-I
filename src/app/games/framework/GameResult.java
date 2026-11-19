@@ -1,4 +1,4 @@
-package app.games;
+package app.games.framework;
 
 /**
  * Represents the result or current status of a game.

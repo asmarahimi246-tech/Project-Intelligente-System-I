@@ -127,7 +127,7 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
                         continue;
                     }
                 }
-                Logger.logDebug("tournament round end");
+                Logger.logDebug("game end");
 
                 // tournament loops infinitly
                 if (builder.getMode() != GameMode.TOURNAMENT || !running) {

@@ -2,6 +2,7 @@ package app.games.tictactoe.model;
 
 import app.games.framework.exceptions.InvalidMoveException;
 import app.games.framework.player.Player;
+import app.util.Logger;
 
 /**
  * <pre>
@@ -73,6 +74,7 @@ public class TicTacToeModel {
      * @param currentPlayer the current player
      */
     public void setCurrentPlayer(Player currentPlayer) {
+        Logger.logDebug("current player = " + currentPlayer.getName());
         this.currentPlayer = currentPlayer;
     }
 

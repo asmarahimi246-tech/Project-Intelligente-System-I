@@ -9,7 +9,7 @@ import app.util.NameGenerator;
  */
 public abstract class Player {
     /** The player name */
-    protected String name = null;
+    protected String name = "null";
     /** The state of the player */
     protected PlayerState state;
     /** The strategy used to calculate the turn */
@@ -21,8 +21,10 @@ public abstract class Player {
      * With a random name
      */
     public Player() {
-        NameGenerator generator = new NameGenerator();
-        setName(generator.getName());
+        if (name.equals("null")) {
+            NameGenerator generator = new NameGenerator();
+            setName(generator.getName());
+        }
     }
 
     /**

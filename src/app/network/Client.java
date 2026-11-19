@@ -218,8 +218,6 @@ public class Client {
      * @return true if succesfull
      */
     public boolean login() {
-        Logger.logDebug("generating name");
-        generateUniqueName();
         Logger.logDebug("login client");
         sendCommand("login " + name);
         Logger.logDebug("login succes");
@@ -233,5 +231,14 @@ public class Client {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     * Sets the name
+     * 
+     * @param name the name to set it to
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }

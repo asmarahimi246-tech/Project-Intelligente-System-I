@@ -2,6 +2,7 @@ package app.games.framework.game;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -35,6 +36,8 @@ import app.util.Config;
  * Type parameters: https://www.w3schools.com/java/java_generics.asp
  *       Use: to make it possible for the extended gameBuilders to return a specific type
  *       EX: the TicTacToeBuilder returns a TicTacToeGame
+ * Shuffle: https://www.geeksforgeeks.org/java/collections-shuffle-method-in-java-with-examples/
+ *       Use: putting local players in a random order
  */
 @SuppressWarnings({"unused"})
 public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
@@ -48,11 +51,18 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
     protected Client client;
     /** Game Name */
     protected String gameName;
+    /** Game Page */
+    protected GamePage page;
 
     /**
      * Constructor
      */
     protected GameBuilder() {}
+
+    @Override
+    public String toString() {
+        return gameName + " Builder";
+    }
 
     /**
      * Get self
@@ -96,7 +106,40 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
      * Builds the game
      * @return the game
      */
-    public abstract Game build();
+    public abstract G build();
+
+    /**
+     * Does setup for local players
+     * 
+     * @param builtPlayers the players to setup
+     * 
+     * @return a list of players setup to start a game
+     * 
+     * TODO: abstract the players so it doesnt have to be made for every builder
+     */
+    protected abstract ArrayList<Player> setupLocalPlayers(ArrayList<Player> builtPlayers);
+
+    /**
+     * Does setup for online players
+     * 
+     * @param builtPlayers the players to setup
+     * 
+     * @return a list of players setup to start a game
+     * 
+     * TODO: abstract the players so it doesnt have to be made for every builder
+     */
+    protected abstract ArrayList<Player> setupOnlinePlayers(ArrayList<Player> builtPlayers);
+
+    /**
+     * Does setup for tournament players
+     * 
+     * @param builtPlayers the players to setup
+     * 
+     * @return a list of players setup to start a game
+     * 
+     * TODO: abstract the players so it doesnt have to be made for every builder
+     */
+    protected abstract ArrayList<Player> setupTournamentPlayers(ArrayList<Player> builtPlayers);
 
     /**
      * Gets the player types to choose from
@@ -128,6 +171,15 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
     }
 
     /**
+     * Gets the added players options list
+     * 
+     * @return the players
+     */
+    public ArrayList<PlayerOption<? extends Player>> getPlayers() {
+        return players;
+    }
+
+    /**
      * Sets the client
      * 
      * @param client to set to
@@ -152,7 +204,16 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
         }
 
         if (mode == GameMode.ONLINE) {
+            client.generateUniqueName();
+            client.login();
             client.subscribe(gameName);
+        } else if (mode == GameMode.TOURNAMENT) {
+            if (Config.DEBUG) {
+                client.generateUniqueName();
+            } else {
+                client.setName(Config.TEAM_NAME);
+            }
+            client.login();
         }
 
         return self();
@@ -176,6 +237,5 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
             // TODO: handle exception
             return;
         }
-        client.login();
     }
 }

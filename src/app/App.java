@@ -37,7 +37,7 @@ public class App {
     /**
      * The application frame of the app
      */
-    private final JFrame applicationFrame;
+    private static JFrame applicationFrame;
 
 
     /**
@@ -46,19 +46,7 @@ public class App {
     public App () {
         // swing setup
         if (Config.SWING_SUPPORTED) {
-            applicationFrame = new JFrame("applicationFrame");
-            applicationFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-            applicationFrame.setResizable(false);
-            applicationFrame.setSize(1000, 1000);
-            applicationFrame.setLocationRelativeTo(null);
-
-            // add a listener to close the application on pressing X
-            applicationFrame.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    close();
-                }
-            });
+            getApplicationFrame();
         } else {
             applicationFrame = null;
         }
@@ -164,5 +152,31 @@ public class App {
         applicationFrame.revalidate();
         applicationFrame.repaint();
         applicationFrame.setVisible(true);
+    }
+
+    /**
+     * Gets the frame of the application
+     * 
+     * Usefull for popup messages
+     * 
+     * @return the application frame
+     */
+    public static JFrame getApplicationFrame() {
+        if (applicationFrame == null) {
+            applicationFrame = new JFrame("applicationFrame");
+            applicationFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+            applicationFrame.setResizable(false);
+            applicationFrame.setSize(1000, 1000);
+            applicationFrame.setLocationRelativeTo(null);
+
+            // add a listener to close the application on pressing X
+            applicationFrame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    close();
+                }
+            });
+        }
+        return applicationFrame;
     }
 }

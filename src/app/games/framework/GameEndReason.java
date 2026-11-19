@@ -1,4 +1,4 @@
-package app.games;
+package app.games.framework;
 
 /**
  * <pre>

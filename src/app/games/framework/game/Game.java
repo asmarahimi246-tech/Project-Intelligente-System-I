@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import app.games.framework.move.Move;
 import app.games.framework.player.Player;
 import app.uiPages.context.Page;
+import app.util.Logger;
 
 /**
  * <pre>
@@ -36,9 +37,6 @@ public abstract class Game {
         this.players = players;
     }
 
-    @Override
-    public abstract String toString();
-
     /**
      * Gets the page
      * 
@@ -58,6 +56,8 @@ public abstract class Game {
      */
     public void close() {
         this.running = false;
+        Logger.logDebug("game closing: " + page.toString());
+        page.close();
     }
 
     /**
