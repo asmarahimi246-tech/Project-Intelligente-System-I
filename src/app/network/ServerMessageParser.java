@@ -53,12 +53,6 @@ public class ServerMessageParser {
      * Sets the MessageType of a server message
      */
     public void setMessageType () {
-        if (svrMessage == null || svrMessage.isBlank()) {
-            throw new IllegalArgumentException(
-                    "Cannot parse a null or empty server message"
-            );
-        }
-
         String type = svrMessage.split(" ")[0];
 
         switch (type) {

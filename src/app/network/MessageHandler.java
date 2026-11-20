@@ -12,7 +12,11 @@ public class MessageHandler {
     }
 
     public ServerMessage handleMessage(String rawMsg) {
+        if (rawMsg == null || rawMsg.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Cannot parse a null or empty server message"
+            );
+        }
         return parser.parse(rawMsg);
-
     }
 }
