@@ -35,5 +35,4 @@ public class ReversiGame extends Game {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'procesMove'");
     }
-    
 }

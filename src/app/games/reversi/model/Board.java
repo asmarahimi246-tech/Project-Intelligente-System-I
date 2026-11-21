@@ -89,13 +89,12 @@ public class Board {
      * @param player1 first player
      * @param player2 second player
      */
-    public void setupInitialBoard(Player player1, Player player2) {
+    public void setupStartingBoard(Player player1, Player player2) {
         board[3][3].setOwner(player2);
         board[4][4].setOwner(player2);
         board[3][4].setOwner(player1);
         board[4][3].setOwner(player1);
     }
-
 
     /**
      * Copys this board
