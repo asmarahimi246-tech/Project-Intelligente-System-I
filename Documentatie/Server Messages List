@@ -1,0 +1,122 @@
+C = Client
+S = Server
+
+Notes bij server antwoorden:
+Items tussen vierkante haken ('[' en ']') geven een lijst weer.
+Items tussen accolades ('{' en '}') geven een map weer. Zoals bij alle maps, is de volgorde niet bepaald.
+
+Notes bij client commando's:
+Alle commando's zijn niet hoofdlettergevoelig.
+Alle argumenten zijn niet hoofdlettergevoelig.
+
+Server messages
+OK
+ERR <reden>
+SVR GAMELIST ["<speltype>", ...]
+SVR PLAYERLIST ["<speler>", ...]
+SVR HELP <help informatie>
+
+SVR GAME MATCH {PLAYERTOMOVE: "<naam speler1>", GAMTYPE: "<speltype>", OPPONENT: "<naam tegenstander>"}
+SVR GAME YOURTURN {TURNMESSAGE: "<bericht voor deze beurt>"}
+SVR GAME MOVE {PLAYER: "<speler>", DETAILS: "<reactie spel op zet>", MOVE: "<zet>"}
+
+SVR GAME WIN/LOSS/DRAW {PLAYERONESCORE: "<score speler1>", PLAYERTWOSCORE: "<score speler2>", COMMENT: "<commentaar op resultaat>"}
+SVR GAME WIN/LOSS/DRAW {PLAYERONESCORE: "<score speler1>", PLAYERTWOSCORE: "<score speler2>", COMMENT: "Player forfeited match"}
+SVR GAME WIN/LOSS/DRAW {PLAYERONESCORE: "<score speler1>", PLAYERTWOSCORE: "<score speler2>", COMMENT: "Client disconnected"}
+
+SVR GAME CHALLENGE {CHALLENGER: "Sjors", GAMETYPE: "Guess Game", CHALLENGENUMBER: "1"}
+SVR GAME CHALLENGE CANCELLED {CHALLENGENUMBER: "<uitdaging nummer>"}
+
+
+help command results
+SVR HELP Help information for commands.
+SVR HELP
+SVR HELP For more information on a command, type 'help <command>'.
+SVR HELP
+SVR HELP Available commands:
+SVR HELP challenge    : Handle challenges
+SVR HELP forfeit      : Forfeit current match
+SVR HELP get          : Get server data
+SVR HELP help         : Get help information (for a specific command)
+SVR HELP login        : Login as player
+SVR HELP logout       : Logout and disconnect
+SVR HELP move         : Make a game move in current match
+SVR HELP place        : Place a ship at the start of current match using start and endindex
+SVR HELP message      : Send a message to all players, also visible on the website.
+SVR HELP subscribe    : Subscribe for the game finder
+
+help challenge
+SVR HELP Help information for command 'challenge'
+SVR HELP
+SVR HELP Description: Handle challenges
+SVR HELP
+SVR HELP Valid usages:
+SVR HELP challenge accept <challenge number>     : Accept challenge
+SVR HELP challenge <player> <game>               : Challenge player for game
+
+help forfeit
+SVR HELP Help information for command 'forfeit'
+SVR HELP
+SVR HELP Description: Forfeit current match
+SVR HELP
+SVR HELP Valid usages:
+SVR HELP forfeit     : Forfeit current match
+
+help get
+SVR HELP Help information for command 'get'
+SVR HELP
+SVR HELP Description: Get server data
+SVR HELP
+SVR HELP Valid usages:
+SVR HELP get playerlist     : Currently logged in players
+SVR HELP get gamelist       : Available games
+
+help login
+SVR HELP Help information for command 'login'
+SVR HELP
+SVR HELP Description: Login as player
+SVR HELP
+SVR HELP Valid usages:
+SVR HELP login <player name>     : Name to login with
+
+help logout
+SVR HELP Help information for command 'logout'
+SVR HELP
+SVR HELP Description: Logout and disconnect
+SVR HELP
+SVR HELP Valid usages:
+SVR HELP logout     : Logout and disconnect
+SVR HELP
+SVR HELP Command aliases: 'exit', 'quit', 'disconnect', 'bye'
+
+help move
+SVR HELP Help information for command 'move'
+SVR HELP
+SVR HELP Description: Make a game move in current match
+SVR HELP
+SVR HELP Valid usages:
+SVR HELP move <move>     : Game-specific move to make
+
+help place
+SVR HELP Help information for command 'place'
+SVR HELP
+SVR HELP Description: Place a ship at the start of current match using start and endindex
+SVR HELP
+SVR HELP Valid usages:
+SVR HELP place <startindex> <eindindex>     : Place a ship in Battleship
+
+help message
+SVR HELP Help information for command 'message'
+SVR HELP
+SVR HELP Description: Send a message to all players, also visible on the website.
+SVR HELP
+SVR HELP Valid usages:
+SVR HELP message <message text>     : Message to send to all players. Wrap in quotes to use spaces.
+
+help subscribe
+SVR HELP Help information for command 'subscribe'
+SVR HELP
+SVR HELP Description: Subscribe for the game finder
+SVR HELP
+SVR HELP Valid usages:
+SVR HELP subscribe <game>     : Game type
