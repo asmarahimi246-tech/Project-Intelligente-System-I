@@ -80,32 +80,16 @@ public class ReversiPage extends Page implements GamePage {
 
     @Override
     public void setGame(Game game) {
-        this.game = (ReversiGame) game;
     }
 
     public ReversiMove requestMove() {
-
-        if (!Config.SWING_SUPPORTED) {
-            return cliInput();
-        }
-
-        SwingUtilities.invokeLater(() -> {
-            acceptingMoves = true;
-            refreshBoard();
-        });
-
-        try {
-            return moves.take();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Waiting for a move was interrupted", e);
-        }
+        return null;
     }
 
     private ReversiMove cliInput() {
 
         // get input
-        System.out.println("give number (1-64)");
+        System.out.println("give number (1-64) ");
         Scanner scanner = ScannerSingleton.getInstance();
         CLIIntegerField xfield = new CLIIntegerField.Builder(scanner, "Something went wrong.")
                 .max(64)
