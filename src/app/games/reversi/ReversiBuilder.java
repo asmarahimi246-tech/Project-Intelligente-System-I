@@ -101,3 +101,4 @@ public class ReversiBuilder extends GameBuilder<ReversiGame, ReversiBuilder> {
         }
     }
 }
+
