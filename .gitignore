@@ -16,6 +16,8 @@ pom.xml
 
 # Other
 .out/
+out/
+out
 
 # Logs
 *.log
