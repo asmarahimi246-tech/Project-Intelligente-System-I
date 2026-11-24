@@ -133,7 +133,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         // pu the players in a random order
         Collections.shuffle(setupPlayers);
         return setupPlayers;
-    };
+    }
 
     /**
      * Does setup for online players

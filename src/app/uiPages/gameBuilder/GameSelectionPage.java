@@ -3,6 +3,8 @@ package app.uiPages.gameBuilder;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import app.games.reversi.ReversiBuilder;
+import app.games.reversi.ReversiGame;
 import app.games.tictactoe.TicTacToeBuilder;
 import app.games.tictactoe.TicTacToeGame;
 import app.uiPages.BasePage;
@@ -59,12 +61,13 @@ public class GameSelectionPage extends Page {
         // print
         System.out.println("=== Game Selection ===");
         System.out.println("1. Tic Tac Toe");
+        System.out.println("2. Reversi");
         System.out.print("Enter your choice: ");
 
         // get input
         Scanner scanner = ScannerSingleton.getInstance();
         CLIIntegerField field = new CLIIntegerField.Builder(scanner, "Something went wrong.")
-            .max(1)
+            .max(2)
             .min(1)
             .build();
         int choice = field.getInput();
@@ -77,6 +80,11 @@ public class GameSelectionPage extends Page {
                 TicTacToeBuilder builder = new TicTacToeBuilder();
                 
                 page = new BasePage(new ModePage<TicTacToeGame,TicTacToeBuilder>(builder));
+                break;
+            case 2:
+                // start building a reversi game
+                ReversiBuilder reversiBuilder = new ReversiBuilder();
+                page = new BasePage(new ModePage<ReversiGame, ReversiBuilder>(reversiBuilder));
                 break;
         
             default:
