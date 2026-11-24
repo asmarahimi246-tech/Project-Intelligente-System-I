@@ -1,9 +1,9 @@
 package app.games.reversi;
 
+import app.games.framework.components.Board;
 import app.games.framework.game.Game;
 import app.games.framework.game.GamePage;
 import app.games.framework.player.Player;
-import app.games.reversi.model.Board;
 import app.games.reversi.model.ReversiMove;
 import app.uiPages.context.Page;
 import app.util.Config;

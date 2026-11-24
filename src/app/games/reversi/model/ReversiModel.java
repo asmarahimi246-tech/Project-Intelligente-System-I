@@ -11,7 +11,7 @@ import app.util.Logger;
 public class ReversiModel {
     private Player currentPlayer;
     private Board board = new Board(8, 8);
-    private app.games.reversi.model.ReversiModel.TriPredicate<Board, Integer, Integer> isCurrentPlayer = (board, row, col) -> (!board.getByPos(row, col).isEmpty()) && (board.getByPos(row, col).getOwner() == currentPlayer);
+    private TriPredicate<Board, Integer, Integer> isCurrentPlayer = (board, row, col) -> (!board.getByPos(row, col).isEmpty()) && (board.getByPos(row, col).getOwner() == currentPlayer);
 
     @FunctionalInterface
     interface TriPredicate<A, B, C> {
