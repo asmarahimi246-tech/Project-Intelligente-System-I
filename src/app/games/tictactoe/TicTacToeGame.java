@@ -20,7 +20,7 @@ import app.util.Logger;
  *   --make model check if move is valid
  *   --if true, make view update with the move added
  */
-public class TicTacToeGame extends Game {
+public class  TicTacToeGame extends Game {
     public TicTacToeModel model = new TicTacToeModel();
 
     /**
