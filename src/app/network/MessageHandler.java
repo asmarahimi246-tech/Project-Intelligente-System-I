@@ -11,6 +11,12 @@ public class MessageHandler {
         this.parser = new ServerMessageParser();
     }
 
+    /**
+     * Handles a message
+     * 
+     * @param rawMsg the message to handle
+     * @return the parsed message
+     */
     public ServerMessage handleMessage(String rawMsg) {
         if (rawMsg == null || rawMsg.isBlank()) {
             throw new IllegalArgumentException(

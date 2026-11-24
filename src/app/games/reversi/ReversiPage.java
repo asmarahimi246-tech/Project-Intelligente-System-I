@@ -1,22 +1,20 @@
 package app.games.reversi;
 
-import app.App;
-import app.games.reversi.model.Tile;
 import app.games.framework.game.Game;
 import app.games.framework.game.GamePage;
 import app.games.framework.player.Player;
 import app.games.reversi.model.Board;
-import app.games.tictactoe.model.Board;
-import app.games.tictactoe.model.TicTacToeMove;
+import app.games.reversi.model.ReversiMove;
 import app.uiPages.context.Page;
-import app.games.reversi.ReversiGame;
 import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
 
-import javax.swing.*;
 import java.util.Scanner;
 
+/**
+ * ReversiPage
+ */
 public class ReversiPage extends Page implements GamePage {
     private ReversiGame game;
 
@@ -49,7 +47,11 @@ public class ReversiPage extends Page implements GamePage {
         System.out.println("its your turn " + name);
     }
 
-
+    /**
+     * Prints a board
+     * 
+     * @param board board
+     */
     public void printBoard(Board board) {
         String toPrint = "";
 
@@ -70,7 +72,7 @@ public class ReversiPage extends Page implements GamePage {
                         toPrint += "" + id;
                     }
                 } else {
-                    toPrint += " " + game.getSymbol(owner);
+                    toPrint += " ";
                 }
             }
             toPrint += "\n";
@@ -86,6 +88,11 @@ public class ReversiPage extends Page implements GamePage {
         return null;
     }
 
+    /**
+     * Gets input from the CLI
+     * 
+     * @return a reversiMove
+     */
     private ReversiMove cliInput() {
 
         // get input
@@ -103,6 +110,6 @@ public class ReversiPage extends Page implements GamePage {
         int col = index % 8;
 
 
-        return new TicTacToeMove(row, col);
+        return new ReversiMove(row, col);
     }
 }

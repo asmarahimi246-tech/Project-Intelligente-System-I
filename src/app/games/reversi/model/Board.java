@@ -2,6 +2,9 @@ package app.games.reversi.model;
 
 import app.games.framework.player.Player;
 
+/**
+ * Board
+ */
 public class Board {
     private final Tile[][] board = new Tile[8][8];
 
