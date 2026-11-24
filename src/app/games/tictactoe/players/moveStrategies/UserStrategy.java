@@ -1,10 +1,9 @@
 package app.games.tictactoe.players.moveStrategies;
 
-import app.games.framework.game.Game;
 import app.games.framework.move.MoveSrategy;
-import app.games.tictactoe.TicTacToeGame;
+import app.games.framework.player.Player;
 import app.games.tictactoe.TicTacToePage;
-import app.games.tictactoe.model.Board;
+import app.games.framework.components.Board;
 import app.games.tictactoe.model.TicTacToeMove;
 
 /**
@@ -26,17 +25,8 @@ public class UserStrategy implements MoveSrategy {
     }
 
     @Override
-    public TicTacToeMove getMove(Game game) {
+    public TicTacToeMove getMove(Board board, Player player) {
         TicTacToeMove toReturn = null;
-
-        // get the game
-        TicTacToeGame ticTacToe = null;
-        if (game instanceof TicTacToeGame) {
-            ticTacToe = (TicTacToeGame) game;
-        }
-
-        // get the board
-        Board board = ticTacToe.model.getBoard();
 
         // request input from the page
         // and check if its valid

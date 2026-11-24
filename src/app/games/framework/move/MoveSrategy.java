@@ -1,6 +1,7 @@
 package app.games.framework.move;
 
-import app.games.framework.game.Game;
+import app.games.framework.components.Board;
+import app.games.framework.player.Player;
 
 /**
  * Move
@@ -10,9 +11,10 @@ import app.games.framework.game.Game;
 public interface MoveSrategy {
     /**
      * Gets a move
-     * @param game the game
+     * @param board the board to place a move on
+     * @param player the player doing the move
      * @return the move
      */
-    public Move getMove(Game game);
+    public Move getMove(Board board, Player player);
 }
 

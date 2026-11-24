@@ -12,13 +12,13 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import app.games.tictactoe.model.Board;
 import app.games.tictactoe.model.TicTacToeMove;
 import app.uiPages.context.Page;
 import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
 import app.App;
+import app.games.framework.components.Board;
 import app.games.framework.game.Game;
 import app.games.framework.game.GamePage;
 import app.games.framework.player.Player;

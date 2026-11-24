@@ -2,11 +2,9 @@ package app.games.tictactoe.players.moveStrategies;
 
 import java.util.Random;
 
-import app.games.framework.game.Game;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
-import app.games.tictactoe.TicTacToeGame;
-import app.games.tictactoe.model.Board;
+import app.games.framework.components.Board;
 import app.games.tictactoe.model.TicTacToeMove;
 import app.util.Config;
 import app.util.Logger;
@@ -141,20 +139,11 @@ public class RandomAiStrategy implements MoveSrategy {
     }
 
     @Override
-    public TicTacToeMove getMove(Game game) {
+    public TicTacToeMove getMove(Board board, Player player) {
         Logger.logDebug("Passive ai is doing a move");
 
-        // get the game
-        TicTacToeGame ticTacToe = null;
-        if (game instanceof TicTacToeGame) {
-            ticTacToe = (TicTacToeGame) game;
-        }
-
-        // get the board
-        Board board = ticTacToe.model.getBoard();
-
         // checks who self is
-        Player aIPlayer = ticTacToe.model.getCurrentPlayer();
+        Player aIPlayer = player;
 
         // make board
         char[] charBoard = new char[9];

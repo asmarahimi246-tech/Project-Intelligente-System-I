@@ -1,5 +1,6 @@
 package app.games.tictactoe.model;
 
+import app.games.framework.components.Board;
 import app.games.framework.exceptions.InvalidMoveException;
 import app.games.framework.player.Player;
 import app.util.Logger;
@@ -28,7 +29,7 @@ import app.util.Logger;
  */
 public class TicTacToeModel {
     private Player currentPlayer;
-    private Board board = new Board();
+    private Board board = new Board(3, 3);
     private TriPredicate<Board, Integer, Integer> isCurrentPlayer = (board, row, col) -> (!board.getByPos(row, col).isEmpty()) && (board.getByPos(row, col).getOwner() == currentPlayer);
 
     @FunctionalInterface

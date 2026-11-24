@@ -1,10 +1,8 @@
 package app.games.tictactoe.players.moveStrategies;
 
-import app.games.framework.game.Game;
+import app.games.framework.components.Board;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
-import app.games.tictactoe.TicTacToeGame;
-import app.games.tictactoe.model.Board;
 import app.games.tictactoe.model.TicTacToeMove;
 import app.games.tictactoe.players.LocalPlayer;
 import app.util.Logger;
@@ -252,23 +250,14 @@ public class AggresiveAIStrategy implements MoveSrategy {
      * @return the move
      */
     @Override
-    public TicTacToeMove getMove(Game game) {
+    public TicTacToeMove getMove(Board board, Player player) {
         Logger.logDebug("Agressive ai is doing a move");
 
         simulatedOpponent = new LocalPlayer(this);
         simulatedOpponent.setName("S");
 
-        // get the game
-        TicTacToeGame ticTacToe = null;
-        if (game instanceof TicTacToeGame) {
-            ticTacToe = (TicTacToeGame) game;
-        }
-
-        // get the board
-        Board board = ticTacToe.model.getBoard();
-
         // checks who self is
-        aIPlayer = ticTacToe.model.getCurrentPlayer();
+        aIPlayer = player;
 
         return calculateBestMove(board);
     }

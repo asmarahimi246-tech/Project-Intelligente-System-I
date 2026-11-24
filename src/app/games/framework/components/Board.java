@@ -1,46 +1,39 @@
-package app.games.tictactoe.model;
+package app.games.framework.components;
 
+import app.games.framework.exceptions.IlligalBoardStateException;
 import app.games.framework.player.Player;
+import app.games.reversi.model.Tile;
 
 /**
  * Board
  */
 public class Board {
-    private final Tile[][] board = new Tile[3][3];
+    private Tile[][] board = null;
 
     /**
      * Creates a board an initializes the tiles
      */
-    public Board() {
+    public Board(int width, int height) {
+        this.board = new Tile[width][height];
+
         // create tiles
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
                 board[row][col] = new Tile();
-                int id = (row)*3 + col + 1;
+                int id = (row)*8 + col + 1;
                 board[row][col].setId(id);
             }
         }
     }
 
-    /**dee
-     * Checks if the tile is empty
-     * 
-     * @param row row
-     * @param col collumn
-     * @return true if empty
-     */
-    //public boolean isEmpty(int row, int col) {
-    //    return board[row][col].isEmpty();
-    //}
-
     /**
      * Checks if the board is full
-     * 
+     *
      * @return true if its full
      */
     public boolean isFull() {
-        for (int col = 0; col < 3; col++) {
-            for (int row = 0; row < 3; row++) {
+        for (int col = 0; col < 8; col++) {
+            for (int row = 0; row < 8; row++) {
                 if (board[col][row].isEmpty()) {
                     return false;
                 }
@@ -51,7 +44,7 @@ public class Board {
 
     /**
      * Gets a tile by its ID
-     * 
+     *
      * @param id the id
      * @return the tile
      */
@@ -70,7 +63,7 @@ public class Board {
 
     /**
      * Gets a tile by its position
-     * 
+     *
      * @param row row
      * @param col col
      * @return the tile
@@ -80,43 +73,38 @@ public class Board {
     }
 
     /**
-     * Places a tile
-     * 
-     * @param row row
-     * @param col collumn
-     * @param player the player that places the tile
-     */
-    //public void place(int row, int col, Player player) {
-    //    board[row][col].setOwner(player);
-    //}
-
-    /**
-     * Gets the owner
-     * 
-     * @param row row
-     * @param col collumn
-     * @return the owner
-     */
-    //public Player getOwner(int row, int col) {
-    //    return board[row][col].getOwner();
-    //}
-
-    /**
      * Creates a board from a other board
-     * 
+     *
      * @param other other
      */
     public Board(Board other) {
         // create tiles
-        // and copy the owner
-        for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[row].length; col++) {
-                board[row][col] = new Tile();
+        if (board != null) {
+            // and copy the owner
+            for (int row = 0; row < board.length; row++) {
+                for (int col = 0; col < board[row].length; col++) {
+                    board[row][col] = new Tile();
 
-                Player owner = other.board[row][col].getOwner();
-                board[row][col].setOwner(owner);
+                    Player owner = other.board[row][col].getOwner();
+                    board[row][col].setOwner(owner);
+                }
             }
+        } else {
+            throw new IlligalBoardStateException("Board is null");
         }
+    }
+
+    /**
+     * Sets the starting pieces in the center of the board.
+     *
+     * @param player1 first player
+     * @param player2 second player
+     */
+    public void setupStartingBoard(Player player1, Player player2) {
+        board[3][3].setOwner(player2);
+        board[4][4].setOwner(player2);
+        board[3][4].setOwner(player1);
+        board[4][3].setOwner(player1);
     }
 
     /**
@@ -127,3 +115,4 @@ public class Board {
         return new Board(this);
     }
 }
+

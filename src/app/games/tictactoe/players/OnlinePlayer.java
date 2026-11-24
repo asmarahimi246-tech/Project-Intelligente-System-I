@@ -2,11 +2,13 @@ package app.games.tictactoe.players;
 
 import javax.naming.TimeLimitExceededException;
 
+import app.games.framework.components.Board;
 import app.games.framework.exceptions.TurnLimitExceededException;
 import app.games.framework.game.Game;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerState;
+import app.games.tictactoe.TicTacToeGame;
 import app.games.tictactoe.model.TicTacToeMove;
 import app.network.Client;
 import app.network.MessageAddon;
@@ -40,7 +42,10 @@ public class OnlinePlayer extends Player {
             client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.YOURTURN, Config.TURNLIMIT);
 
             // get the move
-            TicTacToeMove move = (TicTacToeMove) strategy.getMove(game);
+            TicTacToeGame ticTacToe = (TicTacToeGame) game;
+
+            Board board = ticTacToe.model.getBoard();
+            TicTacToeMove move = (TicTacToeMove) strategy.getMove(board, this);
 
             // send move
             if (move != null) {
