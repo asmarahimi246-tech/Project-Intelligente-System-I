@@ -82,4 +82,9 @@ public class ParserTest {
         assertEquals("Command not found", msg.getErrorDetails());
         assertNull(msg.getGameDetails());
     }
+
+    @Test
+    void testTest() {
+
+    }
 }
