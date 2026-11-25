@@ -7,6 +7,7 @@ import app.games.framework.game.Game;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerState;
+import app.games.reversi.ReversiGame;
 import app.games.reversi.model.ReversiMove;
 import app.network.Client;
 import app.network.MessageAddon;
@@ -39,12 +40,24 @@ public class OnlinePlayer extends Player {
         try {
             client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.YOURTURN, Config.TURNLIMIT);
 
-            // get the move
+            // get the move using the selected strategy
             //TODO: scan terminal here
-            ReversiMove move = null;
+            ReversiGame reversiGame = (ReversiGame) game;
+
+            ReversiMove move = (ReversiMove) strategy.getMove(
+                    reversiGame.model.getBoard(),
+                    this
+            );
 
             // send move
             if (move != null) {
+                // convert Reversi position to server position
+                //Rversi board contains 8 row and 8 columns
+                int serverMove = move.row() * 8 + move.column();
+
+                //send the move
+                client.sendCommand("move " + serverMove);
+                Logger.logDebug("Reversi move sent: " + serverMove);
                 //TODO: go from move to server move
                 //int serverMove =
                 //client.sendCommand("move " + serverMove);
