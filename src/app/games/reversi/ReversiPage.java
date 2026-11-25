@@ -1,16 +1,16 @@
 package app.games.reversi;
 
-import app.games.framework.components.Board;
-import app.games.framework.game.Game;
-import app.games.framework.game.GamePage;
-import app.games.framework.player.Player;
+import java.util.Scanner;
+
 import app.games.reversi.model.ReversiMove;
 import app.uiPages.context.Page;
 import app.util.Config;
 import app.util.ScannerSingleton;
 import app.util.cliInputFields.CLIIntegerField;
-
-import java.util.Scanner;
+import app.games.framework.components.Board;
+import app.games.framework.game.Game;
+import app.games.framework.game.GamePage;
+import app.games.framework.player.Player;
 
 /**
  * ReversiPage
@@ -23,33 +23,8 @@ public class ReversiPage extends Page implements GamePage {
     }
 
     /**
-     * show result
-     *
-     * @param message the message to show
-     */
-    public void showResult(String message) {
-        if (!Config.SWING_SUPPORTED) {
-            System.out.println(message);
-            Board board = game.model.getBoard();
-            printBoard(board);
-        }
-    }
-
-    @Override
-    public void createCLI() {
-        System.out.println();
-        System.out.println("=== Reversi ===");
-        System.out.println("the board looks like this");
-        Board board = game.model.getBoard();
-        printBoard(board);
-
-        String name = game.model.getCurrentPlayer().getName();
-        System.out.println("its your turn " + name);
-    }
-
-    /**
      * Prints a board
-     * 
+     *
      * @param board board
      */
     public void printBoard(Board board) {
@@ -80,12 +55,43 @@ public class ReversiPage extends Page implements GamePage {
         System.out.println(toPrint);
     }
 
+    /**
+     * show result
+     *
+     * @param message the message to show
+     */
+    public void showResult(String message) {
+        if (!Config.SWING_SUPPORTED) {
+            System.out.println(message);
+            Board board = game.model.getBoard();
+            printBoard(board);
+        }
+    }
+
+    @Override
+    public void createCLI() {
+        System.out.println();
+        System.out.println("=== Reversi ===");
+        System.out.println("the board looks like this");
+        Board board = game.model.getBoard();
+        printBoard(board);
+
+        String name = game.model.getCurrentPlayer().getName();
+        System.out.println("its your turn " + name);
+    }
+
+    /**
+     * sets the game
+     *
+     * @param game
+     */
     @Override
     public void setGame(Game game) {
+        this.game = (ReversiGame) game;
     }
 
     public ReversiMove requestMove() {
-        return null;
+        return cliInput();
     }
 
     /**
@@ -96,7 +102,7 @@ public class ReversiPage extends Page implements GamePage {
     private ReversiMove cliInput() {
 
         // get input
-        System.out.println("give number (1-64) ");
+        System.out.println("give number (1-64): ");
         Scanner scanner = ScannerSingleton.getInstance();
         CLIIntegerField xfield = new CLIIntegerField.Builder(scanner, "Something went wrong.")
                 .max(64)
