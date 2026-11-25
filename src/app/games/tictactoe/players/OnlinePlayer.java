@@ -5,6 +5,7 @@ import javax.naming.TimeLimitExceededException;
 import app.games.framework.components.Board;
 import app.games.framework.exceptions.TurnLimitExceededException;
 import app.games.framework.game.Game;
+import app.games.framework.game.GameState;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerState;
@@ -39,7 +40,7 @@ public class OnlinePlayer extends Player {
     public void doMove(Game game) {
         // wait for a move
         try {
-            client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.YOURTURN, Config.TURNLIMIT);
+            client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.YOURTURN, game.turnLimit);
 
             // get the move
             TicTacToeGame ticTacToe = (TicTacToeGame) game;
@@ -57,8 +58,11 @@ public class OnlinePlayer extends Player {
             game.procesMove(move);
             super.state = PlayerState.EXECUTED_TURN;
         } catch (TimeLimitExceededException e) {
-            Logger.logErr("Turnlimit exceeded. Connection with server lost?");
-            throw new TurnLimitExceededException();
+            TurnLimitExceededException error = new TurnLimitExceededException("Player did not give a move in time");
+            game.state = GameState.failed(error);
+
+            // questionable
+            throw error;
         }
     }
 }

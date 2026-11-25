@@ -5,6 +5,7 @@ import javax.naming.TimeLimitExceededException;
 import app.games.framework.exceptions.MatchNotFoundException;
 import app.games.framework.exceptions.TurnLimitExceededException;
 import app.games.framework.game.Game;
+import app.games.framework.game.GameState;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerState;
 import app.games.tictactoe.model.TicTacToeMove;
@@ -42,7 +43,7 @@ public class OnlineOpponent extends Player {
         // wait for match
         ServerMessage msg;
         try {
-            msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MATCH, Integer.MAX_VALUE);
+            msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MATCH, Config.MATCH_TIMEOUT);
             Logger.logDebug(msg.toString());
 
             // get the opponent name
@@ -60,10 +61,8 @@ public class OnlineOpponent extends Player {
                 isFirst = false;
             }
         } catch (TimeLimitExceededException e) {
-
-            //TODO: no thread interupt here
-            Logger.logErr("No match found");
-            throw new MatchNotFoundException();
+            MatchNotFoundException error = new MatchNotFoundException();
+            throw error;
         }
 
         super.state = PlayerState.INITIALIZED;
@@ -77,12 +76,12 @@ public class OnlineOpponent extends Player {
         // get the move
         ServerMessage msg;
         try {
-            msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MOVE, Config.TURNLIMIT);
+            msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MOVE, game.turnLimit);
 
             while (!msg.getGameDetails().get("PLAYER").equalsIgnoreCase(super.name)) {
                 Logger.logDebug("key = " + msg.getGameDetails().get("PLAYER"));
 
-                msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MOVE, Config.TURNLIMIT);
+                msg = client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.MOVE, game.turnLimit);
             }
 
             Logger.logDebug(msg.toString());
@@ -93,8 +92,11 @@ public class OnlineOpponent extends Player {
             // process rge move
             game.procesMove(move);
         } catch (TimeLimitExceededException e) {
-            Logger.logDebug("Opponent turnlimit exceeded");
-            throw new TurnLimitExceededException();
+            TurnLimitExceededException error = new TurnLimitExceededException("Opponent did not give a move in time");
+            game.state = GameState.failed(error);
+
+            // questionable
+            throw error;
         }
         super.state = PlayerState.EXECUTED_TURN;
     }

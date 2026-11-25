@@ -21,6 +21,7 @@ import app.App;
 import app.games.framework.components.Board;
 import app.games.framework.game.Game;
 import app.games.framework.game.GamePage;
+import app.games.framework.game.GameState;
 import app.games.framework.player.Player;
 
 /**
@@ -39,7 +40,6 @@ public class TicTacToePage extends Page implements GamePage {
             new ArrayBlockingQueue<>(1);
 
     private boolean acceptingMoves = false;
-    private static final TicTacToeMove CLOSE_MOVE = new TicTacToeMove(-1, -1);
 
     /**
      * TODO:
@@ -209,6 +209,9 @@ public class TicTacToePage extends Page implements GamePage {
             return moves.take();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            game.state = GameState.forfeited(game.model.getCurrentPlayer());
+
+            // questionable
             throw new IllegalStateException("Waiting for a move was interrupted", e);
         }
     }
@@ -240,7 +243,6 @@ public class TicTacToePage extends Page implements GamePage {
 
     @Override
     public void close() {
-        moves.offer(CLOSE_MOVE);
         super.close();
     }
 }

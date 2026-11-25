@@ -53,11 +53,15 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
     protected String gameName;
     /** Game Page */
     protected GamePage page;
+    /** Game State */
+    protected GameState state;
 
     /**
      * Constructor
      */
-    protected GameBuilder() {}
+    protected GameBuilder() {
+        state = GameState.beingSetup("Builder made");
+    }
 
     @Override
     public String toString() {
@@ -199,6 +203,7 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
      * @return self
      */
     public B prepare() {
+
         if (mode != GameMode.LOCAL) {
             startOnlineMode();
         }

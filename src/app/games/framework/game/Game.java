@@ -19,6 +19,10 @@ import app.util.Logger;
  * </pre>
  */
 public abstract class Game {
+    /** The length of a turn */
+    public long turnLimit;
+    /** The state of the game */
+    public GameState state;
     /** The page (view in the mvc pattern) of the game */
     protected Page page;
     /** The players of the game */
@@ -31,10 +35,12 @@ public abstract class Game {
      * 
      * @param page the page of the game
      * @param players the players of the game
+     * @param turnLimit how long a turn is
      */
-    public Game(Page page, ArrayList<Player> players) {
+    public Game(Page page, ArrayList<Player> players, long turnLimit) {
         this.page = page;
         this.players = players;
+        this.turnLimit = turnLimit;
     }
 
     /**

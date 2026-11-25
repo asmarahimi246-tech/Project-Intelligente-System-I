@@ -9,12 +9,16 @@ import app.games.tictactoe.players.moveStrategies.AggresiveAIStrategy;
 import app.games.tictactoe.players.moveStrategies.PassiveAIStrategy;
 import app.games.tictactoe.players.moveStrategies.RandomAiStrategy;
 import app.games.tictactoe.players.moveStrategies.UserStrategy;
+import app.util.Config;
 import app.util.Logger;
 import app.games.tictactoe.players.LocalPlayer;
 import app.games.tictactoe.players.OnlinePlayer;
+import app.games.framework.exceptions.BuildFailedException;
 import app.games.framework.exceptions.IlligalPlayerOptionException;
+import app.games.framework.exceptions.MatchNotFoundException;
 import app.games.framework.game.GameBuilder;
 import app.games.framework.game.GameMode;
+import app.games.framework.game.GameState;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerOption;
 
@@ -161,7 +165,13 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         online.setName("you");
         
         // wait for match
-        opponent.waitForMatch();
+        try {
+            opponent.waitForMatch();
+        } catch(MatchNotFoundException e) {
+            state = GameState.failed(e);
+            throw new BuildFailedException("No match found");
+        }
+    
 
         // server based order
         // by waiting for Match message
@@ -201,19 +211,23 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
             builtPlayers.add(playerOption.build());
         }
 
-        // setup players
+        // setup players an turn limit
+        long turnLimit = Config.DEFAULT_TIMEOUT;
         ArrayList<Player> setupPlayers;
         switch (mode) {
             case LOCAL:
                 setupPlayers = new ArrayList<Player>(setupLocalPlayers(builtPlayers));
+                turnLimit = Config.LOCAL_TURNLIMIT;
                 break;
 
             case ONLINE:
                 setupPlayers = new ArrayList<Player>(setupOnlinePlayers(builtPlayers));
+                turnLimit = Config.ONLINE_TURNLIMIT;
                 break;
 
             case TOURNAMENT:
                 setupPlayers = new ArrayList<Player>(setupTournamentPlayers(builtPlayers));
+                turnLimit = Config.TOURNAMENT_TURNLIMIT;
                 break;
         
             default:
@@ -221,7 +235,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         }
 
         // build game
-        TicTacToeGame game = new TicTacToeGame((TicTacToePage) page, setupPlayers);
+        TicTacToeGame game = new TicTacToeGame((TicTacToePage) page, setupPlayers, turnLimit);
         page.setGame(game);
 
         return game;

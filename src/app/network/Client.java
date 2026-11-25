@@ -103,7 +103,7 @@ public class Client {
                 System.err.println("Error received from server");
                 throw new InterruptedException();
             }
-            if (listener.okQueue.poll(Config.DEFAULT_TIMOUT, TimeUnit.MILLISECONDS) != null) {
+            if (listener.okQueue.poll(Config.DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS) != null) {
                 ok = true;
             }
         } catch (InterruptedException e) {

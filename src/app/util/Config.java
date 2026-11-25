@@ -59,7 +59,13 @@ public class Config {
     /** The team name */
     public static final String TEAM_NAME = "iForgorWhatTheNameWasSupposedToBe";
     /** The default timout in miliseconds */
-    public static final long DEFAULT_TIMOUT = 100000;
+    public static final long DEFAULT_TIMEOUT = 10000;
     /** The turnlimit in miliseconds */
-    public static final long TURNLIMIT = 5000;
+    public static final long LOCAL_TURNLIMIT = Integer.MAX_VALUE;
+    /** The turnlimit in miliseconds */
+    public static final long ONLINE_TURNLIMIT = 300000;
+    /** The turnlimit in miliseconds */
+    public static final long TOURNAMENT_TURNLIMIT = 5000;
+    /** How long to wait for a match in miliseconds */
+    public static final long MATCH_TIMEOUT = 30000;
 }

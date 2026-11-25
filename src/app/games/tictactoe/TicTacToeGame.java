@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import javax.swing.SwingUtilities;
 
 import app.games.framework.game.Game;
+import app.games.framework.game.GameState;
 import app.games.framework.move.Move;
 import app.games.framework.player.Player;
 import app.games.tictactoe.model.TicTacToeModel;
@@ -28,11 +29,13 @@ public class  TicTacToeGame extends Game {
      * 
      * @param page the view
      * @param players the players
+     * @param turnLimit how long a turn os
      */
-    public TicTacToeGame(TicTacToePage page, ArrayList<Player> players) {
-        super(page, players);
+    public TicTacToeGame(TicTacToePage page, ArrayList<Player> players, long turnLimit) {
+        super(page, players, turnLimit);
         
         super.running = true;
+        super.state = GameState.inProgress();
     }
 
     /**
@@ -86,6 +89,7 @@ public class  TicTacToeGame extends Game {
                 if (model.checkForWin()) {
                     running = false;
                     view.showResult(player.getName() + " wins!");
+                    state = GameState.playerWon(player);
                     break;
                 }
 
@@ -94,6 +98,7 @@ public class  TicTacToeGame extends Game {
                 if (moves == 9) {
                     running = false;
                     view.showResult("Draw!");
+                    state = GameState.draw();
                     break;
                 };
             }
