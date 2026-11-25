@@ -1,20 +1,21 @@
 package app.games.reversi;
 
+import app.games.framework.exceptions.BuildFailedException;
 import app.games.framework.exceptions.IlligalPlayerOptionException;
+import app.games.framework.exceptions.MatchNotFoundException;
 import app.games.framework.game.GameBuilder;
 import app.games.framework.game.GameMode;
+import app.games.framework.game.GameState;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerOption;
 import app.games.reversi.players.LocalPlayer;
 import app.games.reversi.players.OnlineOpponent;
 import app.games.reversi.players.OnlinePlayer;
-import app.games.reversi.players.moveStrategies.RandomAiStrategy;
-import app.games.reversi.players.moveStrategies.ReversiAiStrategy;
 import app.games.reversi.players.moveStrategies.UserStrategy;
+import app.util.Config;
 import app.util.Logger;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,7 +55,8 @@ public class ReversiBuilder extends GameBuilder<ReversiGame, ReversiBuilder> {
             builtPlayers.add(playerOption.build());
         }
 
-        // setup players
+        // setup players an turn limit
+        long turnLimit = Config.DEFAULT_TIMEOUT;
         ArrayList<Player> setupPlayers;
         switch (mode) {
             case LOCAL:
@@ -63,18 +65,20 @@ public class ReversiBuilder extends GameBuilder<ReversiGame, ReversiBuilder> {
 
             case ONLINE:
                 setupPlayers = new ArrayList<Player>(setupOnlinePlayers(builtPlayers));
+                turnLimit = Config.ONLINE_TURNLIMIT;
                 break;
 
             case TOURNAMENT:
                 setupPlayers = new ArrayList<Player>(setupTournamentPlayers(builtPlayers));
+                turnLimit = Config.TOURNAMENT_TURNLIMIT;
                 break;
-
+        
             default:
                 throw new IllegalStateException("mode doesnt exist", null);
         }
 
         // build game
-        ReversiGame game = new ReversiGame((ReversiPage) page, setupPlayers);
+        ReversiGame game = new ReversiGame((ReversiPage) page, setupPlayers, turnLimit);
         page.setGame(game);
 
         return game;
@@ -86,10 +90,8 @@ public class ReversiBuilder extends GameBuilder<ReversiGame, ReversiBuilder> {
 
         // give local players a logical name
         setupPlayers.get(0).setName("Player 1");
-        setupPlayers.get(0).setName("Player 2");
+        setupPlayers.get(1).setName("Player 2");
 
-        // pu the players in a random order
-        Collections.shuffle(setupPlayers);
         return setupPlayers;
     }
 
@@ -112,7 +114,13 @@ public class ReversiBuilder extends GameBuilder<ReversiGame, ReversiBuilder> {
         online.setName("you");
 
         // wait for match
-        opponent.waitForMatch();
+        // wait for match
+        try {
+            opponent.waitForMatch();
+        } catch(MatchNotFoundException e) {
+            state = GameState.failed(e);
+            throw new BuildFailedException("No match found");
+        }
 
         // server based order
         // by waiting for Match message

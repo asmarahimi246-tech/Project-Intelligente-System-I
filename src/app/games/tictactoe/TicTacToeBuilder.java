@@ -217,7 +217,6 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
         switch (mode) {
             case LOCAL:
                 setupPlayers = new ArrayList<Player>(setupLocalPlayers(builtPlayers));
-                turnLimit = Config.LOCAL_TURNLIMIT;
                 break;
 
             case ONLINE:

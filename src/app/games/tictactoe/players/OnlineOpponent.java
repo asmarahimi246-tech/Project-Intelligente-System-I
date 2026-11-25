@@ -38,8 +38,10 @@ public class OnlineOpponent extends Player {
 
     /**
      * Logs into the server
+     * 
+     * @throws MatchNotFoundException
      */
-    public void waitForMatch() {
+    public void waitForMatch() throws MatchNotFoundException {
         // wait for match
         ServerMessage msg;
         try {
@@ -92,11 +94,8 @@ public class OnlineOpponent extends Player {
             // process rge move
             game.procesMove(move);
         } catch (TimeLimitExceededException e) {
-            TurnLimitExceededException error = new TurnLimitExceededException("Opponent did not give a move in time");
-            game.state = GameState.failed(error);
-
-            // questionable
-            throw error;
+            Logger.logDebug("Opponent did not give a move in time");
+            game.state = GameState.forfeited(this);
         }
         super.state = PlayerState.EXECUTED_TURN;
     }

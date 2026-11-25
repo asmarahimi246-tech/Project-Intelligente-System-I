@@ -58,11 +58,8 @@ public class OnlinePlayer extends Player {
             game.procesMove(move);
             super.state = PlayerState.EXECUTED_TURN;
         } catch (TimeLimitExceededException e) {
-            TurnLimitExceededException error = new TurnLimitExceededException("Player did not give a move in time");
-            game.state = GameState.failed(error);
-
-            // questionable
-            throw error;
+            Logger.logDebug("Player did not give a move in time");
+            game.state = GameState.forfeited(this);
         }
     }
 }

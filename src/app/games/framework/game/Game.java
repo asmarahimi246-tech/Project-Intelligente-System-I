@@ -27,8 +27,6 @@ public abstract class Game {
     protected Page page;
     /** The players of the game */
     protected ArrayList<Player> players = new ArrayList<Player>();
-    /** True if the game is running */
-    protected boolean running;
 
     /**
      * Creates a game
@@ -61,7 +59,6 @@ public abstract class Game {
      * Closes the game
      */
     public void close() {
-        this.running = false;
         Logger.logDebug("game closing: " + page.toString());
         page.close();
     }

@@ -24,7 +24,7 @@ public class Config {
 
     // swing
     /** Whether the Swing user interface is supported. */
-    public static boolean SWING_SUPPORTED = true;
+    public static boolean SWING_SUPPORTED = false;
     /** Background color used by the Swing user interface. */
     public static final Color BACKGROUND_COLOR = new Color(38, 42, 48);
     /** Foreground color used by the Swing user interface. */
@@ -55,13 +55,16 @@ public class Config {
     /** Whether tic-tac-toe displays X and O symbols. */
     public static final boolean X_AND_O = true;
 
+    // reversi
+    // TODO: maybe other symbols for reversi then just W and B
+    /** Whether reversi displays W and B symbols. */
+    public static final boolean W_AND_B = true;
+
     // server
     /** The team name */
     public static final String TEAM_NAME = "iForgorWhatTheNameWasSupposedToBe";
     /** The default timout in miliseconds */
     public static final long DEFAULT_TIMEOUT = 10000;
-    /** The turnlimit in miliseconds */
-    public static final long LOCAL_TURNLIMIT = Integer.MAX_VALUE;
     /** The turnlimit in miliseconds */
     public static final long ONLINE_TURNLIMIT = 300000;
     /** The turnlimit in miliseconds */

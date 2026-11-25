@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
+import app.games.framework.exceptions.InvalidMoveException;
 import app.games.framework.game.Game;
 import app.games.framework.game.GameState;
 import app.games.framework.move.Move;
@@ -23,6 +24,7 @@ import app.util.Logger;
  */
 public class  TicTacToeGame extends Game {
     public TicTacToeModel model = new TicTacToeModel();
+    private int moves = 0;
 
     /**
      * Makes a game
@@ -33,8 +35,6 @@ public class  TicTacToeGame extends Game {
      */
     public TicTacToeGame(TicTacToePage page, ArrayList<Player> players, long turnLimit) {
         super(page, players, turnLimit);
-        
-        super.running = true;
         super.state = GameState.inProgress();
     }
 
@@ -63,7 +63,7 @@ public class  TicTacToeGame extends Game {
         TicTacToePage view = (TicTacToePage) page;
 
         // game loop
-        while (running) {
+        while (state.getStatus() == GameState.States.IN_PROGRESS) {
             Logger.logDebug("[tic tac toe]");
             Logger.logDebug("new tic tac toe round");
 
@@ -71,6 +71,28 @@ public class  TicTacToeGame extends Game {
             for (Player player : players) {
                 // set the current player
                 model.setCurrentPlayer(player);
+
+                // check game states
+                switch (state.getStatus()) {
+                    case FORFEITED:
+                        state = GameState.playerWon(player);
+                        continue;
+                    
+                    case PLAYER_WON:
+                        view.showResult(state.getDetail() + " won");
+                        break;
+
+                    case DRAW:
+                        view.showResult("draw");
+                        break;
+
+                    case IN_PROGRESS:
+                        continue;
+
+                    default:
+                        break;
+                }
+
                 
                 if (Config.SWING_SUPPORTED) {
                     SwingUtilities.invokeLater(() -> page.open());
@@ -80,27 +102,6 @@ public class  TicTacToeGame extends Game {
 
                 Logger.logDebug("start move");
                 player.doMove(this);
-
-                if (!running) {
-                    break;
-                }
-
-                // check for win
-                if (model.checkForWin()) {
-                    running = false;
-                    view.showResult(player.getName() + " wins!");
-                    state = GameState.playerWon(player);
-                    break;
-                }
-
-                // check for draw
-                moves++;
-                if (moves == 9) {
-                    running = false;
-                    view.showResult("Draw!");
-                    state = GameState.draw();
-                    break;
-                };
             }
         }
     }
@@ -108,7 +109,22 @@ public class  TicTacToeGame extends Game {
     @Override
     public void procesMove(Move move) {
         if (move instanceof TicTacToeMove) {
-            model.placeMove((TicTacToeMove) move);
+            try {
+                model.placeMove((TicTacToeMove) move);
+
+                // check for win
+                if (model.checkForWin()) {
+                    state = GameState.playerWon(model.getCurrentPlayer());
+                }
+
+                // check for draw
+                if (moves >= 9) {
+                    state = GameState.draw();
+                }
+                
+            } catch (InvalidMoveException e) {
+                state = GameState.failed(e);
+            }
         }
     }
 }

@@ -9,9 +9,9 @@ import app.games.framework.player.Player;
  */
 public final class GameState {
     /**
-     * The current state
+     * The States state
      */
-    public enum Current {
+    public enum States {
         BEING_SETUP("Being setup: "),
         IN_PROGRESS("In progress: "),
         PLAYER_WON("Player won: "),
@@ -21,12 +21,12 @@ public final class GameState {
 
         private final String label;
 
-        Current(String label) {
+        States(String label) {
             this.label = label;
         }
     }
 
-    private final Current status;
+    private final States status;
     private final String detail;
     private final Exception exception;
 
@@ -37,7 +37,7 @@ public final class GameState {
      * @param detail details
      * @param exception exception
      */
-    private GameState(Current status, String detail, Exception exception) {
+    private GameState(States status, String detail, Exception exception) {
         this.status = status;
         this.detail = detail;
         this.exception = exception;
@@ -49,7 +49,7 @@ public final class GameState {
      * @return self
      */
     public static GameState beingSetup(String detail) {
-        return new GameState(Current.BEING_SETUP, detail, null);
+        return new GameState(States.BEING_SETUP, detail, null);
     }
 
     /**
@@ -58,7 +58,7 @@ public final class GameState {
      * @return self
      */
     public static GameState inProgress() {
-        return new GameState(Current.IN_PROGRESS, null, null);
+        return new GameState(States.IN_PROGRESS, null, null);
     }
 
     /**
@@ -68,7 +68,7 @@ public final class GameState {
      * @return self
      */
     public static GameState playerWon(Player player) {
-        return new GameState(Current.PLAYER_WON, player.getName(), null);
+        return new GameState(States.PLAYER_WON, player.getName(), null);
     }
 
     /**
@@ -77,7 +77,7 @@ public final class GameState {
      * @return self
      */
     public static GameState draw() {
-        return new GameState(Current.DRAW, null, null);
+        return new GameState(States.DRAW, null, null);
     }
 
     /**
@@ -87,7 +87,7 @@ public final class GameState {
      * @return self
      */
     public static GameState forfeited(Player player) {
-        return new GameState(Current.FORFEITED, player.getName(), null);
+        return new GameState(States.FORFEITED, player.getName(), null);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class GameState {
      * @return self
      */
     public static GameState failed(Exception exception) {
-        return new GameState(Current.FAIL, null, exception);
+        return new GameState(States.FAIL, null, exception);
     }
 
     /**
@@ -105,7 +105,7 @@ public final class GameState {
      * 
      * @return the state
      */
-    public Current getStatus() {
+    public States getStatus() {
         return status;
     }
 

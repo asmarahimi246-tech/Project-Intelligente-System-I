@@ -1,8 +1,11 @@
 package app.games.reversi;
 
 import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 import app.games.reversi.model.ReversiMove;
+import app.games.tictactoe.model.TicTacToeMove;
 import app.uiPages.context.Page;
 import app.util.Config;
 import app.util.ScannerSingleton;
@@ -11,6 +14,8 @@ import app.games.framework.components.Board;
 import app.games.framework.game.Game;
 import app.games.framework.game.GamePage;
 import app.games.framework.player.Player;
+
+import javax.swing.*;
 
 /**
  * ReversiPage
@@ -39,7 +44,7 @@ public class ReversiPage extends Page implements GamePage {
                 }
 
                 if (owner == null) {
-                    int id = (row)*8 + col + 1;
+                    int id = (row) * 8 + col + 1;
 
                     if (id < 10) {
                         toPrint += " " + id;
@@ -47,7 +52,8 @@ public class ReversiPage extends Page implements GamePage {
                         toPrint += "" + id;
                     }
                 } else {
-                    toPrint += " ";
+                    String symbol = game.getSymbol(owner);
+                    toPrint += " " + symbol;
                 }
             }
             toPrint += "\n";
@@ -91,7 +97,23 @@ public class ReversiPage extends Page implements GamePage {
     }
 
     public ReversiMove requestMove() {
-        return cliInput();
+
+        if (!Config.SWING_SUPPORTED) {
+            return cliInput();
+        }
+        throw new IllegalStateException("test");
+
+//        SwingUtilities.invokeLater(() -> {
+//            acceptingMoves = true;
+//            refreshBoard();
+//        });
+//
+//        try {
+//            return moves.take();
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//            throw new IllegalStateException("Waiting for a move was interrupted", e);
+//        }
     }
 
     /**
@@ -102,7 +124,7 @@ public class ReversiPage extends Page implements GamePage {
     private ReversiMove cliInput() {
 
         // get input
-        System.out.println("give number (1-64): ");
+        System.out.println("give number (1-64)");
         Scanner scanner = ScannerSingleton.getInstance();
         CLIIntegerField xfield = new CLIIntegerField.Builder(scanner, "Something went wrong.")
                 .max(64)
