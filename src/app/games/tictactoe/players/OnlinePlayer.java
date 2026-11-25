@@ -3,7 +3,6 @@ package app.games.tictactoe.players;
 import javax.naming.TimeLimitExceededException;
 
 import app.games.framework.components.Board;
-import app.games.framework.exceptions.TurnLimitExceededException;
 import app.games.framework.game.Game;
 import app.games.framework.game.GameState;
 import app.games.framework.move.MoveSrategy;
@@ -14,7 +13,6 @@ import app.games.tictactoe.model.TicTacToeMove;
 import app.network.Client;
 import app.network.MessageAddon;
 import app.network.MessageSubtype;
-import app.util.Config;
 import app.util.Logger;
 
 /**

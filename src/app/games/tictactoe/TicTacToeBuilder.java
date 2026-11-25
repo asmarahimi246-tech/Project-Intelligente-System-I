@@ -199,7 +199,7 @@ public class TicTacToeBuilder extends GameBuilder<TicTacToeGame,TicTacToeBuilder
     @Override
     protected ArrayList<Player> setupTournamentPlayers(ArrayList<Player> builtPlayers) {
         // im very usefull
-        return setupTournamentPlayers(builtPlayers);
+        return setupOnlinePlayers(builtPlayers);
     };
 
     @Override

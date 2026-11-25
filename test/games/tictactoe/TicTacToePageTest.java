@@ -37,7 +37,7 @@ public class TicTacToePageTest {
         players.add(playerO);
 
         page = new TicTacToePage();
-        game = new TicTacToeGame(page, players);
+        game = new TicTacToeGame(page, players, 100);
         page.setGame(game);
     }
 

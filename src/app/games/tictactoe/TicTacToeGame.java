@@ -59,16 +59,18 @@ public class  TicTacToeGame extends Game {
 
     @Override
     public void run() {
-        int moves = 0;
         TicTacToePage view = (TicTacToePage) page;
 
         // game loop
-        while (state.getStatus() == GameState.States.IN_PROGRESS) {
+        while (state.getStatus() == GameState.States.IN_PROGRESS | state.getStatus() == GameState.States.FORFEITED) {
             Logger.logDebug("[tic tac toe]");
             Logger.logDebug("new tic tac toe round");
 
             // each player does a move
             for (Player player : players) {
+                moves++;
+                Logger.logDebug("moves" + moves);
+
                 // set the current player
                 model.setCurrentPlayer(player);
 
@@ -76,18 +78,18 @@ public class  TicTacToeGame extends Game {
                 switch (state.getStatus()) {
                     case FORFEITED:
                         state = GameState.playerWon(player);
-                        continue;
+                        view.showResult(state.getDetail() + " win");
                     
                     case PLAYER_WON:
-                        view.showResult(state.getDetail() + " won");
-                        break;
+                        view.showResult(state.getDetail() + " win");
+                        return;
 
                     case DRAW:
                         view.showResult("draw");
-                        break;
+                        return;
 
                     case IN_PROGRESS:
-                        continue;
+                        break;
 
                     default:
                         break;

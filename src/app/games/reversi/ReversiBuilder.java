@@ -23,6 +23,9 @@ import java.util.List;
  */
 public class ReversiBuilder extends GameBuilder<ReversiGame, ReversiBuilder> {
 
+    /**
+     * Makes a reversi game
+     */
     public ReversiBuilder() {
         super();
         super.playersToAdd = 2;

@@ -7,6 +7,7 @@ import app.games.framework.player.Player;
 import app.games.framework.player.PlayerState;
 import app.games.tictactoe.TicTacToeGame;
 import app.games.tictactoe.model.TicTacToeMove;
+import app.util.Logger;
 
 /**
  * LocalPlayer

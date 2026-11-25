@@ -1,11 +1,8 @@
 package app.games.reversi;
 
 import java.util.Scanner;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 import app.games.reversi.model.ReversiMove;
-import app.games.tictactoe.model.TicTacToeMove;
 import app.uiPages.context.Page;
 import app.util.Config;
 import app.util.ScannerSingleton;
@@ -15,7 +12,6 @@ import app.games.framework.game.Game;
 import app.games.framework.game.GamePage;
 import app.games.framework.player.Player;
 
-import javax.swing.*;
 
 /**
  * ReversiPage
@@ -96,6 +92,11 @@ public class ReversiPage extends Page implements GamePage {
         this.game = (ReversiGame) game;
     }
 
+    /**
+     * Requests a move from the page
+     * 
+     * @return the move
+     */
     public ReversiMove requestMove() {
 
         if (!Config.SWING_SUPPORTED) {

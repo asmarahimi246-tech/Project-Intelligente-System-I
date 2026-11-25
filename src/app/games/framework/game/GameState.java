@@ -46,6 +46,7 @@ public final class GameState {
     /**
      * Makes a gameState and sets the state to BEING_SETUP
      * 
+     * @param detail detail
      * @return self
      */
     public static GameState beingSetup(String detail) {

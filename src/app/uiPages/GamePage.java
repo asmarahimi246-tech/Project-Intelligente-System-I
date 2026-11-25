@@ -109,6 +109,7 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
                 // then build the content view
                 try {
                     game.run();
+                    Logger.logDebug(game.state.getStatus() + game.state.getDetail());
                 } catch (RuntimeException e) {
                     // game closed
                     if (Thread.currentThread().isInterrupted()) {
@@ -122,6 +123,7 @@ public class GamePage<G extends Game, B extends GameBuilder<G, B>> extends Page 
                     // TODO: a way to know what error
                     } else {
                         if (game != null) {
+                            Logger.logErr(game.state.getStatus() + game.state.getDetail());
                             game.close();
                         }
                         continue;

@@ -24,7 +24,7 @@ public class Config {
 
     // swing
     /** Whether the Swing user interface is supported. */
-    public static boolean SWING_SUPPORTED = false;
+    public static boolean SWING_SUPPORTED = true;
     /** Background color used by the Swing user interface. */
     public static final Color BACKGROUND_COLOR = new Color(38, 42, 48);
     /** Foreground color used by the Swing user interface. */
@@ -66,7 +66,7 @@ public class Config {
     /** The default timout in miliseconds */
     public static final long DEFAULT_TIMEOUT = 10000;
     /** The turnlimit in miliseconds */
-    public static final long ONLINE_TURNLIMIT = 300000;
+    public static final long ONLINE_TURNLIMIT = 5000;
     /** The turnlimit in miliseconds */
     public static final long TOURNAMENT_TURNLIMIT = 5000;
     /** How long to wait for a match in miliseconds */

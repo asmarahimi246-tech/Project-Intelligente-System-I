@@ -6,9 +6,11 @@ import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
 import app.games.reversi.ReversiPage;
 import app.games.reversi.model.ReversiMove;
-import app.games.tictactoe.TicTacToePage;
-import app.games.tictactoe.model.TicTacToeMove;
 
+/**
+ * 
+ * UserStrategy
+ */
 public class UserStrategy implements MoveSrategy {
     ReversiPage page;
 

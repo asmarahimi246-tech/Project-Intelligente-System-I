@@ -2,25 +2,32 @@ package app.games.framework.components;
 
 import app.games.framework.exceptions.IlligalBoardStateException;
 import app.games.framework.player.Player;
-import app.games.reversi.model.Tile;
+import app.util.Logger;
 
 /**
  * Board
  */
 public class Board {
     private Tile[][] board = null;
+    public int width;
+    public int height;
 
     /**
      * Creates a board an initializes the tiles
+     * 
+     * @param width width
+     * @param height height
      */
     public Board(int width, int height) {
+        this.width = width;
+        this.height = height;
         this.board = new Tile[width][height];
 
         // create tiles
-        for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[row].length; col++) {
+        for (int row = 0; row < width; row++) {
+            for (int col = 0; col < height; col++) {
                 board[row][col] = new Tile();
-                int id = (row)*8 + col + 1;
+                int id = (row)*width + col + 1;
                 board[row][col].setId(id);
             }
         }
@@ -32,8 +39,8 @@ public class Board {
      * @return true if its full
      */
     public boolean isFull() {
-        for (int col = 0; col < 8; col++) {
-            for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < width; col++) {
+            for (int row = 0; row < height; row++) {
                 if (board[col][row].isEmpty()) {
                     return false;
                 }
@@ -69,28 +76,35 @@ public class Board {
      * @return the tile
      */
     public Tile getByPos(int row, int col) {
-        return board[row][col];
+        return (Tile) board[row][col];
     }
 
     /**
      * Creates a board from a other board
      *
      * @param other other
+     * 
+     * @throws IlligalBoardStateException when the board to copy is null
      */
-    public Board(Board other) {
-        // create tiles
-        if (board != null) {
-            // and copy the owner
-            for (int row = 0; row < board.length; row++) {
-                for (int col = 0; col < board[row].length; col++) {
-                    board[row][col] = new Tile();
+    public Board(Board other) throws IlligalBoardStateException {
+        this.width = other.width;
+        this.height = other.height;
+        this.board = new Tile[other.width][other.height];
 
-                    Player owner = other.board[row][col].getOwner();
-                    board[row][col].setOwner(owner);
-                }
+        // and copy the owner
+        for (int row = 0; row < width; row++) {
+            for (int col = 0; col < height; col++) {
+                // make new tile
+                board[row][col] = new Tile();
+
+                // set id
+                int id = (row)*width + col + 1;
+                board[row][col].setId(id);
+
+                // set owner
+                Player owner = other.board[row][col].getOwner();
+                board[row][col].setOwner(owner);
             }
-        } else {
-            throw new IlligalBoardStateException("Board is null");
         }
     }
 
@@ -113,6 +127,34 @@ public class Board {
      */
     public Board copy() {
         return new Board(this);
+    }
+
+    /**
+     * Prints the board to the console for debugging.
+     */
+    public void debugPrint() {
+        String toPrint = "";
+
+        for (int row = 0; row < height; row++) {
+
+            for (int col = 0; col < width; col++) {
+
+                Player owner = board[row][col].getOwner();
+
+                // add spacer
+                if (col != 0) {
+                    toPrint += "|";
+                }
+
+                if (owner == null) {
+                    toPrint += "_";
+                } else {
+                    toPrint += owner.getName();
+                }
+            }
+            toPrint += "\n";
+        }
+        System.out.println(toPrint);
     }
 }
 
