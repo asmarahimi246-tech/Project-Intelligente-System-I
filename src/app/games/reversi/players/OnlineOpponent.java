@@ -87,7 +87,7 @@ public class OnlineOpponent extends Player {
             int serverMove = Integer.parseInt(msg.getGameDetails().get("MOVE"));
 
             //TODO: server move to reversi move
-            ReversiMove move = new ReversiMove(serverMove/3, serverMove%3);
+            ReversiMove move = new ReversiMove(serverMove/8, serverMove%8);
 
             // process rge move
             game.procesMove(move);

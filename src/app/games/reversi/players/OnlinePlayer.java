@@ -2,12 +2,16 @@ package app.games.reversi.players;
 
 import javax.naming.TimeLimitExceededException;
 
+import app.games.framework.components.Board;
 import app.games.framework.exceptions.TurnLimitExceededException;
 import app.games.framework.game.Game;
 import app.games.framework.move.MoveSrategy;
 import app.games.framework.player.Player;
 import app.games.framework.player.PlayerState;
+import app.games.reversi.ReversiGame;
 import app.games.reversi.model.ReversiMove;
+import app.games.tictactoe.TicTacToeGame;
+import app.games.tictactoe.model.TicTacToeMove;
 import app.network.Client;
 import app.network.MessageAddon;
 import app.network.MessageSubtype;
@@ -40,14 +44,15 @@ public class OnlinePlayer extends Player {
             client.getSvrMessageBySubTypeAndOptionalAddon(MessageSubtype.GAME, MessageAddon.YOURTURN, Config.TURNLIMIT);
 
             // get the move
-            //TODO: scan terminal here
-            ReversiMove move = null;
+            ReversiGame reversi = (ReversiGame) game;
+
+            Board board = reversi.model.getBoard();
+            ReversiMove move = (ReversiMove) strategy.getMove(board, this);
 
             // send move
             if (move != null) {
-                //TODO: go from move to server move
-                //int serverMove =
-                //client.sendCommand("move " + serverMove);
+                int serverMove = move.row()*8 +move.column();
+                client.sendCommand("move " + serverMove);
             }
 
             // process the move

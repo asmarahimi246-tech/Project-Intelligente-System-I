@@ -86,10 +86,8 @@ public class ReversiBuilder extends GameBuilder<ReversiGame, ReversiBuilder> {
 
         // give local players a logical name
         setupPlayers.get(0).setName("Player 1");
-        setupPlayers.get(0).setName("Player 2");
+        setupPlayers.get(1).setName("Player 2");
 
-        // pu the players in a random order
-        Collections.shuffle(setupPlayers);
         return setupPlayers;
     }
 
