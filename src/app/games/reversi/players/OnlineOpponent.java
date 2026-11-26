@@ -13,6 +13,7 @@ import app.network.MessageSubtype;
 import app.network.ServerMessage;
 import app.util.Config;
 import app.util.Logger;
+import app.games.framework.exceptions.MatchNotFoundException;
 
 /**
  * OnlineOpponent
@@ -62,7 +63,7 @@ public class OnlineOpponent extends Player {
 
             //TODO: no thread interupt here
             Logger.logErr("No match found");
-            Thread.currentThread().interrupt();
+            throw new MatchNotFoundException();
         }
 
         super.state = PlayerState.INITIALIZED;
@@ -86,8 +87,12 @@ public class OnlineOpponent extends Player {
             Logger.logDebug(msg.toString());
             int serverMove = Integer.parseInt(msg.getGameDetails().get("MOVE"));
 
+            if(serverMove < 0 || serverMove >= 64){
+                throw new IllegalArgumentException("Invalid Reversi server move: " + serverMove);
+            }
+
             //TODO: server move to reversi move
-            ReversiMove move = new ReversiMove(serverMove/3, serverMove%3);
+            ReversiMove move = new ReversiMove(serverMove/8, serverMove%8);
 
             // process rge move
             game.procesMove(move);
