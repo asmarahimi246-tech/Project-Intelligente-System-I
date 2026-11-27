@@ -34,7 +34,7 @@ public class ReversiBuilder extends GameBuilder<ReversiGame, ReversiBuilder> {
     }
 
     @Override
-    protected ReversiBuilder self() {
+    public ReversiBuilder self() {
         return this;
     }
 

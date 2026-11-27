@@ -72,7 +72,7 @@ public abstract class GameBuilder<G extends Game, B extends GameBuilder<G, B>> {
      * Get self
      * @return the builder
      */
-    protected abstract B self();
+    public abstract B self();
 
     /**
      * Sets the game mode

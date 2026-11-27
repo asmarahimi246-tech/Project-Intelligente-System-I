@@ -60,4 +60,13 @@ public abstract class Player {
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * Gets the strategy
+     * 
+     * @return the strategy
+     */
+    public MoveSrategy getStrategy() {
+        return strategy;
+    }
 } 

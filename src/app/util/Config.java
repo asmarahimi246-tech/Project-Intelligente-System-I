@@ -62,7 +62,7 @@ public class Config {
 
     // server
     /** The team name */
-    public static final String TEAM_NAME = "iForgorWhatTheNameWasSupposedToBe";
+    public static final String TEAM_NAME = "ITV2S2";
     /** The default timout in miliseconds */
     public static final long DEFAULT_TIMEOUT = 10000;
     /** The turnlimit in miliseconds */
